@@ -58,16 +58,14 @@ function current_page()
 /**
  * @return string
  */
-function make_navigation()
+function make_navigation(): string
 {
     $page = current_page();
     $menu = [];
     $pages = [
-        'news'           => __('News'),
         'meetings'       => [__('Meetings'), 'user_meetings'],
         'user_shifts'    => __('Shifts'),
         'angeltypes'     => __('Angeltypes'),
-        'questions'      => [__('Ask the Heaven'), 'question.add'],
     ];
 
     foreach ($pages as $menu_page => $options) {
