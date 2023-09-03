@@ -58,7 +58,6 @@ class ControllerTest extends TestCase
                 $this->assertArrayHasKey('themes', $data);
                 $this->assertArrayHasKey('shifts', $data);
                 $this->assertArrayHasKey('announcements', $data);
-                $this->assertArrayHasKey('questions', $data);
                 $this->assertArrayHasKey('messages', $data);
                 $this->assertArrayHasKey('password_resets', $data);
                 $this->assertArrayHasKey('registration_enabled', $data);
@@ -106,10 +105,6 @@ class ControllerTest extends TestCase
             ->method('announcements')
             ->withConsecutive([false], [true])
             ->willReturnOnConsecutiveCalls(18, 7);
-        $stats->expects($this->exactly(2))
-            ->method('questions')
-            ->withConsecutive([true], [false])
-            ->willReturnOnConsecutiveCalls(5, 0);
         $stats->expects($this->exactly(8))
             ->method('logEntries')
             ->withConsecutive(

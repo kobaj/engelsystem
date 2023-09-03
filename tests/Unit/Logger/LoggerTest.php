@@ -82,7 +82,6 @@ class LoggerTest extends ServiceProviderTest
             ['Data and {context}', [], 'Data and {context}'],
             ['Data and {context}', ['context' => null], 'Data and '],
             ['Data and {context}', ['context' => new stdClass()], 'Data and {context}'],
-            ['Some user asked: {question}', ['question' => 'Foo?'], 'Some user asked: Foo?'],
         ];
     }
 

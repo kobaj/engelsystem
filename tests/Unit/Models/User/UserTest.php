@@ -14,7 +14,6 @@ use Engelsystem\Models\News;
 use Engelsystem\Models\NewsComment;
 use Engelsystem\Models\OAuth;
 use Engelsystem\Models\Privilege;
-use Engelsystem\Models\Question;
 use Engelsystem\Models\Shifts\Shift;
 use Engelsystem\Models\Shifts\ShiftEntry;
 use Engelsystem\Models\User\Contact;
@@ -415,49 +414,7 @@ class UserTest extends ModelTest
         $this->assertSame($worklogEntry->id, $worklog->id);
     }
 
-    /**
-     * @covers \Engelsystem\Models\User\User::questionsAsked
-     */
-    public function testQuestionsAsked(): void
-    {
-        ($user = new User($this->data))->save();
-        ($user2 = new User(array_merge($this->data, ['name' => 'dolor', 'email' => 'dolor@bar.batz'])))->save();
-
-        ($question1 = new Question(['user_id' => $user->id, 'text' => Str::random()]))->save();
-        ($question2 = new Question(['user_id' => $user->id, 'text' => Str::random()]))->save();
-        // create some questions asked by user 2 to test the correct assignment
-        (new Question(['user_id' => $user2->id, 'text' => Str::random()]))->save();
-        (new Question(['user_id' => $user2->id, 'text' => Str::random()]))->save();
-
-        $questionIds = $user->questionsAsked()->pluck('id')->toArray();
-        $this->assertCount(2, $questionIds);
-        $this->assertContains($question1->id, $questionIds);
-        $this->assertContains($question2->id, $questionIds);
-    }
-
-    /**
-     * @covers \Engelsystem\Models\User\User::questionsAnswered
-     */
-    public function testQuestionsAnswered(): void
-    {
-        ($user = new User($this->data))->save();
-        ($user2 = new User(array_merge($this->data, ['name' => 'dolor', 'email' => 'dolor@bar.batz'])))->save();
-
-        $questionData = ['user_id' => $user->id, 'text' => Str::random()];
-        $answerData = ['answerer_id' => $user2->id, 'answer' => Str::random()];
-        ($question1 = new Question(array_merge($questionData, $answerData)))->save();
-        ($question2 = new Question(array_merge($questionData, $answerData)))->save();
-        // Create some questions asked by user 2 to test the correct assignment
-        (new Question(array_merge($questionData, $answerData, ['answerer_id' => $user->id])))->save();
-        (new Question($questionData))->save();
-        (new Question($questionData))->save();
-
-        $answers = $user2->questionsAnswered()->pluck('id')->toArray();
-        $this->assertCount(2, $answers);
-        $this->assertContains($question1->id, $answers);
-        $this->assertContains($question2->id, $answers);
-    }
-
+ 
     /**
      * @covers \Engelsystem\Models\User\User::shiftsCreated
      * @covers \Engelsystem\Models\User\User::shiftsUpdated

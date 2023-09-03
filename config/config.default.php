@@ -36,15 +36,9 @@ return [
 
     // Footer links
     'footer_items'            => [
-        // URL to the angel faq and job description
-        'FAQ'     => env('FAQ_URL', '/faq'),
-
         // Contact email address, linked on every page
         'Contact' => env('CONTACT_EMAIL', 'mailto:ticket@c3heaven.de'),
     ],
-
-    // Text displayed on the FAQ page, rendered as markdown
-    'faq_text'                => env('FAQ_TEXT', null),
 
     // Link to documentation/help
     'documentation_url'       => env('DOCUMENTATION_URL', 'https://engelsystem.de/doc/'),
@@ -220,7 +214,7 @@ return [
     ],
 
     // Redirect to this site after logging in or when pressing the top-left button
-    // Must be one of news, meetings, user_shifts, angeltypes, questions
+    // Must be one of news, meetings, user_shifts, angeltypes
     'home_site'               => env('HOME_SITE', 'news'),
 
     // Number of News shown on one site and for feed readers (minimum 1)

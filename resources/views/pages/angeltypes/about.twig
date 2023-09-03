@@ -25,13 +25,6 @@
                 {% endif %}
 
                 {% set footerItems = config('footer_items') %}
-                {% if footerItems.FAQ is defined %}
-                    {% set url = footerItems.FAQ %}
-                    {% if footerItems.FAQ starts with '/' %}
-                        {% set url = url(footerItems.FAQ) %}
-                    {% endif %}
-                    <a href="{{ url }}" class="btn btn-primary">{{ __('faq.faq') }}</a>
-                {% endif %}
             </div>
         </div>
 

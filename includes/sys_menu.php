@@ -27,7 +27,6 @@ function header_render_hints()
     if ($user) {
         $hints_renderer = new UserHintsRenderer();
 
-        $hints_renderer->addHint(admin_new_questions());
         $hints_renderer->addHint(user_angeltypes_unconfirmed_hint());
         $hints_renderer->addHint(render_user_departure_date_hint());
         $hints_renderer->addHint(user_driver_license_required_hint());
@@ -63,6 +62,7 @@ function make_navigation(): string
     $page = current_page();
     $menu = [];
     $pages = [
+        'news'           => __('News'),
         'meetings'       => [__('Meetings'), 'user_meetings'],
         'user_shifts'    => __('Shifts'),
         'angeltypes'     => __('Angeltypes'),
@@ -87,7 +87,6 @@ function make_navigation(): string
         'admin_active'       => 'Active angels',
         'users'              => ['All Angels', 'admin_user'],
         'admin_free'         => 'Free angels',
-        'admin/questions'    => ['Answer questions', 'question.edit'],
         'shifttypes'         => 'Shifttypes',
         'admin_shifts'       => 'Create shifts',
         'admin/rooms'        => ['room.rooms', 'admin_rooms'],
@@ -190,25 +189,4 @@ function make_language_select()
         );
     }
     return $items;
-}
-
-/**
- * Renders a hint for new questions to answer.
- *
- * @return string|null
- */
-function admin_new_questions()
-{
-    if (!auth()->can('question.edit') || current_page() == 'admin/questions') {
-        return null;
-    }
-
-    $unanswered_questions = Question::unanswered()->count();
-    if (!$unanswered_questions) {
-        return null;
-    }
-
-    return '<a href="' . page_link_to('/admin/questions') . '">'
-        . __('There are unanswered questions!')
-        . '</a>';
 }

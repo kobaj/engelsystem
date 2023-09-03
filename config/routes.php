@@ -76,20 +76,6 @@ $route->addGroup(
     }
 );
 
-// FAQ
-$route->get('/faq', 'FaqController@index');
-
-// Questions
-$route->addGroup(
-    '/questions',
-    function (RouteCollector $route): void {
-        $route->get('', 'QuestionsController@index');
-        $route->post('', 'QuestionsController@delete');
-        $route->get('/new', 'QuestionsController@add');
-        $route->post('/new', 'QuestionsController@save');
-    }
-);
-
 // Messages
 $route->addGroup(
     '/messages',
@@ -145,17 +131,6 @@ $route->addGroup(
                 $route->post('/edit[/{schedule_id:\d+}]', 'Admin\\Schedule\\ImportSchedule@save');
                 $route->get('/load/{schedule_id:\d+}', 'Admin\\Schedule\\ImportSchedule@loadSchedule');
                 $route->post('/import/{schedule_id:\d+}', 'Admin\\Schedule\\ImportSchedule@importSchedule');
-            }
-        );
-
-        // Questions
-        $route->addGroup(
-            '/questions',
-            function (RouteCollector $route): void {
-                $route->get('', 'Admin\\QuestionsController@index');
-                $route->post('', 'Admin\\QuestionsController@delete');
-                $route->get('/{question_id:\d+}', 'Admin\\QuestionsController@edit');
-                $route->post('/{question_id:\d+}', 'Admin\\QuestionsController@save');
             }
         );
 

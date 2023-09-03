@@ -6,13 +6,11 @@ namespace Engelsystem\Test\Unit\Controllers\Metrics;
 
 use Carbon\Carbon;
 use Engelsystem\Controllers\Metrics\Stats;
-use Engelsystem\Models\Faq;
 use Engelsystem\Models\LogEntry;
 use Engelsystem\Models\Message;
 use Engelsystem\Models\News;
 use Engelsystem\Models\NewsComment;
 use Engelsystem\Models\OAuth;
-use Engelsystem\Models\Question;
 use Engelsystem\Models\Room;
 use Engelsystem\Models\Shifts\Shift;
 use Engelsystem\Models\Shifts\ShiftEntry;
@@ -261,23 +259,6 @@ class StatsTest extends TestCase
         $this->assertEquals(2, $stats->comments());
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Metrics\Stats::questions
-     */
-    public function testQuestions(): void
-    {
-        $this->addUsers();
-        $questionsData = ['text' => 'Lorem Ipsum', 'user_id' => 1];
-
-        (new Question($questionsData))->save();
-        (new Question($questionsData))->save();
-        (new Question($questionsData + ['answerer_id' => 2, 'answer' => 'Dolor sit!']))->save();
-
-        $stats = new Stats($this->database);
-        $this->assertEquals(3, $stats->questions());
-        $this->assertEquals(2, $stats->questions(false));
-        $this->assertEquals(1, $stats->questions(true));
-    }
 
     /**
      * @covers \Engelsystem\Controllers\Metrics\Stats::arrivedUsers
@@ -350,17 +331,6 @@ class StatsTest extends TestCase
         $this->assertEquals(1, $stats->currentlyWorkingUsers(true));
     }
 
-    /**
-     * @covers \Engelsystem\Controllers\Metrics\Stats::faq
-     */
-    public function testFaq(): void
-    {
-        (new Faq(['question' => 'Foo?', 'text' => 'Bar!']))->save();
-        (new Faq(['question' => 'Lorem??', 'text' => 'Ipsum!!!']))->save();
-
-        $stats = new Stats($this->database);
-        $this->assertEquals(2, $stats->faq());
-    }
 
     /**
      * @covers \Engelsystem\Controllers\Metrics\Stats::messages
