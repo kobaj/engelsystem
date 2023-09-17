@@ -76,18 +76,6 @@ $route->addGroup(
     }
 );
 
-// Messages
-$route->addGroup(
-    '/messages',
-    function (RouteCollector $route): void {
-        $route->get('', 'MessagesController@index');
-        $route->post('', 'MessagesController@redirectToConversation');
-        $route->get('/{user_id:\d+}', 'MessagesController@messagesOfConversation');
-        $route->post('/{user_id:\d+}', 'MessagesController@send');
-        $route->post('/{user_id:\d+}/{msg_id:\d+}', 'MessagesController@delete');
-    }
-);
-
 // API
 $route->get('/api[/{resource:.+}]', 'ApiController@index');
 

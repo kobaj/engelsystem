@@ -50,7 +50,6 @@ class Globals extends TwigExtension implements GlobalsInterface
 
         return [
             'user'          => $user ?? [],
-            'user_messages' => $userMessages,
             'request'       => $this->request,
             'themeId'       => $themeId,
             'theme'         => $theme,

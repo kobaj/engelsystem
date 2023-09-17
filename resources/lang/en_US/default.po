@@ -266,7 +266,7 @@ msgid "settings.profile.email_messages"
 msgstr "Notify me on new private messages."
 
 msgid "settings.profile.email_by_human_allowed"
-msgstr "Allow heaven gofurs to contact you by e-mail."
+msgstr "Allow gofur leads to contact you by e-mail."
 
 msgid "settings.profile.email_goody"
 msgstr "To receive vouchers, give consent that nick, e-mail address, worked hours and shirt size will be stored until "
@@ -291,7 +291,7 @@ msgid "settings.password.password"
 msgstr "Old password"
 
 msgid "settings.password.new_password"
-msgstr "New passwort"
+msgstr "New password"
 
 msgid "settings.password.new_password2"
 msgstr "Password confirmation"
@@ -378,7 +378,7 @@ msgid "faq.faq"
 msgstr "FAQ"
 
 msgid "faq.questions_link"
-msgstr "If you don't find an answer, you can <a href=\"%s\">ask the heaven</a>."
+msgstr "If you don't find an answer, you can <a href=\"%s\">ask the gofurden</a>. (But this has been turned off in this edition.)"
 
 msgid "faq.edit"
 msgstr "Edit FAQ entry"
@@ -834,3 +834,6 @@ msgstr "If the gofur is active, they can claim a goodie. If goodie is set to 'Ye
 
 msgid "angel"
 msgstr "gofur"
+
+msgid "By completing this form you're registering as a Chaos-Angel. This script will create you an account in the angel task scheduler."
+msgstr "By completing this form you're registering as a gofur for FC. This script will create you an account in the gofur task scheduler."

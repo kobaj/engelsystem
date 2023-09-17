@@ -631,13 +631,6 @@ function User_view(
                             )
                             : ''
                         : '',
-                    $auth->can('user_messages') ?
-                        heading(
-                            '<a href="' . page_link_to('/messages/' . $user_source->id) . '">'
-                            . icon('envelope')
-                            . '</a>'
-                        )
-                        : '',
                 ]),
                 User_view_state($admin_user_privilege, $freeloader, $user_source),
                 User_angeltypes_render($user_angeltypes),

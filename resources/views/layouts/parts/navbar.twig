@@ -70,15 +70,6 @@
                 {% if is_user() %}
                     {{ _self.toolbar_item(menuUserShiftState(user), url('shifts', {'action': 'next'}), '', 'clock', __('Next shift')) }}
 
-                    {% if has_permission_to('user_messages') %}
-                        {{ _self.toolbar_item(
-                            user_messages ? '<span class="badge bg-danger">' ~ user_messages ~ '</span>' : '',
-                            url('messages'),
-                            'messages',
-                            'envelope'
-                        ) }}
-                    {% endif %}
-
                     {{ menuUserHints() }}
 
                     {% include "layouts/parts/language_dropdown.twig" %}
