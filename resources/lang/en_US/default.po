@@ -230,7 +230,7 @@ msgid "settings.profile.pronoun"
 msgstr "Pronoun"
 
 msgid "settings.profile.pronoun.info"
-msgstr "Will be shown on your profile page and in angel lists."
+msgstr "Will be shown on your profile page and in gofur lists."
 
 msgid "settings.profile.firstname"
 msgstr "First name"
@@ -266,7 +266,7 @@ msgid "settings.profile.email_messages"
 msgstr "Notify me on new private messages."
 
 msgid "settings.profile.email_by_human_allowed"
-msgstr "Allow heaven angels to contact you by e-mail."
+msgstr "Allow heaven gofurs to contact you by e-mail."
 
 msgid "settings.profile.email_goody"
 msgstr "To receive vouchers, give consent that nick, e-mail address, worked hours and shirt size will be stored until "
@@ -279,7 +279,7 @@ msgid "settings.profile.shirt_size"
 msgstr "Shirt size"
 
 msgid "settings.profile.angeltypes.info"
-msgstr "You can manage your Angeltypes <a href=\"%s\">on the Angeltypes page</a>."
+msgstr "You can manage your Gofurtypes <a href=\"%s\">on the Gofurtypes page</a>."
 
 msgid "settings.password"
 msgstr "Password"
@@ -338,10 +338,10 @@ msgid "angeltype.ifsg.own"
 msgstr "my health instruction"
 
 msgid "angeltype.ifsg.required.info"
-msgstr "This angeltype requires a health instruction. Please enter your health instruction information!"
+msgstr "This gofurtype requires a health instruction. Please enter your health instruction information!"
 
 msgid "angeltype.ifsg.required.info.here"
-msgstr "You joined an angeltype which requires a health instruction. "
+msgstr "You joined an gofurtype which requires a health instruction. "
 "Please edit your health instruction information here: %s."
 
 msgid "ifsg.info"
@@ -441,7 +441,7 @@ msgid "message.title"
 msgstr "Messages"
 
 msgid "message.choose_angel"
-msgstr "Choose an Angel"
+msgstr "Choose an Gofur"
 
 msgid "message.to_conversation"
 msgstr "To Conversation"
@@ -450,7 +450,7 @@ msgid "message.message"
 msgstr "Message"
 
 msgid "angel"
-msgstr "Angel"
+msgstr "Gofur"
 
 msgid "date"
 msgstr "Date"
@@ -477,7 +477,7 @@ msgid "worklog.delete.info"
 msgstr "Do you really want to delete the work log for %s?"
 
 msgid "angeltypes.angeltypes"
-msgstr "Angeltypes"
+msgstr "Gofurtypes"
 
 msgid "angeltypes.about"
 msgstr "Teams-/Job description"
@@ -486,7 +486,7 @@ msgid "angeltypes.about.text"
 msgstr "Here you can find the list of teams and their tasks. If you have further questions, have a look at the FAQ."
 
 msgid "angeltypes.restricted.hint"
-msgstr "This angeltype requires the attendance at an introduction meeting. "
+msgstr "This gofurtype requires the attendance at an introduction meeting. "
 "You might find additional information in the description."
 
 msgid "angeltypes.name"
@@ -517,7 +517,7 @@ msgid "room.description"
 msgstr "Description"
 
 msgid "room.required_angels"
-msgstr "Required angels"
+msgstr "Required gofurs"
 
 msgid "room.map_url.info"
 msgstr "The map will be embedded on the room page as an iframe."
@@ -533,3 +533,304 @@ msgstr "Day %1$d"
 
 msgid "dashboard.day"
 msgstr "Day"
+
+msgid "Angeltypes"
+msgstr "Gofurtypes"
+
+msgid "Angeltype %s deleted."
+msgstr "Gofurtype %s deleted."
+
+msgid "Angeltype doesn't exist . "
+msgstr "Gofurtype doesn't exist . "
+
+msgid "Angel types which need approvals:"
+msgstr "Gofur types which need approvals:"
+
+msgid "Angeltype doesn't exist."
+msgstr "Gofurtype doesn't exist."
+
+msgid "Angel has been marked as active."
+msgstr "Gofur has been marked as active."
+
+msgid "Angel not found."
+msgstr "Gofur not found.."
+
+msgid "Angel has been marked as not active."
+msgstr "Gofur has been marked as not active."
+
+msgid "Angel has got a t-shirt."
+msgstr "Gofur has got a t-shirt."
+
+msgid "Angel has got no t-shirt."
+msgstr "Gofur has got no t-shirt."
+
+msgid "Reset done. Angel has not arrived."
+msgstr "Reset done. Gofur has not arrived."
+
+msgid "Angel has been marked as arrived."
+msgstr "Gofur has been marked as arrived."
+
+msgid "Angeltype"
+msgstr "Gofurtype"
+
+msgid "All Angels"
+msgstr "All Gofurs"
+
+msgid "Angel registration successful!"
+msgstr "Gofur registration successful!"
+
+msgid ""
+"By completing this form you're registering as a Chaos-Angel. This script "
+"will create you an account in the angel task scheduler."
+msgstr ""
+By completing this form you're registering as a Gofur. This script "
+"will create you an account in the gofur task scheduler."
+
+msgid ""
+"Angel types which require introduction can only be used by an angel if "
+"enabled by a supporter (double opt-in)."
+msgstr ""
+"Gofur types which require introduction can only be used by a gofur if "
+"enabled by a supporter (double opt-in)."
+
+msgid "Angels needed in the next 3 hrs"
+msgstr "Gofurs needed in the next 3 hrs"
+
+msgid "Angels needed for nightshifts"
+msgstr "Gofurs needed for nightshifts"
+
+msgid "Angels currently working"
+msgstr "Gofurs currently working"
+
+msgid "Angel:"
+msgstr "Gofur:"
+
+msgid "You can manage your Angeltypes <a href=\"%s\">on the Angeltypes page</a>."
+msgstr "You can manage your Gofurtypes <a href=\"%s\">on the Angeltypes page</a>."
+
+msgid "Angel can receive another %d vouchers."
+msgstr "Gofur can receive another %d vouchers."
+
+msgid "Angel can receive another %d vouchers and is FA."
+msgstr "Gofur can receive another %d vouchers and is FA."
+
+msgid "Angel has got a goodie."
+msgstr "Gofur has got a goodie."
+
+msgid "Angel has got no goodie."
+msgstr "Gofur has got no goodie."
+
+msgid "Delete angeltype %s"
+msgstr "Delete gofurtype %s"
+
+msgid "User is not in angeltype."
+msgstr "User is not in gofurtype."
+
+msgid "You need be accepted member of the angeltype."
+msgstr "You need be an accepted member of the gofurtype."
+
+msgid "Please check your input for needed angels of type %s."
+msgstr "Please check your input for needed gofurs of type %s."
+
+msgid "Needed angels"
+msgstr "Needed gofurs"
+
+msgid "There is %d unconfirmed angeltype."
+msgid_plural "There are %d unconfirmed angeltypes."
+msgstr[0] "There is %d unconfirmed gofurtype."
+msgstr[1] "There are %d unconfirmed gofurtypes."
+
+msgid "You are not allowed to delete all users for this angeltype."
+msgstr "You are not allowed to delete all users for this gofurtype."
+
+msgid "Denied all users for angeltype %s."
+msgstr "Denied all users for gofurtype %s."
+
+msgid "You are not allowed to confirm all users for this angeltype."
+msgstr "You are not allowed to confirm all users for this gofurtype."
+
+msgid "Confirmed all users for angeltype %s."
+msgstr "Confirmed all users for gofurtype %s."
+
+msgid "User angeltype doesn't exist."
+msgstr "User gofurtype doesn't exist."
+
+msgid "You are not allowed to confirm this users angeltype."
+msgstr "You are not allowed to confirm this users gofurtype."
+
+msgid "%s confirmed for angeltype %s."
+msgstr "%s confirmed for gofurtype %s."
+
+msgid "Confirm angeltype for user"
+msgstr "Confirm gofurtype for user"
+
+msgid "You are not allowed to delete this users angeltype."
+msgstr "You are not allowed to delete this users gofurtype."
+
+msgid "Remove angeltype"
+msgstr "Remove gofurtype"
+
+msgid "Add user to angeltype"
+msgstr "Add user to gofurtype"
+
+msgid ""
+"You joined an angeltype which requires a driving license. Please edit your "
+"driving license information here: %s."
+msgstr ""
+"You joined a gofurtype which requires a driving license. Please edit your "
+"driving license information here: %s."
+
+msgid "Active angels"
+msgstr "Active gofurs"
+
+msgid ""
+"At least %s angels are forced to be active. The number has to be greater."
+msgstr ""
+"At least %s gofurs are forced to be active. The number has to be greater."
+
+msgid "Please enter a number of angels to be marked as active."
+msgstr "Please enter a number of gofurs to be marked as active."
+
+msgid "Marked angels."
+msgstr "Marked angels."
+
+msgid "Search angel:"
+msgstr "Search gofurs:"
+
+msgid "How much angels should be active?"
+msgstr "How many gofurs should be active?"
+
+msgid "Arrive angels"
+msgstr "Arrive gofurs"
+
+msgid "Free angels"
+msgstr "Free gofurs"
+
+msgid "Please enter needed angels for type %s."
+msgstr "Please enter needed gofurs for type %s."
+
+msgid "Needed angels:"
+msgstr "Needed gofurs:"
+
+msgid "Please check the needed angels for team %s."
+msgstr "Please check the needed gofurs for team %s."
+
+msgid "There are 0 angels needed. Please enter the amounts of needed angels."
+msgstr "There are 0 gofurs needed. Please enter the amounts of needed gofurs."
+
+msgid "Please select a mode for needed angels."
+msgstr "Please select a mode for needed gofurs."
+
+msgid "Please select needed angels."
+msgstr "Please select needed gofurs."
+
+msgid "Take needed angels from room settings"
+msgstr "Take needed gofurs from room settings"
+
+msgid "The following angels are needed"
+msgstr "The following gofurs are needed"
+
+msgid ""
+"Please visit the angeltypes page or the users profile to manage users "
+"angeltypes."
+msgstr ""
+"Please visit the gofurtypes page or the users profile to manage users "
+"gofurtypes."
+
+msgid "Allow heaven angels to contact you by e-mail."
+msgstr "Allow gofurden managers to contact you by e-mail."
+
+msgid ""
+"Some angel types have to be confirmed later by a supporter at an "
+"introduction meeting. You can change your selection in the options section."
+msgstr ""
+"Some gofur types have to be confirmed later by a supporter at an "
+"introduction meeting. You can change your selection in the options section."
+
+msgid "Hello %s, here can you leave messages for other angels"
+msgstr "Hello %s, here you can leave messages for other gofurs"
+
+msgid ""
+"The administration has not configured any angeltypes yet - or you are not "
+"subscribed to any angeltype."
+msgstr ""
+"The administration has not configured any gofurtypes yet - or you are not "
+"subscribed to any angeltype."
+
+msgid ""
+"The tasks shown here are influenced by the angeltypes you joined already!"
+msgstr ""
+"The tasks shown here are influenced by the gofurtypes you joined already!"
+
+msgid "Do you want to delete angeltype %s?"
+msgstr "Do you want to delete gofurtype %s?"
+
+msgid ""
+"This angeltype requires a driver license. Please enter your driver license "
+"information!"
+msgstr ""
+"This gofurtype requires a driver license. Please enter your driver license "
+"information!"
+
+msgid ""
+"You are unconfirmed for this angeltype. Please go to the introduction for %s "
+"to get confirmed."
+msgstr ""
+"You are unconfirmed for this gofurtype. Please go to the introduction for %s "
+"to get confirmed."
+
+msgid "New angeltype"
+msgstr "New gofurtype"
+
+msgid "Other angeltype needed / collides with my shifts"
+msgstr "Other gofurtype needed / collides with my shifts"
+
+msgid "Add more angels"
+msgstr "Add more angels"
+
+msgid "Will be shown on your profile page and in angel lists."
+msgstr "Will be shown on your profile page and in gofur lists"
+
+msgid ""
+"You are not marked as arrived. Please go to heaven's desk, get your angel "
+"badge and/or tell them that you arrived already."
+msgstr ""
+"You are not marked as arrived. Please go to the gofur den, get your gofur "
+"badge and/or tell them that you arrived already."
+
+msgid ""
+"Here you can change the user entry. Under the item 'Arrived' the angel is marked as present, "
+"a yes at Active means that the angel was active."
+msgstr ""
+"Here you can change the user entry. Under the item 'Arrived' the gofur is marked as present, "
+"a yes at Active means that the gofur was active."
+
+msgid ""
+"If the angel is active, it can claim a T-shirt. If T-shirt is set to 'Yes', the angel already got their T-shirt."
+msgstr ""
+"If the gofur is active, they can claim a T-shirt. If T-shirt is set to 'Yes', the gofur already got their T-shirt."
+
+msgid ""
+"If the angel was Active, this entitles him to a T-shirt. If T-shirt contains a 'Ja', "
+"it means that the angel has already received his T-shirt."
+msgstr ""
+"If the gofur was Active, this entitles them to a T-shirt. If T-shirt contains a 'Ja', "
+"it means that the gofar has already received their T-shirt."
+
+msgid "Please visit the angeltypes page or the users profile to manage the users angeltypes."
+msgstr "Please visit the gofurtypes page or the users profile to manage the users angeltypes."
+
+msgid "Here you can reset the password of this angel:"
+msgstr "Here you can reset the password of this gofur:"
+
+msgid "Here you can define the user groups of the angel:"
+msgstr "Here you can define the user groups of the gofur:"
+
+msgid "You cannot edit angels with more rights."
+msgstr "You cannot edit gofurs with more rights."
+
+msgid "If the angel is active, it can claim a goodie. If goodie is set to 'Yes', the angel already got their goodie."
+msgstr "If the gofur is active, they can claim a goodie. If goodie is set to 'Yes', the gofur already got their goodie."
+
+msgid "angel"
+msgstr "gofur"
