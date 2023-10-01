@@ -692,7 +692,7 @@ msgid "Please enter a number of angels to be marked as active."
 msgstr "Please enter a number of gofurs to be marked as active."
 
 msgid "Marked angels."
-msgstr "Marked angels."
+msgstr "Marked gofurs."
 
 msgid "Search angel:"
 msgstr "Search gofurs:"
@@ -786,7 +786,7 @@ msgid "Other angeltype needed / collides with my shifts"
 msgstr "Other gofurtype needed / collides with my shifts"
 
 msgid "Add more angels"
-msgstr "Add more angels"
+msgstr "Add more gofurs"
 
 msgid "Will be shown on your profile page and in angel lists."
 msgstr "Will be shown on your profile page and in gofur lists"

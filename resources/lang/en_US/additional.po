@@ -226,3 +226,4 @@ msgstr "Room successfully deleted."
 
 msgid "validation.name.exists"
 msgstr "The name is already used."
+

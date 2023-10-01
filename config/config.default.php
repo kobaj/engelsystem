@@ -215,7 +215,7 @@ return [
 
     // Redirect to this site after logging in or when pressing the top-left button
     // Must be one of news, meetings, user_shifts, angeltypes
-    'home_site'               => env('HOME_SITE', 'news'),
+    'home_site'               => env('HOME_SITE', 'user_shifts'),
 
     // Number of News shown on one site and for feed readers (minimum 1)
     'display_news'            => env('DISPLAY_NEWS', 10),
@@ -260,7 +260,7 @@ return [
     'enable_password'         => (bool) env('ENABLE_PASSWORD', true),
 
     // Whether the DECT field should be enabled
-    'enable_dect'             => (bool) env('ENABLE_DECT', true),
+    'enable_dect'             => (bool) env('ENABLE_DECT', false),
 
     // Whether the mobile number can be shown to other users
     'enable_mobile_show'      => (bool) env('ENABLE_MOBILE_SHOW', false),
@@ -286,10 +286,10 @@ return [
     // 'none' => no goodie at all
     // 'goodie' => a goodie which has no sizing options
     // 'tshirt' => goodie that is called tshirt and has sizing options
-    'goodie_type'             => env('GOODIE_TYPE', 'goodie'),
+    'goodie_type'             => env('GOODIE_TYPE', 'none'),
 
     // Enables the food voucher in the user profile
-    'enable_voucher'          => (bool) env('ENABLE_VOUCHER', true),
+    'enable_voucher'          => (bool) env('ENABLE_VOUCHER', false),
 
     // Number of shifts to freeload until angel is locked for shift signup.
     'max_freeloadable_shifts' => env('MAX_FREELOADABLE_SHIFTS', 2),
@@ -298,7 +298,7 @@ return [
     'disabled_user_view_columns' => [],
 
     // Local timezone
-    'timezone'                => env('TIMEZONE', 'Europe/Berlin'),
+    'timezone'                => env('TIMEZONE', 'America/Los_Angeles'),
 
     // Multiply 'night shifts' and freeloaded shifts (start or end between 2 and 6 exclusive) by 2
     'night_shifts'            => [
@@ -393,7 +393,7 @@ return [
         //'Expect-CT' => 'max-age=7776000,enforce,report-uri="[uri]"',
     ],
 
-    // A list of credits
+    // A list of credits-r
     'credits'                 => [
         'Contribution' => 'Please visit [engelsystem/engelsystem](https://github.com/engelsystem/engelsystem) if '
             . 'you want to contribute, have found any [bugs](https://github.com/engelsystem/engelsystem/issues) '
