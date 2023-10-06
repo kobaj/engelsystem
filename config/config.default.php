@@ -215,7 +215,7 @@ return [
 
     // Redirect to this site after logging in or when pressing the top-left button
     // Must be one of news, meetings, user_shifts, angeltypes
-    'home_site'               => env('HOME_SITE', 'user_shifts'),
+    'home_site'               => env('HOME_SITE', 'news'),
 
     // Number of News shown on one site and for feed readers (minimum 1)
     'display_news'            => env('DISPLAY_NEWS', 10),
@@ -393,7 +393,7 @@ return [
         //'Expect-CT' => 'max-age=7776000,enforce,report-uri="[uri]"',
     ],
 
-    // A list of credits-r
+    // A list of credits
     'credits'                 => [
         'Contribution' => 'Please visit [engelsystem/engelsystem](https://github.com/engelsystem/engelsystem) if '
             . 'you want to contribute, have found any [bugs](https://github.com/engelsystem/engelsystem/issues) '

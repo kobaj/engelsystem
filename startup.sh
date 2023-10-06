@@ -14,6 +14,7 @@ docker rm engelsystem-es_server-1 engelsystem-es_database-1  2&>1 > /dev/null
 cd docker
 docker compose build && \
 docker compose up -d --wait && \
+sleep 5 && \
 docker compose exec es_server bin/migrate
 
 if [ $? -eq 0 ]; then

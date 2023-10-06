@@ -837,9 +837,3 @@ msgstr "gofur"
 
 msgid "By completing this form you're registering as a Chaos-Angel. This script will create you an account in the angel task scheduler."
 msgstr "By completing this form you're registering as a gofur for FC. This script will create you an account in the gofur task scheduler."
-
-msgid "%d helper needed"
-msgstr "%d gofur needed"
-
-msgid "%d helpers needed"
-msgstr "%d gofurs needed"
