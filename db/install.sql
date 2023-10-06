@@ -100,6 +100,7 @@ INSERT INTO `GroupPrivileges` (`id`, `group_id`, `privilege_id`) VALUES
 (251, -2, 17),
 (256, -2, 24),
 (253, -2, 26),
+(259, -2, 28),
 (245, -2, 30),
 (244, -2, 34),
 (249, -2, 35),

@@ -25,6 +25,7 @@ class LegacyMiddleware implements MiddlewareInterface
         'shifts',
         'users',
         'user_driver_licenses',
+        'admin_shifts',
         'admin_shifts_history',
     ];
 

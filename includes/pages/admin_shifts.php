@@ -77,13 +77,13 @@ function admin_shifts()
             error(__('Please select a shift type.'));
         }
 
-        // Name/Bezeichnung der Schicht, darf leer sein
+        // Name/designation of the shift, may be empty
         $title = strip_request_item('title');
 
-        // Beschreibung der Schicht, darf leer sein
+        // Description of the shift, may be empty
         $description = strip_request_item_nl('description');
 
-        // Auswahl der sichtbaren Locations für die Schichten
+        // Selection of the visible locations for the layers
         if (
             $request->has('rid')
             && preg_match('/^\d+$/', $request->input('rid'))
@@ -139,7 +139,7 @@ function admin_shifts()
                         'trim',
                         explode(',', $request->input('change_hours'))
                     );
-                    // Fehlende Minutenangaben ergänzen, 24 Uhr -> 00 Uhr
+                    // Add missing minutes, 24:00 -> 00:00
                     array_walk($change_hours, function (&$value) use ($valid) {
                         // Add minutes
                         if (!preg_match('/^(\d{1,2}):\d{2}$/', $value)) {
@@ -200,12 +200,12 @@ function admin_shifts()
             error(__('Please select needed angels.'));
         }
 
-        // Beim Zurück-Knopf das Formular zeigen
+        // Show the form when you press the back button
         if ($request->has('back')) {
             $valid = false;
         }
 
-        // Alle Eingaben in Ordnung
+        // All entries OK
         if ($valid) {
             if ($angelmode == 'location') {
                 $needed_angel_types = NeededAngelType::whereRoomId($rid)

@@ -62,10 +62,8 @@ function make_navigation(): string
     $page = current_page();
     $menu = [];
     $pages = [
-        'news'           => __('News'),
-        'meetings'       => [__('Meetings'), 'user_meetings'],
         'user_shifts'    => __('Shifts'),
-        'angeltypes'     => __('Angeltypes'),
+        'admin_shifts'   => __('Create shifts'),
     ];
 
     foreach ($pages as $menu_page => $options) {
@@ -88,12 +86,12 @@ function make_navigation(): string
         'users'              => ['All Angels', 'admin_user'],
         'admin_free'         => 'Free angels',
         'shifttypes'         => 'Shifttypes',
-        'admin_shifts'       => 'Create shifts',
         'admin/rooms'        => ['room.rooms', 'admin_rooms'],
         'admin_groups'       => 'Grouprights',
         'admin/schedule'     => ['schedule.import', 'schedule.import'],
         'admin/logs'         => ['log.log', 'admin_log'],
         'admin_event_config' => 'Event config',
+        'angeltypes'         => ['Angeltypes', 'admin_user']
     ];
 
     if (config('autoarrive')) {
