@@ -7,10 +7,11 @@ if [ $? -ne 0 ]; then
 fi
 
 # Kill and remove old programs, if they are running.
-docker kill engelsystem-es_server-1 engelsystem-es_database-1 2&>1 > /dev/null
-docker rm engelsystem-es_server-1 engelsystem-es_database-1  2&>1 > /dev/null
+docker kill engelsystem-es_server-1 engelsystem-es_database-1 2>&1 > /dev/null
+docker rm engelsystem-es_server-1 engelsystem-es_database-1  2>%1 > /dev/null
 
 # Start-up all the scripts.
+# The "sleep 5" is because "--wait" doesn't wait long enough.
 cd docker
 docker compose build && \
 docker compose up -d --wait && \

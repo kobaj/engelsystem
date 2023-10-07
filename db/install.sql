@@ -261,7 +261,7 @@ INSERT INTO `Privileges` (`id`, `name`, `desc`) VALUES
 (31, 'admin_active', 'Mark angels as active and if they got a t-shirt.'),
 (32, 'admin_free', 'Show a list of free/unemployed angels.'),
 (33, 'admin_user_angeltypes', 'Confirm restricted angel types'),
-(34, 'atom', ' Atom news export'),
+(34, 'atom', 'Atom news export'),
 (35, 'shifts_json_export', 'Export shifts in JSON format'),
 (36, 'angeltypes', 'View angeltypes'),
 (37, 'user_angeltypes', 'Join angeltypes.'),
