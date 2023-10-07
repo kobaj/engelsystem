@@ -3,6 +3,8 @@
 [![GPL](https://img.shields.io/github/license/engelsystem/engelsystem.svg?maxAge=2592000)](LICENSE)
 
 # Engelsystem
+This system was forked off of [engelsystem](https://github.com/engelsystem/engelsystem/). This version is available at [Engelsystem-FC](https://github.com/chipuni/engelsystem).
+
 Please visit [engelsystem.de](https://engelsystem.de) for a feature list.
 
 To report bugs use [engelsystem/issues](https://github.com/engelsystem/engelsystem/issues).
@@ -12,7 +14,7 @@ We really love to get pull requests containing fixes or improvements.
 Please read the [CONTRIBUTING.md](CONTRIBUTING.md) and [DEVELOPMENT.md](DEVELOPMENT.md) before you start.
 
 ## Installation
-The Engelsystem may be installed manually or by using the provided [docker setup](#docker).
+The Engelsystem can be started using the provided startup.sh program.
 
 ### Requirements
  * PHP >= 8.1
@@ -29,7 +31,7 @@ The Engelsystem may be installed manually or by using the provided [docker setup
  * Webserver, i.e. lighttpd, nginx, or Apache
 
 ### Download
- * Go to the [Releases](https://github.com/engelsystem/engelsystem/releases) page and download the latest stable release file.
+* Go to the [Engelsystem](https://github.com/chipuni/engelsystem) page and download the latest stable release file.
  * Extract the files to your webroot and continue with the directions for configurations and setup.
 
 ### Configuration and Setup
