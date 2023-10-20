@@ -2,7 +2,7 @@
 version: "3.6"
 services:
   es_server:
-    image: es_server
+    image: engelsystem:latest
     build:
       context: ..
       dockerfile: docker/Dockerfile
@@ -38,3 +38,4 @@ networks:
   database:
     internal: true
   internet:
+
