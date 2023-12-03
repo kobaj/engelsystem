@@ -47,6 +47,7 @@ $form-label-font-weight: $font-weight-bold;
 @import '~bootstrap/scss/close';
 @import '~bootstrap/scss/popover';
 @import '~bootstrap/scss/tooltip';
+@import '~bootstrap/scss/modal';
 
 @import '~bootstrap/scss/helpers';
 
@@ -384,6 +385,10 @@ code {
   .alert {
     max-width: 75%;
   }
+}
+
+.btn-group .btn {
+  border-radius: inherit;
 }
 
 /* Hide the arrow up/down buttons rendered by the browser in the input field */

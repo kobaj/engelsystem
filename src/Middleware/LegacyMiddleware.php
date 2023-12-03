@@ -20,13 +20,10 @@ class LegacyMiddleware implements MiddlewareInterface
         'admin_event_config',
         'angeltypes',
         'public_dashboard',
-        'rooms',
+        'locations',
         'shift_entries',
         'shifts',
         'users',
-        'user_driver_licenses',
-        'admin_shifts',
-        'admin_shifts_history',
     ];
 
     public function __construct(protected ContainerInterface $container, protected Authenticator $auth)
@@ -63,7 +60,7 @@ class LegacyMiddleware implements MiddlewareInterface
             $translator = $this->container->get('translator');
 
             $page = 404;
-            $title = $translator->translate('Page not found');
+            $title = $translator->translate('page.404.title');
             $content = $translator->translate('page.404.text');
         }
 
@@ -91,16 +88,11 @@ class LegacyMiddleware implements MiddlewareInterface
                 return users_controller();
             case 'user_angeltypes':
                 return user_angeltypes_controller();
-            case 'user_driver_licenses':
-                return user_driver_licenses_controller();
-            case 'shifttypes':
-                list($title, $content) = shifttypes_controller();
-                return [$title, $content];
             case 'admin_event_config':
                 list($title, $content) = event_config_edit_controller();
                 return [$title, $content];
-            case 'rooms':
-                return rooms_controller();
+            case 'locations':
+                return locations_controller();
             case 'user_myshifts':
                 $title = myshifts_title();
                 $content = user_myshifts();
@@ -108,10 +100,6 @@ class LegacyMiddleware implements MiddlewareInterface
             case 'user_shifts':
                 $title = shifts_title();
                 $content = user_shifts();
-                return [$title, $content];
-            case 'register':
-                $title = register_title();
-                $content = guest_register();
                 return [$title, $content];
             case 'admin_user':
                 $title = admin_user_title();
@@ -137,11 +125,9 @@ class LegacyMiddleware implements MiddlewareInterface
                 $title = admin_shifts_title();
                 $content = admin_shifts();
                 return [$title, $content];
-            case 'admin_shifts_history':
-                return [admin_shifts_history_title(), admin_shifts_history()];
         }
 
-        throw_redirect(page_link_to('login'));
+        throw_redirect(url('/login'));
 
         return [];
     }

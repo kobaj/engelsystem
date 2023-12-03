@@ -106,7 +106,7 @@ function admin_free()
                 : icon('eye-slash'),
             'actions'     =>
                 auth()->can('admin_user')
-                    ? button(page_link_to('admin_user', ['id' => $usr->id]), icon('pencil') . __('edit'), 'btn-sm')
+                    ? button(url('/admin-user', ['id' => $usr->id]), icon('pencil') . __('edit'), 'btn-sm')
                     : '',
         ];
     }
@@ -115,19 +115,19 @@ function admin_free()
             div('row', [
                 div('col-md-12 form-inline', [
                     div('row', [
-                        form_text('search', __('Search'), $search, null, null, null, 'col'),
+                        form_text('search', __('form.search'), $search, null, null, null, 'col'),
                         form_select('angeltype', __('Angeltype'), $angel_types, $angelType, '', 'col'),
-                        form_submit('submit', __('Search')),
+                        form_submit('submit', __('form.search')),
                     ]),
                 ]),
             ]),
         ]),
         table([
-            'name'        => __('Name'),
-            'shift_state' => __('Next shift'),
+            'name'        => __('general.name'),
+            'shift_state' => __('shift.next'),
             'last_shift'  => __('Last shift'),
-            'dect'        => __('DECT'),
-            'email'       => __('E-Mail'),
+            'dect'        => __('general.dect'),
+            'email'       => __('general.email'),
             'actions'     => '',
         ], $free_users_table),
     ]);

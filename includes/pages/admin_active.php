@@ -47,11 +47,11 @@ function admin_active()
                     __('At least %s angels are forced to be active. The number has to be greater.'),
                     $forced_count
                 ));
-                throw_redirect(page_link_to('admin_active'));
+                throw_redirect(url('/admin-active'));
             }
         } else {
             $msg .= error(__('Please enter a number of angels to be marked as active.'));
-            throw_redirect(page_link_to('admin_active'));
+            throw_redirect(url('/admin-active'));
         }
 
         if ($request->hasPostData('ack')) {
@@ -97,9 +97,9 @@ function admin_active()
             $msg = success(__('Marked angels.'), true);
         } else {
             $set_active = form([
-                button(page_link_to('admin_active', ['search' => $search]), '&laquo; ' . __('back')),
+                button(url('/admin-active', ['search' => $search]), '&laquo; ' . __('back')),
                 form_submit('ack', '&raquo; ' . __('apply')),
-            ], page_link_to('admin_active', ['search' => $search, 'count' => $count, 'set_active' => 1]));
+            ], url('/admin-active', ['search' => $search, 'count' => $count, 'set_active' => 1]));
         }
     }
 
@@ -133,7 +133,7 @@ function admin_active()
                 $user_source->state->got_shirt = true;
                 $user_source->state->save();
                 engelsystem_log('User ' . User_Nick_render($user_source, true) . ' has tshirt now.');
-                $msg = success(($goodie_tshirt ? __('Angel has got a t-shirt.') : __('Angel has got a goodie.')), true);
+                $msg = success(($goodie_tshirt ? __('Angel has got a T-shirt.') : __('Angel has got a goodie.')), true);
             } else {
                 $msg = error('Angel not found.', true);
             }
@@ -144,7 +144,7 @@ function admin_active()
                 $user_source->state->got_shirt = false;
                 $user_source->state->save();
                 engelsystem_log('User ' . User_Nick_render($user_source, true) . ' has NO tshirt.');
-                $msg = success(($goodie_tshirt ? __('Angel has got no t-shirt.') : __('Angel has got no goodie.')), true);
+                $msg = success(($goodie_tshirt ? __('Angel has got no T-shirt.') : __('Angel has got no goodie.')), true);
             } else {
                 $msg = error(__('Angel not found.'), true);
             }
@@ -237,7 +237,7 @@ function admin_active()
             }
             $actions[] = form(
                 [form_submit('submit', __('set active'), 'btn-sm', false, 'secondary')],
-                page_link_to('admin_active', $parameters),
+                url('/admin-active', $parameters),
                 false,
                 true
             );
@@ -252,7 +252,7 @@ function admin_active()
             }
             $actions[] = form(
                 [form_submit('submit', __('remove active'), 'btn-sm', false, 'secondary')],
-                page_link_to('admin_active', $parametersRemove),
+                url('/admin-active', $parametersRemove),
                 false,
                 true
             );
@@ -268,8 +268,8 @@ function admin_active()
 
             if ($goodie_enabled) {
                 $actions[] = form(
-                    [form_submit('submit', ($goodie_tshirt ? __('got t-shirt') : __('got goodie')), 'btn-sm', false, 'secondary')],
-                    page_link_to('admin_active', $parametersShirt),
+                    [form_submit('submit', ($goodie_tshirt ? __('got T-shirt') : __('got goodie')), 'btn-sm', false, 'secondary')],
+                    url('/admin-active', $parametersShirt),
                     false,
                     true
                 );
@@ -286,8 +286,8 @@ function admin_active()
 
             if ($goodie_enabled) {
                 $actions[] = form(
-                    [form_submit('submit', ($goodie_tshirt ? __('remove t-shirt') : __('remove goodie')), 'btn-sm', false, 'secondary')],
-                    page_link_to('admin_active', $parameters),
+                    [form_submit('submit', ($goodie_tshirt ? __('remove T-shirt') : __('remove goodie')), 'btn-sm', false, 'secondary')],
+                    url('/admin-active', $parameters),
                     false,
                     true
                 );
@@ -328,18 +328,18 @@ function admin_active()
         form([
             form_text('search', __('Search angel:'), $search),
             form_checkbox('show_all_shifts', __('Show all shifts'), $show_all_shifts),
-            form_submit('submit', __('Search')),
-        ], page_link_to('admin_active')),
+            form_submit('submit', __('form.search')),
+        ], url('/admin-active')),
         $set_active == '' ? form([
             form_text('count', __('How much angels should be active?'), $count ?: $forced_count),
-            form_submit('set_active', __('Preview')),
+            form_submit('set_active', __('form.preview')),
         ]) : $set_active,
         $msg . msg(),
         table(
             array_merge(
                 [
                     'no'           => __('No.'),
-                    'nick'         => __('Name'),
+                    'nick'         => __('general.name'),
                 ],
                 ($goodie_tshirt ? ['shirt_size'   => __('Size')] : []),
                 [
@@ -355,10 +355,10 @@ function admin_active()
             ),
             $matched_users
         ),
-        $goodie_enabled ? '<h2>' . ($goodie_tshirt ? __('Shirt statistic') : __('Goodie statistic')) . '</h2>' : '',
+        $goodie_enabled ? '<h2>' . ($goodie_tshirt ? __('T-shirt statistic') : __('Goodie statistic')) . '</h2>' : '',
         $goodie_enabled ? table(array_merge(
             ($goodie_tshirt ? ['size'  => __('Size')] : []),
-            ['given' => $goodie_tshirt ? __('Given shirts') : __('Given goodies') ]
+            ['given' => $goodie_tshirt ? __('Given T-shirts') : __('Given goodies') ]
         ), $goodie_statistics) : '',
     ]);
 }

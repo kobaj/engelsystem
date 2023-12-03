@@ -6,7 +6,10 @@
 
 {% block content %}
     <div class="container">
-        <h1>{{ block('title') }}</h1>
+        <h1>
+            {{ m.button(m.icon('chevron-left'), url('/news'), null, 'sm') }}
+            {{ block('title') }}
+        </h1>
 
         {% include 'layouts/parts/messages.twig' %}
 
@@ -14,12 +17,12 @@
             <div class="row">
                 <div class="col-md-6">
                     <p>
-                        {{ m.icon('clock') }} {{ news.updated_at.format(__('Y-m-d H:i')) }}
+                        {{ m.icon('clock') }} {{ news.updated_at.format(__('general.datetime')) }}
 
                         {% if news.updated_at != news.created_at %}
                             &emsp;{{ __('news.updated') }}
                             <br>
-                            {{ m.icon('clock') }} {{ news.created_at.format(__('Y-m-d H:i')) }}
+                            {{ m.icon('clock') }} {{ news.created_at.format(__('general.datetime')) }}
                         {% endif %}
 
                         &emsp;{{ m.user(news.user) }}
@@ -49,9 +52,9 @@
                     {{ f.checkbox('is_pinned', __('news.edit.is_pinned'), {
                         'checked': is_pinned,
                     }) }}
-                    {% if has_permission_to('news.important') %}
-                        {{ f.checkbox('is_important', __('news.edit.is_important'), {
-                            'checked': is_important,
+                    {% if has_permission_to('news.highlight') %}
+                        {{ f.checkbox('is_highlighted', __('news.edit.is_highlighted'), {
+                            'checked': is_highlighted,
                         }) }}
                     {% endif %}
                 </div>
@@ -67,12 +70,12 @@
 
                     <p>{{ m.info(__('news.edit.hint')) }}</p>
 
-                    {{ f.submit() }}
+                    {{ f.submit(__('form.save'), {'icon_left': 'save'}) }}
 
                     {{ f.submit(m.icon('eye'), {'name': 'preview', 'btn_type': 'info', 'title': __('form.preview')}) }}
 
                     {% if news and news.id %}
-                        {{ f.submit(m.icon('trash'), {'name': 'delete', 'btn_type': 'danger', 'title': __('form.delete')}) }}
+                        {{ f.delete(__('form.delete'), {'confirm_title': __('news.delete.title', [news.title[:40]|e])}) }}
                     {% endif %}
                 </div>
             </div>
@@ -82,7 +85,7 @@
                     <div class="col-md-12">
                         <h2>{{ __('form.preview') }}</h2>
 
-                        <div class="card {% if news.is_important %}bg-warning{% elseif news.is_meeting %}bg-info{% elseif theme.type =='light' %}bg-light{% else %}bg-secondary{% endif %} mb-4">
+                        <div class="card {% if news.is_highlighted %}bg-warning{% elseif news.is_meeting %}bg-info{% elseif theme.type =='light' %}bg-light{% else %}bg-secondary{% endif %} mb-4">
                             <div class="card-header {% if news.is_meeting and theme.type == 'dark' %}text-white{% endif %}">
                                 {% if news.is_meeting %}{{ __('news.is_meeting') }}{% endif %}
                                 {{ news.title }}

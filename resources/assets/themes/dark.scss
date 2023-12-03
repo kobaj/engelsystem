@@ -4,6 +4,7 @@ $input-disabled-bg: #111;
 $alert-bg-scale: 70%;
 $secondary: #222;
 $table-striped-bg: rgba(#fff, 0.05);
+$list-group-form-check-input-border-color: #999;
 
 $es-choices-highlight-color: #000;
 
@@ -12,4 +13,8 @@ $invert-color-value: 1 !default;
 /* Invert the clock icon color for Chrome */
 input[type='time']::-webkit-calendar-picker-indicator {
   filter: invert($invert-color-value);
+}
+
+.modal .bg-dark .modal-header .btn-close {
+  background-color: $list-group-form-check-input-border-color;
 }

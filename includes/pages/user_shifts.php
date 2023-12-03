@@ -3,7 +3,7 @@
 use Engelsystem\Database\Db;
 use Engelsystem\Helpers\Carbon;
 use Engelsystem\Models\AngelType;
-use Engelsystem\Models\Room;
+use Engelsystem\Models\Location;
 use Engelsystem\Models\Shifts\NeededAngelType;
 use Engelsystem\Models\Shifts\Shift;
 use Engelsystem\Models\UserAngelType;
@@ -34,7 +34,7 @@ function user_shifts()
     $request = request();
 
     if (auth()->user()->isFreeloader()) {
-        throw_redirect(page_link_to('user_myshifts'));
+        throw_redirect(url('/user-myshifts'));
     }
 
     if ($request->has('edit_shift')) {
@@ -107,40 +107,40 @@ function update_ShiftsFilter(ShiftsFilter $shiftsFilter, $user_shifts_admin, $da
 {
     $shiftsFilter->setUserShiftsAdmin($user_shifts_admin);
     $shiftsFilter->setFilled(check_request_int_array('filled', $shiftsFilter->getFilled()));
-    $shiftsFilter->setRooms(check_request_int_array('rooms', $shiftsFilter->getRooms()));
+    $shiftsFilter->setLocations(check_request_int_array('locations', $shiftsFilter->getLocations()));
     $shiftsFilter->setTypes(check_request_int_array('types', $shiftsFilter->getTypes()));
     update_ShiftsFilter_timerange($shiftsFilter, $days);
 }
 
 /**
- * @return Room[]|Collection
+ * @return Location[]|Collection
  */
-function load_rooms(bool $onlyWithActiveShifts = false)
+function load_locations(bool $onlyWithActiveShifts = false)
 {
-    $rooms = Room::orderBy('name');
+    $locations = Location::orderBy('name');
 
     if ($onlyWithActiveShifts) {
-        $roomIdsFromAngelType = NeededAngelType::query()
-            ->whereNotNull('room_id')
-            ->select('room_id');
+        $locationIdsFromAngelType = NeededAngelType::query()
+            ->whereNotNull('location_id')
+            ->select('location_id');
 
-        $roomIdsFromShift = Shift::query()
+        $locationIdsFromShift = Shift::query()
             ->leftJoin('needed_angel_types', 'shifts.id', 'needed_angel_types.shift_id')
             ->whereNotNull('needed_angel_types.shift_id')
-            ->select('shifts.room_id');
+            ->select('shifts.location_id');
 
-        $rooms->whereIn('id', $roomIdsFromAngelType)
-            ->orWhereIn('id', $roomIdsFromShift);
+        $locations->whereIn('id', $locationIdsFromAngelType)
+            ->orWhereIn('id', $locationIdsFromShift);
     }
 
-    $rooms = $rooms->get();
+    $locations = $locations->get();
 
-    if ($rooms->isEmpty()) {
-        error(__('The administration has not configured any rooms yet.'));
-        throw_redirect(page_link_to('/'));
+    if ($locations->isEmpty()) {
+        error(__('The administration has not configured any locations yet.'));
+        throw_redirect(url('/'));
     }
 
-    return $rooms;
+    return $locations;
 }
 
 /**
@@ -162,7 +162,7 @@ function load_days()
         error(__('The administration has not configured any shifts yet.'));
         // Do not try to redirect to the current page
         if (config('home_site') != 'user_shifts') {
-            throw_redirect(page_link_to('/'));
+            throw_redirect(url('/'));
         }
     }
     return $days;
@@ -174,10 +174,11 @@ function load_days()
 function load_types()
 {
     $user = auth()->user();
+    $isShico = auth()->can('admin_shifts');
 
     if (!AngelType::count()) {
         error(__('The administration has not configured any angeltypes yet - or you are not subscribed to any angeltype.'));
-        throw_redirect(page_link_to('/'));
+        throw_redirect(url('/'));
     }
 
     $types = Db::select(
@@ -197,8 +198,11 @@ function load_types()
                 ON (
                     `user_angel_type`.`angel_type_id`=`angel_types`.`id`
                     AND `user_angel_type`.`user_id`=?
-                )
-            ORDER BY `angel_types`.`name`
+                )'
+            . ($isShico ? '' :
+            'WHERE angel_types.hide_on_shift_view = 0
+                OR user_angel_type.user_id IS NOT NULL ') .
+            'ORDER BY `angel_types`.`name`
         ',
         [
             $user->id,
@@ -229,7 +233,7 @@ function view_user_shifts()
 
     $session = session();
     $days = load_days();
-    $rooms = load_rooms(true);
+    $locations = load_locations(true);
     $types = load_types();
     $ownAngelTypes = [];
 
@@ -246,8 +250,8 @@ function view_user_shifts()
     }
 
     if (!$session->has('shifts-filter')) {
-        $room_ids = $rooms->pluck('id')->toArray();
-        $shiftsFilter = new ShiftsFilter(auth()->can('user_shifts_admin'), $room_ids, $ownAngelTypes);
+        $location_ids = $locations->pluck('id')->toArray();
+        $shiftsFilter = new ShiftsFilter(auth()->can('user_shifts_admin'), $location_ids, $ownAngelTypes);
         $session->set('shifts-filter', $shiftsFilter->sessionExport());
     }
 
@@ -282,19 +286,22 @@ function view_user_shifts()
     }
 
     $formattedDays = collect($days)->map(function ($value) {
-        return Carbon::make($value)->format(__('Y-m-d'));
+        return dateWithEventDay(Carbon::make($value)->format('Y-m-d'));
     })->toArray();
+
+    $link = button(url('/admin-shifts'), icon('plus-lg'), 'add');
 
     return page([
         div('col-md-12', [
             msg(),
             view(__DIR__ . '/../../resources/views/pages/user-shifts.html', [
                 'title'         => shifts_title(),
-                'room_select'   => make_select(
-                    $rooms,
-                    $shiftsFilter->getRooms(),
-                    'rooms',
-                    icon('pin-map-fill') . __('Rooms')
+                'add_link'      => auth()->can('admin_shifts') ? $link : '',
+                'location_select' => make_select(
+                    $locations,
+                    $shiftsFilter->getLocations(),
+                    'locations',
+                    icon('pin-map-fill') . __('Locations')
                 ),
                 'start_select'  => html_select_key(
                     'start_day',
@@ -314,7 +321,10 @@ function view_user_shifts()
                     $types,
                     $shiftsFilter->getTypes(),
                     'types',
-                    icon('person-lines-fill') . __('Angeltypes') . '<sup>1</sup>',
+                    icon('person-lines-fill') . __('angeltypes.angeltypes')
+                    . ' <small><span class="bi bi-info-circle-fill text-info" data-bs-toggle="tooltip" title="'
+                    . __('The tasks shown here are influenced by the angeltypes you joined already!')
+                    . '"></span></small>',
                     $ownAngelTypes
                 ),
                 'filled_select' => make_select(
@@ -323,12 +333,6 @@ function view_user_shifts()
                     'filled',
                     icon('person-fill-slash') . __('Occupancy')
                 ),
-                'task_notice'   =>
-                    '<sup>1</sup>'
-                    . __('The tasks shown here are influenced by the angeltypes you joined already!')
-                    . ' <a href="' . url('/angeltypes/about') . '">'
-                    . __('Description of the jobs.')
-                    . '</a>',
                 'shifts_table'  => msg() . $shiftCalendarRenderer->render(),
                 'ical_text'     => div('mt-3', ical_hint()),
                 'filter'        => __('Filter'),
@@ -364,9 +368,9 @@ function ical_hint()
     return heading(__('iCal export and API') . ' ' . button_help('user/ical'), 2)
         . '<p>' . sprintf(
             __('Export your own shifts. <a href="%s">iCal format</a> or <a href="%s">JSON format</a> available (please keep secret, otherwise <a href="%s">reset the api key</a>).'),
-            page_link_to('ical', ['key' => $user->api_key]),
-            page_link_to('shifts_json_export', ['key' => $user->api_key]),
-            page_link_to('user_myshifts', ['reset' => 1])
+            url('/ical', ['key' => $user->api_key]),
+            url('/shifts-json-export', ['key' => $user->api_key]),
+            url('/user-myshifts', ['reset' => 1])
         )
         . ' <button class="btn btn-sm btn-danger" type="button"
             data-bs-toggle="collapse" data-bs-target="#collapseApiKey"

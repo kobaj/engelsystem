@@ -9,15 +9,15 @@ use Illuminate\Support\Collection;
  *
  * @param array             $stats
  * @param array[]           $free_shifts
- * @param News[]|Collection $important_news
+ * @param News[]|Collection $highlighted_news
  * @return string
  */
-function public_dashboard_view($stats, $free_shifts, $important_news)
+function public_dashboard_view($stats, $free_shifts, $highlighted_news)
 {
     $needed_angels = '';
     $news = '';
-    if ($important_news->isNotEmpty()) {
-        $first_news = $important_news->first();
+    if ($highlighted_news->isNotEmpty()) {
+        $first_news = $highlighted_news->first();
         $news = div('alert alert-warning text-center', [
             '<a href="' . url('/news/' . $first_news->id) . '"><strong>' . $first_news->title . '</strong></a>',
         ]);
@@ -58,7 +58,7 @@ function public_dashboard_view($stats, $free_shifts, $important_news)
     }
 
     $isFiltered = request()->get('filtered');
-    $filter = collect(session()->get('shifts-filter'))->only(['rooms', 'types'])->toArray();
+    $filter = collect(session()->get('shifts-filter'))->only(['locations', 'types'])->toArray();
     return page([
         div('wrapper', [
             div('public-dashboard', [
@@ -98,7 +98,7 @@ function public_dashboard_shift_render($shift)
         $panel_body .= ' (' . $shift['title'] . ')';
     }
 
-    $panel_body .= '<br>' . icon('pin-map-fill') . $shift['room_name'];
+    $panel_body .= '<br>' . icon('pin-map-fill') . $shift['location_name'];
 
     foreach ($shift['needed_angels'] as $needed_angels) {
         $panel_body .= '<br>' . icon('person')

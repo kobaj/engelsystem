@@ -17,8 +17,34 @@ msgstr ""
 msgid "validation.password.required"
 msgstr "Bitte gib ein Passwort an."
 
+msgid "validation.password.length"
+msgstr "Das angegebene Passwort ist zu kurz."
+
 msgid "validation.login.required"
 msgstr "Bitte gib einen Loginnamen an."
+
+msgid "validation.pronoun.required"
+msgstr "Bitte gebe dein Pronomen an."
+
+msgid "validation.firstname.required"
+msgstr "Bitte gebe deinen Vornamen an."
+
+msgid "validation.lastname.required"
+msgstr "Bitte gebe deinen Nachnamen an."
+
+msgid "validation.mobile.required"
+msgstr "Bitte gebe deine Handynummer an."
+
+msgid "validation.dect.required"
+msgstr "Bitte gebe deine DECT-Nummer an."
+
+msgid "validation.username.required"
+msgstr "Bitte gebe deinen Nick an."
+
+msgid "validation.username.username"
+msgstr ""
+"Bitte gebe einen gültigen Nick ein: "
+"Verwende bis zu 24 Buchstaben, Zahlen oder verbindende Schriftzeichen (.-_) für deinen Nick."
 
 msgid "validation.email.required"
 msgstr "Bitte gib eine E-Mail-Adresse an."
@@ -26,10 +52,10 @@ msgstr "Bitte gib eine E-Mail-Adresse an."
 msgid "validation.email.email"
 msgstr "Die E-Mail-Adresse ist nicht gültig."
 
-msgid "validation.password.min"
+msgid "validation.password.length"
 msgstr "Dein neues Passwort ist zu kurz."
 
-msgid "validation.new_password.min"
+msgid "validation.new_password.length"
 msgstr "Dein neues Passwort ist zu kurz."
 
 msgid "validation.password.confirmed"
@@ -37,6 +63,21 @@ msgstr "Deine Passwörter stimmen nicht überein."
 
 msgid "validation.password_confirmation.required"
 msgstr "Du musst dein Passwort bestätigen."
+
+msgid "validation.tshirt_size.required"
+msgstr "Bitte wähle deine T-Shirt-Größe aus."
+
+msgid "validation.tshirt_size.shirtSize"
+msgstr "Bitte wähle eine gültige T-Shirt-Größe aus."
+
+msgid "validation.planned_arrival_date.required"
+msgstr "Bitte gebe dein geplantes Ankunftsdatum an."
+
+msgid "validation.planned_arrival_date.min"
+msgstr "Das geplante Ankunftsdatum darf nicht vor Aufbaubeginn liegen."
+
+msgid "validation.planned_arrival_date.between"
+msgstr "Das geplante Ankunftsdatum muss zwischen Aufbaubeginn und Abbauende liegen."
 
 msgid "schedule.edit.success"
 msgstr "Das Programm wurde erfolgreich konfiguriert."
@@ -131,6 +172,9 @@ msgstr "Der OAuth-Provider ist aufgrund eines unerwarteten Fehlers nicht in der 
 msgid "oauth.temporarily_unavailable"
 msgstr "Der OAuth-Provider ist aufgrund Überlastung oder Wartung temporär nicht in der Lage, die Anfrage zu erfüllen"
 
+msgid "profile.my-shifts"
+msgstr "Meine Schichten"
+
 msgid "settings.profile"
 msgstr "Profil"
 
@@ -142,8 +186,11 @@ msgid "settings.profile.planned_departure_date.invalid"
 msgstr "Bitte gib Dein geplantes Abreisedatum an, damit wir ein Gefühl für die Abbauplanung bekommen. "
 "Es sollte nach dem Aufbaubeginn und vor dem Abbauende liegen."
 
-msgid "settings.profile.success"
+msgid "settings.success"
 msgstr "Einstellungen gespeichert."
+
+msgid "settings.sessions.delete_success"
+msgstr "Sitzung erfolgreich gelöscht."
 
 msgid "faq.delete.success"
 msgstr "FAQ Eintrag erfolgreich gelöscht."
@@ -219,11 +266,26 @@ msgstr "Arbeitseinsatz erfolgreich bearbeitet."
 msgid "worklog.delete.success"
 msgstr "Arbeitseinsatz erfolgreich gelöscht."
 
-msgid "room.edit.success"
-msgstr "Raum erfolgreich bearbeitet."
+msgid "location.edit.success"
+msgstr "Ort erfolgreich bearbeitet."
 
-msgid "room.delete.success"
-msgstr "Raum erfolgreich gelöscht."
+msgid "location.delete.success"
+msgstr "Ort erfolgreich gelöscht."
+
+msgid "shifttype.edit.success"
+msgstr "Schichttyp erfolgreich bearbeitet."
+
+msgid "shifttype.delete.success"
+msgstr "Schichttyp erfolgreich gelöscht."
 
 msgid "validation.name.exists"
 msgstr "Der Name wird bereits verwendet."
+
+msgid "registration.disabled"
+msgstr "Die Registrierung ist deaktiviert."
+
+msgid "registration.successful"
+msgstr "Registrierung erfolgreich. Du kannst dich jetzt anmelden!"
+
+msgid "shifts.history.delete.success"
+msgstr "Schichten erfolgreich gelöscht."

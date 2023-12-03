@@ -2,7 +2,7 @@
 {% import 'macros/base.twig' as m %}
 {% import 'macros/form.twig' as f %}
 
-{% block title %}{{ __('Design') }}{% endblock %}
+{% block title %}{{ __('design.title') }}{% endblock %}
 
 {% set colors=['success', 'info', 'warning', 'danger'] %}
 {% set types=[
@@ -59,7 +59,7 @@
                 <ul>
                     {% for id,theme in themes %}
                         <li>
-                            <a href="{{ url('design', {'theme': id}) }}"
+                            <a href="{{ url('/design', {'theme': id}) }}"
                                 {%- if id == themeId %} class="text-info"{% endif %}>
                                 {{ theme['name'] }}
                             </a>
@@ -200,6 +200,30 @@
             </div>
         </div>
 
+        <div class="row">
+            <div class="col-3 col-md-6 mb-2">
+                <span id="modal" class="ref-id"></span>
+                <h3>Modal <a href="#modal" class="ref-link">{{ m.icon('link') }}</a></h3>
+                <div class="modal position-static d-block" tabindex="-1">
+                    <div class="modal-dialog">
+                        <div class="modal-content {{ m.type_bg_class() }}">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Title</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <p>{{ lipsum }}</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-primary">Save</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="row mb-4">
             <div class="col-md-12">
                 <span id="forms" class="ref-id"></span>
@@ -330,9 +354,13 @@
                                 'title': 'Click me!',
                             }) }}
                         </div>
-                        <code>f.submit(label)</code>
-                        <form id="form">
+                        <code>f.submit(label, opt)</code>
+                        <form class="prevent-default">
                             {{ f.submit('Go!') }}
+                        </form>
+                        <code>f.delete(label, opt)</code>
+                        <form class="prevent-default">
+                            {{ f.delete('Delete it', {'confirm_title': 'Delete some item'}) }}
                         </form>
                     </div>
 
@@ -448,20 +476,20 @@ Por scientie, musica, sport etc, litot Europa usa li sam vocabular.</code></pre>
             <div class="col">
                 <h4>Countdowns</h4>
                 <ul>
-                    <li title="{{ timestamp30s.format(__('Y-m-d H:i')) }}" data-countdown-ts="{{ timestamp30s.getTimestamp() }}">30s: %c</li>
-                    <li title="{{ timestamp30m.format(__('Y-m-d H:i')) }}" data-countdown-ts="{{ timestamp30m.getTimestamp() }}">30m: %c</li>
-                    <li title="{{ timestamp59m.format(__('Y-m-d H:i')) }}" data-countdown-ts="{{ timestamp59m.getTimestamp() }}">59m: %c</li>
-                    <li title="{{ timestamp1h.format(__('Y-m-d H:i')) }}" data-countdown-ts="{{ timestamp1h.getTimestamp() }}">1h: %c</li>
-                    <li title="{{ timestamp1h30m.format(__('Y-m-d H:i')) }}" data-countdown-ts="{{ timestamp1h30m.getTimestamp() }}">1h 30m: %c</li>
-                    <li title="{{ timestamp1h31m.format(__('Y-m-d H:i')) }}" data-countdown-ts="{{ timestamp1h31m.getTimestamp() }}">1h 31m: %c</li>
-                    <li title="{{ timestamp2h.format(__('Y-m-d H:i')) }}" data-countdown-ts="{{ timestamp2h.getTimestamp() }}">2h: %c</li>
-                    <li title="{{ timestamp2d.format(__('Y-m-d H:i')) }}" data-countdown-ts="{{ timestamp2d.getTimestamp() }}">2d: %c</li>
-                    <li title="{{ timestamp3m.format(__('Y-m-d H:i')) }}" data-countdown-ts="{{ timestamp3m.getTimestamp() }}">3m: %c</li>
-                    <li title="{{ timestamp22y.format(__('Y-m-d H:i')) }}" data-countdown-ts="{{ timestamp22y.getTimestamp() }}">22y: %c</li>
+                    <li title="{{ timestamp30s.format(__('general.datetime')) }}" data-countdown-ts="{{ timestamp30s.getTimestamp() }}">30s: %c</li>
+                    <li title="{{ timestamp30m.format(__('general.datetime')) }}" data-countdown-ts="{{ timestamp30m.getTimestamp() }}">30m: %c</li>
+                    <li title="{{ timestamp59m.format(__('general.datetime')) }}" data-countdown-ts="{{ timestamp59m.getTimestamp() }}">59m: %c</li>
+                    <li title="{{ timestamp1h.format(__('general.datetime')) }}" data-countdown-ts="{{ timestamp1h.getTimestamp() }}">1h: %c</li>
+                    <li title="{{ timestamp1h30m.format(__('general.datetime')) }}" data-countdown-ts="{{ timestamp1h30m.getTimestamp() }}">1h 30m: %c</li>
+                    <li title="{{ timestamp1h31m.format(__('general.datetime')) }}" data-countdown-ts="{{ timestamp1h31m.getTimestamp() }}">1h 31m: %c</li>
+                    <li title="{{ timestamp2h.format(__('general.datetime')) }}" data-countdown-ts="{{ timestamp2h.getTimestamp() }}">2h: %c</li>
+                    <li title="{{ timestamp2d.format(__('general.datetime')) }}" data-countdown-ts="{{ timestamp2d.getTimestamp() }}">2d: %c</li>
+                    <li title="{{ timestamp3m.format(__('general.datetime')) }}" data-countdown-ts="{{ timestamp3m.getTimestamp() }}">3m: %c</li>
+                    <li title="{{ timestamp22y.format(__('general.datetime')) }}" data-countdown-ts="{{ timestamp22y.getTimestamp() }}">22y: %c</li>
                 </ul>
                 <ul>
-                    <li title="{{ timestamp30mago.format(__('Y-m-d H:i')) }}" data-countdown-ts="{{ timestamp30mago.getTimestamp() }}">30m ago: %c</li>
-                    <li title="{{ timestamp45mago.format(__('Y-m-d H:i')) }}" data-countdown-ts="{{ timestamp45mago.getTimestamp() }}">45m ago: %c</li>
+                    <li title="{{ timestamp30mago.format(__('general.datetime')) }}" data-countdown-ts="{{ timestamp30mago.getTimestamp() }}">30m ago: %c</li>
+                    <li title="{{ timestamp45mago.format(__('general.datetime')) }}" data-countdown-ts="{{ timestamp45mago.getTimestamp() }}">45m ago: %c</li>
                 </ul>
             </div>
         </div>
@@ -505,9 +533,11 @@ Por scientie, musica, sport etc, litot Europa usa li sam vocabular.</code></pre>
     </div>
     </div>
     <script>
-        document.getElementById('form').addEventListener('submit', (e) => {
-            e.preventDefault();
-            return false;
-        });
+        [...document.getElementsByClassName('prevent-default')].forEach((element) => {
+            element.addEventListener('submit', (e) => {
+                e.preventDefault();
+                return false;
+            });
+        })
     </script>
 {% endblock %}

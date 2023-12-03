@@ -8,7 +8,7 @@ use Engelsystem\Models\User\User;
  */
 function myshifts_title()
 {
-    return __('My shifts');
+    return __('profile.my-shifts');
 }
 
 /**
@@ -37,21 +37,21 @@ function user_myshifts()
         if ($request->input('reset') == 'ack') {
             User_reset_api_key($user);
             success(__('Key changed.'));
-            throw_redirect(page_link_to('users', ['action' => 'view', 'user_id' => $shifts_user->id]));
+            throw_redirect(url('/users', ['action' => 'view', 'user_id' => $shifts_user->id]));
         }
         return page_with_title(__('Reset API key'), [
             error(
                 __('If you reset the key, the url to your iCal- and JSON-export and your atom/rss feed changes! You have to update it in every application using one of these exports.'),
                 true
             ),
-            button(page_link_to('user_myshifts', ['reset' => 'ack']), __('Continue'), 'btn-danger'),
+            button(url('/user-myshifts', ['reset' => 'ack']), __('Continue'), 'btn-danger'),
         ]);
     } elseif ($request->has('edit') && preg_match('/^\d+$/', $request->input('edit'))) {
         $shift_entry_id = $request->input('edit');
         /** @var ShiftEntry $shiftEntry */
         $shiftEntry = ShiftEntry::where('id', $shift_entry_id)
             ->where('user_id', $shifts_user->id)
-            ->with(['shift', 'shift.shiftType', 'shift.room', 'user'])
+            ->with(['shift', 'shift.shiftType', 'shift.location', 'user'])
             ->first();
         if (!empty($shiftEntry)) {
             $shift = $shiftEntry->shift;
@@ -90,14 +90,14 @@ function user_myshifts()
                         . '. Freeloaded: ' . ($freeloaded ? 'YES Comment: ' . $freeloaded_comment : 'NO')
                     );
                     success(__('Shift saved.'));
-                    throw_redirect(page_link_to('users', ['action' => 'view', 'user_id' => $shifts_user->id]));
+                    throw_redirect(url('/users', ['action' => 'view', 'user_id' => $shifts_user->id]));
                 }
             }
 
             return ShiftEntry_edit_view(
                 $shifts_user,
-                $shift->start->format(__('Y-m-d H:i')) . ', ' . shift_length($shift),
-                $shift->room->name,
+                $shift->start->format(__('general.datetime')) . ', ' . shift_length($shift),
+                $shift->location->name,
                 $shift->shiftType->name,
                 $shiftEntry->angelType->name,
                 $shiftEntry->user_comment,
@@ -106,10 +106,10 @@ function user_myshifts()
                 auth()->can('user_shifts_admin')
             );
         } else {
-            throw_redirect(page_link_to('user_myshifts'));
+            throw_redirect(url('/user-myshifts'));
         }
     }
 
-    throw_redirect(page_link_to('users', ['action' => 'view', 'user_id' => $shifts_user->id]));
+    throw_redirect(url('/users', ['action' => 'view', 'user_id' => $shifts_user->id]));
     return '';
 }

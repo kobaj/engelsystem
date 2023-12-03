@@ -43,25 +43,26 @@ function User_delete_view($user)
  */
 function User_edit_vouchers_view($user)
 {
-    return page_with_title(sprintf(__('%s\'s vouchers'), User_Nick_render($user)), [
-        msg(),
-        buttons([
-            button(user_link($user->id), icon('chevron-left') . __('back')),
-        ]),
-        info(sprintf(
-            $user->state->force_active
-                ? __('Angel can receive another %d vouchers and is FA.')
-                : __('Angel can receive another %d vouchers.'),
-            User_get_eligable_voucher_count($user)
-        ), true),
-        form(
-            [
-                form_spinner('vouchers', __('Number of vouchers given out'), $user->state->got_voucher),
-                form_submit('submit', __('Save')),
-            ],
-            page_link_to('users', ['action' => 'edit_vouchers', 'user_id' => $user->id])
-        ),
-    ]);
+    $link = button(user_link($user->id), icon('chevron-left'), 'btn-sm');
+    return page_with_title(
+        $link . ' ' . sprintf(__('%s\'s vouchers'), User_Nick_render($user)),
+        [
+            msg(),
+            info(sprintf(
+                $user->state->force_active
+                    ? __('Angel can receive another %d vouchers and is FA.')
+                    : __('Angel can receive another %d vouchers.'),
+                User_get_eligable_voucher_count($user)
+            ), true),
+            form(
+                [
+                    form_spinner('vouchers', __('Number of vouchers given out'), $user->state->got_voucher),
+                    form_submit('submit', __('form.save')),
+                ],
+                url('/users', ['action' => 'edit_vouchers', 'user_id' => $user->id])
+            ),
+        ]
+    );
 }
 
 /**
@@ -109,12 +110,12 @@ function Users_view(
             }
         }
         $u['arrival_date'] = $user->personalData->planned_arrival_date
-            ? $user->personalData->planned_arrival_date->format(__('Y-m-d')) : '';
+            ? $user->personalData->planned_arrival_date->format(__('general.date')) : '';
         $u['departure_date'] = $user->personalData->planned_departure_date
-            ? $user->personalData->planned_departure_date->format(__('Y-m-d')) : '';
-        $u['last_login_at'] = $user->last_login_at ? $user->last_login_at->format(__('m/d/Y h:i a')) : '';
+            ? $user->personalData->planned_departure_date->format(__('general.date')) : '';
+        $u['last_login_at'] = $user->last_login_at ? $user->last_login_at->format(__('general.datetime')) : '';
         $u['actions'] = table_buttons([
-            button_icon(page_link_to('admin_user', ['id' => $user->id]), 'pencil', 'btn-sm'),
+            button_icon(url('/admin-user', ['id' => $user->id]), 'pencil', 'btn-sm'),
         ]);
         $usersList[] = $u;
     }
@@ -132,21 +133,21 @@ function Users_view(
     $user_table_headers = [];
 
     if (!config('display_full_name')) {
-        $user_table_headers['name'] = Users_table_header_link('name', __('Nick'), $order_by);
+        $user_table_headers['name'] = Users_table_header_link('name', __('general.nick'), $order_by);
     }
     if (config('enable_user_name')) {
-        $user_table_headers['first_name'] = Users_table_header_link('first_name', __('Prename'), $order_by);
-        $user_table_headers['last_name'] = Users_table_header_link('last_name', __('Name'), $order_by);
+        $user_table_headers['first_name'] = Users_table_header_link('first_name', __('settings.profile.firstname'), $order_by);
+        $user_table_headers['last_name'] = Users_table_header_link('last_name', __('settings.profile.lastname'), $order_by);
     }
     if (config('enable_dect')) {
-        $user_table_headers['dect'] = Users_table_header_link('dect', __('DECT'), $order_by);
+        $user_table_headers['dect'] = Users_table_header_link('dect', __('general.dect'), $order_by);
     }
     $user_table_headers['arrived'] = Users_table_header_link('arrived', __('Arrived'), $order_by);
     if (config('enable_voucher')) {
         $user_table_headers['got_voucher'] = Users_table_header_link('got_voucher', __('Voucher'), $order_by);
     }
     $user_table_headers['freeloads'] = Users_table_header_link('freeloads', __('Freeloads'), $order_by);
-    $user_table_headers['active'] = Users_table_header_link('active', __('Active'), $order_by);
+    $user_table_headers['active'] = Users_table_header_link('active', __('user.active'), $order_by);
     $user_table_headers['force_active'] = Users_table_header_link('force_active', __('Forced'), $order_by);
     if ($goodie_enabled) {
         if ($goodie_tshirt) {
@@ -173,11 +174,9 @@ function Users_view(
         unset($user_table_headers[$key]);
     }
 
-    return page_with_title(__('All users'), [
+    $link = button(url('/register'), icon('plus-lg'), 'add');
+    return page_with_title(__('All users') . ' ' . $link, [
         msg(),
-        buttons([
-            button(page_link_to('register'), icon('plus-lg') . __('New user')),
-        ]),
         table($user_table_headers, $usersList),
     ]);
 }
@@ -191,7 +190,7 @@ function Users_view(
 function Users_table_header_link($column, $label, $order_by)
 {
     return '<a href="'
-        . page_link_to('users', ['OrderBy' => $column])
+        . url('/users', ['OrderBy' => $column])
         . '">'
         . $label . ($order_by == $column ? ' <span class="caret"></span>' : '')
         . '</a>';
@@ -209,7 +208,7 @@ function User_shift_state_render($user)
 
     $upcoming_shifts = ShiftEntries_upcoming_for_user($user);
     if ($upcoming_shifts->isEmpty()) {
-        return '<span class="text-success">' . __('Free') . '</span>';
+        return '<span class="text-success">' . __('free') . '</span>';
     }
 
     /** @var ShiftEntry $nextShiftEntry */
@@ -217,8 +216,8 @@ function User_shift_state_render($user)
 
     $start = $nextShiftEntry->shift->start;
     $end = $nextShiftEntry->shift->end;
-    $startFormat = $start->format(__('Y-m-d H:i'));
-    $endFormat = $end->format(__('Y-m-d H:i'));
+    $startFormat = $start->format(__('general.datetime'));
+    $endFormat = $end->format(__('general.datetime'));
     $startTimestamp = $start->timestamp;
     $endTimestamp = $end->timestamp;
 
@@ -260,7 +259,7 @@ function User_last_shift_render($user)
     $lastShiftEntry = $last_shifts->first();
     $end = $lastShiftEntry->shift->end;
 
-    return '<span title="' . $end->format(__('Y-m-d H:i')) . '" data-countdown-ts="' . $end->timestamp . '">'
+    return '<span title="' . $end->format(__('general.datetime')) . '" data-countdown-ts="' . $end->timestamp . '">'
         . __('Shift ended %c')
         . '</span>';
 }
@@ -272,7 +271,7 @@ function User_last_shift_render($user)
 function User_view_shiftentries($needed_angel_type)
 {
     $shift_info = '<br><b><a href="'
-        . page_link_to('angeltypes', ['action' => 'view', 'angeltype_id' => $needed_angel_type['id']])
+        . url('/angeltypes', ['action' => 'view', 'angeltype_id' => $needed_angel_type['id']])
         . '">' . $needed_angel_type['name'] . '</a>:</b> ';
 
     $shift_entries = [];
@@ -309,12 +308,12 @@ function User_view_myshift(Shift $shift, $user_source, $its_me)
 
     $myshift = [
         'date'       => icon('calendar-event')
-            . $shift->start->format(__('Y-m-d')) . '<br>'
+            . $shift->start->format(__('general.date')) . '<br>'
             . icon('clock-history') . $shift->start->format('H:i')
             . ' - '
             . $shift->end->format(__('H:i')),
         'duration'   => sprintf('%.2f', ($shift->end->timestamp - $shift->start->timestamp) / 3600) . '&nbsp;h',
-        'room'       => Room_name_render($shift->room),
+        'location'   => location_name_render($shift->location),
         'shift_info' => $shift_info,
         'comment'    => '',
     ];
@@ -340,7 +339,7 @@ function User_view_myshift(Shift $shift, $user_source, $its_me)
     ];
     if ($its_me || auth()->can('user_shifts_admin')) {
         $myshift['actions'][] = button(
-            page_link_to('user_myshifts', ['edit' => $shift->shift_entry_id, 'id' => $user_source->id]),
+            url('/user-myshifts', ['edit' => $shift->shift_entry_id, 'id' => $user_source->id]),
             icon('pencil') . __('edit'),
             'btn-sm'
         );
@@ -388,7 +387,6 @@ function User_view_myshifts(
     foreach ($shifts as $shift) {
         $key = $shift->start->timestamp . '-shift-' . $shift->shift_entry_id . $shift->id;
         $myshifts_table[$key] = User_view_myshift($shift, $user_source, $its_me);
-
         if (!$shift->freeloaded) {
             $timeSum += ($shift->end->timestamp - $shift->start->timestamp);
         }
@@ -405,16 +403,16 @@ function User_view_myshifts(
         $myshifts_table[] = [
             'date'       => '<b>' . __('Sum:') . '</b>',
             'duration'   => '<b>' . sprintf('%.2f', round($timeSum / 3600, 2)) . '&nbsp;h</b>',
-            'room'       => '',
+            'location'   => '',
             'shift_info' => '',
             'comment'    => '',
             'actions'    => '',
         ];
         if ($goodie_enabled && ($its_me || $tshirt_admin)) {
             $myshifts_table[] = [
-                'date'       => '<b>' . ($goodie_tshirt ? __('Your t-shirt score') : __('Your goodie score')) . '&trade;:</b>',
+                'date'       => '<b>' . ($goodie_tshirt ? __('Your T-shirt score') : __('Your goodie score')) . '&trade;:</b>',
                 'duration'   => '<b>' . $tshirt_score . '</b>',
-                'room'       => '',
+                'location'   => '',
                 'shift_info' => '',
                 'comment'    => '',
                 'actions'    => '',
@@ -450,15 +448,15 @@ function User_view_worklog(Worklog $worklog, $admin_user_worklog_privilege)
     }
 
     return [
-        'date'       => icon('calendar-event') . date(__('Y-m-d'), $worklog->worked_at->timestamp),
+        'date'       => icon('calendar-event') . date(__('general.date'), $worklog->worked_at->timestamp),
         'duration'   => sprintf('%.2f', $worklog->hours) . ' h',
-        'room'       => '',
+        'location'   => '',
         'shift_info' => __('Work log entry'),
         'comment'    => $worklog->comment . '<br>'
             . sprintf(
                 __('Added by %s at %s'),
                 User_Nick_render($worklog->creator),
-                $worklog->created_at->format(__('Y-m-d H:i'))
+                $worklog->created_at->format(__('general.datetime'))
             ),
         'actions'    => $actions,
     ];
@@ -499,9 +497,8 @@ function User_view(
     $goodie_tshirt = $goodie === GoodieType::Tshirt;
     $auth = auth();
     $nightShiftsConfig = config('night_shifts');
-    $user_name = htmlspecialchars(
-        $user_source->personalData->first_name
-    ) . ' ' . htmlspecialchars($user_source->personalData->last_name);
+    $user_name = htmlspecialchars((string) $user_source->personalData->first_name) . ' '
+        . htmlspecialchars((string) $user_source->personalData->last_name);
     $myshifts_table = '';
     if ($its_me || $admin_user_privilege || $tshirt_admin) {
         $my_shifts = User_view_myshifts(
@@ -515,11 +512,11 @@ function User_view(
         );
         if (count($my_shifts) > 0) {
             $myshifts_table = div('table-responsive', table([
-                'date'       => __('Day &amp; time'),
+                'date'       => __('Day & Time'),
                 'duration'   => __('Duration'),
-                'room'       => __('Location'),
-                'shift_info' => __('Name &amp; workmates'),
-                'comment'    => __('Comment'),
+                'location'   => __('Location'),
+                'shift_info' => __('Name & Workmates'),
+                'comment'    => __('worklog.comment'),
                 'actions'    => __('Action'),
             ], $my_shifts));
         } elseif ($user_source->state->force_active) {
@@ -545,7 +542,10 @@ function User_view(
             : ''
         )
         . htmlspecialchars($user_source->name)
-        . (config('enable_user_name') ? ' <small>' . $user_name . '</small>' : ''),
+        . (config('enable_user_name') ? ' <small>' . $user_name . '</small>' : '')
+        . ((auth()->can('user.info.show') && $user_source->state->user_info)
+        ? (' <small><span class="bi bi-info-circle-fill text-info" data-bs-toggle="tooltip" title="'
+        . htmlspecialchars($user_source->state->user_info) . '"></span></small>') : ''),
         [
             msg(),
             div('row', [
@@ -556,27 +556,19 @@ function User_view(
                             icon('person') . ($goodie_tshirt ? __('Shirt') : __('Goodie'))
                         ) : '',
                         $admin_user_privilege ? button(
-                            page_link_to('admin_user', ['id' => $user_source->id]),
+                            url('/admin-user', ['id' => $user_source->id]),
                             icon('pencil') . __('edit')
-                        ) : '',
-                        $admin_user_privilege || ($its_me && $needs_drivers_license) ? button(
-                            user_driver_license_edit_link($user_source),
-                            icon('person-vcard') . __('driving license')
-                        ) : '',
-                        config('ifsg_enabled') && ($admin_user_privilege || ($its_me && $needs_ifsg_certificate)) ? button(
-                            page_link_to('settings/certificates'),
-                            icon('card-checklist') . __('ifsg.certificate')
                         ) : '',
                         (($admin_user_privilege || $auth->can('admin_arrive')) && !$user_source->state->arrived) ?
                             form([
                                 form_hidden('action', 'arrived'),
                                 form_hidden('user', $user_source->id),
-                                form_submit('submit', __('arrived'), '', false),
-                            ], page_link_to('admin_arrive'), true) : '',
+                                form_submit('submit', __('user.arrived'), '', false),
+                            ], url('/admin-arrive'), true) : '',
                         ($admin_user_privilege || $auth->can('voucher.edit')) && config('enable_voucher') ?
                             button(
-                                page_link_to(
-                                    'users',
+                                url(
+                                    '/users',
                                     ['action' => 'edit_vouchers', 'user_id' => $user_source->id]
                                 ),
                                 icon('valentine') . __('Vouchers')
@@ -589,15 +581,15 @@ function User_view(
                     ], 'mb-2'),
                     $its_me ? table_buttons([
                         button(
-                            page_link_to('settings/profile'),
-                            icon('person-fill-gear') . __('Settings')
+                            url('/settings/profile'),
+                            icon('person-fill-gear') . __('settings.settings')
                         ),
                         $auth->can('ical') ? button(
-                            page_link_to('ical', ['key' => $user_source->api_key]),
+                            url('/ical', ['key' => $user_source->api_key]),
                             icon('calendar-week') . __('iCal Export')
                         ) : '',
                         $auth->can('shifts_json_export') ? button(
-                            page_link_to('shifts_json_export', ['key' => $user_source->api_key]),
+                            url('/shifts-json-export', ['key' => $user_source->api_key]),
                             icon('braces') . __('JSON Export')
                         ) : '',
                         (
@@ -605,7 +597,7 @@ function User_view(
                             || $auth->can('ical')
                             || $auth->can('atom')
                         ) ? button(
-                            page_link_to('user_myshifts', ['reset' => 1]),
+                            url('/user-myshifts', ['reset' => 1]),
                             icon('arrow-repeat') . __('Reset API key')
                         ) : '',
                     ], 'mb-2') : '',
@@ -631,6 +623,13 @@ function User_view(
                             )
                             : ''
                         : '',
+                    $auth->can('user_messages') ?
+                        heading(
+                            '<a href="' . url('/messages/' . $user_source->id) . '">'
+                            . icon('envelope')
+                            . '</a>'
+                        )
+                        : '',
                 ]),
                 User_view_state($admin_user_privilege, $freeloader, $user_source),
                 User_angeltypes_render($user_angeltypes),
@@ -641,16 +640,17 @@ function User_view(
             $myshifts_table,
             ($its_me && $nightShiftsConfig['enabled'] && $goodie_enabled) ? info(
                 icon('info-circle') . sprintf(
-                    __('Your night shifts between %d and %d am count twice.'),
+                    __('Your night shifts between %d and %d am count twice for the %s score.'),
                     $nightShiftsConfig['start'],
-                    $nightShiftsConfig['end']
+                    $nightShiftsConfig['end'],
+                    ($goodie_tshirt ? __('T-shirt') : __('goodie'))
                 ),
                 true
             ) : '',
             $its_me && count($shifts) == 0
                 ? error(sprintf(
                     __('Go to the <a href="%s">shifts table</a> to sign yourself up for some shifts.'),
-                    page_link_to('user_shifts')
+                    url('/user-shifts')
                 ), true)
                 : '',
             $its_me ? ical_hint() : '',
@@ -675,7 +675,7 @@ function User_view_state($admin_user_privilege, $freeloader, $user_source)
     }
 
     return div('col-md-2', [
-        heading(__('User state'), 4),
+        heading(__('State'), 4),
         join('<br>', $state),
     ]);
 }
@@ -693,7 +693,7 @@ function User_view_state_user($user_source)
     ];
 
     if ($user_source->state->arrived) {
-        $state[] = '<span class="text-success">' . icon('house') . __('Arrived') . '</span>';
+        $state[] = '<span class="text-success">' . icon('house') . __('user.arrived') . '</span>';
     } else {
         $state[] = '<span class="text-danger">' . __('Not arrived') . '</span>';
     }
@@ -726,24 +726,24 @@ function User_view_state_admin($freeloader, $user_source)
         $state[] = '<span class="text-success">' . icon('house')
             . sprintf(
                 __('Arrived at %s'),
-                $user_source->state->arrival_date ? $user_source->state->arrival_date->format(__('Y-m-d')) : ''
+                $user_source->state->arrival_date ? $user_source->state->arrival_date->format(__('general.date')) : ''
             )
             . '</span>';
 
         if ($user_source->state->force_active) {
-            $state[] = '<span class="text-success">' . __('Active (forced)') . '</span>';
+            $state[] = '<span class="text-success">' . __('user.force_active') . '</span>';
         } elseif ($user_source->state->active) {
-            $state[] = '<span class="text-success">' . __('Active') . '</span>';
+            $state[] = '<span class="text-success">' . __('user.active') . '</span>';
         }
         if ($user_source->state->got_shirt && $goodie_enabled) {
-            $state[] = '<span class="text-success">' . ($goodie_tshirt ? __('T-Shirt') : __('Goodie')) . '</span>';
+            $state[] = '<span class="text-success">' . ($goodie_tshirt ? __('T-shirt') : __('Goodie')) . '</span>';
         }
     } else {
         $arrivalDate = $user_source->personalData->planned_arrival_date;
         $state[] = '<span class="text-danger">'
             . ($arrivalDate ? sprintf(
                 __('Not arrived (Planned: %s)'),
-                $arrivalDate->format(__('Y-m-d'))
+                $arrivalDate->format(__('general.date'))
             ) : __('Not arrived'))
             . '</span>';
     }
@@ -785,7 +785,7 @@ function User_angeltypes_render($user_angeltypes)
             . '</a>';
     }
     return div('col-md-2', [
-        heading(__('Angeltypes'), 4),
+        heading(__('angeltypes.angeltypes'), 4),
         join('<br>', $output),
     ]);
 }
@@ -881,9 +881,9 @@ function User_Pronoun_render(User $user): string
  */
 function render_profile_link($text, $user_id = null, $class = '')
 {
-    $profile_link = page_link_to('settings/profile');
+    $profile_link = url('/settings/profile');
     if (!is_null($user_id)) {
-        $profile_link = page_link_to('users', ['action' => 'view', 'user_id' => $user_id]);
+        $profile_link = url('/users', ['action' => 'view', 'user_id' => $user_id]);
     }
 
     return sprintf(
@@ -947,8 +947,12 @@ function render_user_tshirt_hint()
 {
     $goodie = GoodieType::from(config('goodie_type'));
     $goodie_tshirt = $goodie === GoodieType::Tshirt;
-    if ($goodie_tshirt && !auth()->user()->personalData->shirt_size) {
-        $text = __('You need to specify a tshirt size in your settings!');
+    if (
+        $goodie_tshirt
+        && config('required_user_fields')['tshirt_size']
+        && !auth()->user()->personalData->shirt_size
+    ) {
+        $text = __('tshirt.required.hint');
         return render_profile_link($text);
     }
 
@@ -961,8 +965,64 @@ function render_user_tshirt_hint()
 function render_user_dect_hint()
 {
     $user = auth()->user();
-    if ($user->state->arrived && config('enable_dect') && !$user->contact->dect) {
-        $text = __('You need to specify a DECT phone number in your settings! If you don\'t have a DECT phone, just enter \'-\'.');
+    if ((config('required_user_fields')['dect'] || $user->state->arrived) && config('enable_dect') && !$user->contact->dect) {
+        $text = __('dect.required.hint');
+        return render_profile_link($text);
+    }
+
+    return null;
+}
+
+/**
+ * @return string|null
+ */
+function render_user_pronoun_hint()
+{
+    $user = auth()->user();
+    if (config('required_user_fields')['pronoun'] && config('enable_pronoun') && !$user->personalData->pronoun) {
+        $text = __('pronoun.required.hint');
+        return render_profile_link($text);
+    }
+
+    return null;
+}
+
+/**
+ * @return string|null
+ */
+function render_user_firstname_hint()
+{
+    $user = auth()->user();
+    if (config('required_user_fields')['firstname'] && config('enable_user_name') && !$user->personalData->first_name) {
+        $text = __('firstname.required.hint');
+        return render_profile_link($text);
+    }
+
+    return null;
+}
+
+/**
+ * @return string|null
+ */
+function render_user_lastname_hint()
+{
+    $user = auth()->user();
+    if (config('required_user_fields')['lastname'] && config('enable_user_name') && !$user->personalData->last_name) {
+        $text = __('lastname.required.hint');
+        return render_profile_link($text);
+    }
+
+    return null;
+}
+
+/**
+ * @return string|null
+ */
+function render_user_mobile_hint()
+{
+    $user = auth()->user();
+    if (config('required_user_fields')['mobile'] && !$user->contact->mobile) {
+        $text = __('mobile.required.hint');
         return render_profile_link($text);
     }
 

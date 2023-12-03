@@ -2,7 +2,10 @@
 {% import 'macros/base.twig' as m %}
 {% import 'macros/form.twig' as f %}
 
-{% block title %}{% if news.is_meeting %}{{ __('news.is_meeting') }} {% endif %}{{ news.title }}{% endblock %}
+{% block title %}
+    {{ m.button(m.icon('chevron-left'), url('/news'), null, 'sm') }}
+    {% if news.is_meeting %}{{ __('news.is_meeting') }} {% endif %}{{ news.title }}
+{% endblock %}
 
 {% block news %}
     {{ _self.news(news) }}
@@ -20,7 +23,7 @@
                 <div class="card-footer {% if theme.type =='light' %}bg-light{% else %}bg-dark{% endif %} text-muted d-flex align-items-center">
                     <div class="me-3">
                         {{ m.icon('clock') }}
-                        {{ comment.created_at.format(__('Y-m-d H:i')) }}
+                        {{ comment.created_at.format(__('general.datetime')) }}
                     </div>
                     {{ m.user(comment.user, {'pronoun': true}) }}
 
@@ -30,7 +33,11 @@
                                 action="{{ url('/news/comment/' ~ comment.id) }}" enctype="multipart/form-data"
                                 method="post">
                                 {{ csrf() }}
-                                {{ f.submit(m.icon('trash'), {'name': 'delete', 'btn_type': 'danger', 'size': 'sm', 'title': __('form.delete')}) }}
+                                {{ f.delete(null, {
+                                    'size': 'sm',
+                                    'confirm_title': __('news.comments.delete.title', [comment.text[:40]|e]),
+                                    'confirm_button_text': __('form.delete'),
+                                }) }}
                             </form>
                         </div>
                     {% endif %}

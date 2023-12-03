@@ -30,11 +30,13 @@ return [
 
     // Header links
     // Available link placeholders: %lang%
+    // To disable a header_item in the config.php, you can set its value to null
     'header_items'            => [
         //'Foo' => 'https://foo.bar/batz-%lang%.html',
     ],
 
     // Footer links
+    // To disable a footer item in the config.php, you can set its value to null
     'footer_items'            => [
         // Contact email address, linked on every page
         'Contact' => env('CONTACT_EMAIL', 'mailto:ticket@c3heaven.de'),
@@ -125,6 +127,8 @@ return [
     // Default theme, 1=style1.css
     'theme'                   => env('THEME', 1),
 
+    // Supported themes
+    // To disable a theme in the config.php, you can set its value to null
     'themes' => [
         16 => [
             'name' => 'Engelsystem cccamp23 (2023)',
@@ -223,6 +227,16 @@ return [
     // Users are able to sign up
     'registration_enabled'    => (bool) env('REGISTRATION_ENABLED', true),
 
+    // Required user fields
+    'required_user_fields' => [
+        'pronoun'            => (bool) env('PRONOUN_REQUIRED', false),
+        'firstname'          => (bool) env('FIRSTNAME_REQUIRED', false),
+        'lastname'           => (bool) env('LASTNAME_REQUIRED', false),
+        'tshirt_size'        => (bool) env('TSHIRT_SIZE_REQUIRED', true),
+        'mobile'             => (bool) env('MOBILE_REQUIRED', false),
+        'dect'               => (bool) env('DECT_REQUIRED', false),
+    ],
+
     // Only arrived angels can sign up for shifts
     'signup_requires_arrival' => (bool) env('SIGNUP_REQUIRES_ARRIVAL', false),
 
@@ -267,7 +281,7 @@ return [
 
     // Regular expression describing a FALSE username.
     // Per default usernames must only contain alphanumeric chars, "-", "_" or ".".
-    'username_regex' => (string) env('USERNAME_REGEX', '/([^\p{L}\p{N}\-_.]+)/ui'),
+    'username_regex' => (string) env('USERNAME_REGEX', '/([^\p{L}\p{N}_.-]+)/ui'),
 
     // Enables first name and last name
     'enable_user_name'        => (bool) env('ENABLE_USER_NAME', false),
@@ -325,6 +339,7 @@ return [
         && env('IFSG_ENABLED', false),
 
     // Available locales in /resources/lang/
+    // To disable a locale in the config.php, you can set its value to null
     'locales'                 => [
         'en_US' => 'English',
         'de_DE' => 'Deutsch',
@@ -333,16 +348,17 @@ return [
     // The default locale to use
     'default_locale'          => env('DEFAULT_LOCALE', 'en_US'),
 
-    // Available T-Shirt sizes, set value to null if not available
+    // Available T-Shirt sizes
+    // To disable a t-shirt size in the config.php, you can set its value to null
     'tshirt_sizes'            => [
         'S'    => 'Small Straight-Cut',
-        'S-G'  => 'Small Fitted-Cut',
+        'S-F'  => 'Small Fitted-Cut',
         'M'    => 'Medium Straight-Cut',
-        'M-G'  => 'Medium Fitted-Cut',
+        'M-F'  => 'Medium Fitted-Cut',
         'L'    => 'Large Straight-Cut',
-        'L-G'  => 'Large Fitted-Cut',
+        'L-F'  => 'Large Fitted-Cut',
         'XL'   => 'XLarge Straight-Cut',
-        'XL-G' => 'XLarge Fitted-Cut',
+        'XL-F' => 'XLarge Fitted-Cut',
         '2XL'  => '2XLarge Straight-Cut',
         '3XL'  => '3XLarge Straight-Cut',
         '4XL'  => '4XLarge Straight-Cut',
@@ -382,6 +398,8 @@ return [
 
     // Add additional headers
     'add_headers'             => (bool) env('ADD_HEADERS', true),
+    // Predefined headers
+    // To disable a header in the config.php, you can set its value to null
     'headers'                 => [
         'X-Content-Type-Options'  => 'nosniff',
         'X-Frame-Options'         => 'sameorigin',

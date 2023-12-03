@@ -47,10 +47,10 @@ class NewsController extends BaseController
         return $this->response->withView(
             'pages/news/edit.twig',
             [
-                'news'         => $news,
-                'is_meeting'   => $news ? $news->is_meeting : $isMeetingDefault,
-                'is_pinned'    => $news ? $news->is_pinned : false,
-                'is_important' => $news ? $news->is_important : false,
+                'news'           => $news,
+                'is_meeting'     => $news ? $news->is_meeting : $isMeetingDefault,
+                'is_pinned'      => $news ? $news->is_pinned : false,
+                'is_highlighted' => $news ? $news->is_highlighted : false,
             ],
         );
     }
@@ -62,17 +62,7 @@ class NewsController extends BaseController
         /** @var News $news */
         $news = $this->news->findOrNew($newsId);
 
-        $data = $this->validate($request, [
-            'title'        => 'required',
-            'text'         => 'required',
-            'is_meeting'   => 'optional|checked',
-            'is_pinned'    => 'optional|checked',
-            'is_important' => 'optional|checked',
-            'delete'       => 'optional|checked',
-            'preview'      => 'optional|checked',
-        ]);
-
-        if (!is_null($data['delete'])) {
+        if ($request->request->has('delete')) {
             $news->delete();
 
             $this->log->info(
@@ -88,6 +78,16 @@ class NewsController extends BaseController
             return $this->redirect->to('/news');
         }
 
+        $data = $this->validate($request, [
+            'title'          => 'required',
+            'text'           => 'required',
+            'is_meeting'     => 'optional|checked',
+            'is_pinned'      => 'optional|checked',
+            'is_highlighted' => 'optional|checked',
+            'delete'         => 'optional|checked',
+            'preview'        => 'optional|checked',
+        ]);
+
         if (!$news->user) {
             $news->user()->associate($this->auth->user());
         }
@@ -96,8 +96,8 @@ class NewsController extends BaseController
         $news->is_meeting = !is_null($data['is_meeting']);
         $news->is_pinned = !is_null($data['is_pinned']);
 
-        if ($this->auth->can('news.important')) {
-            $news->is_important = !is_null($data['is_important']);
+        if ($this->auth->can('news.highlight')) {
+            $news->is_highlighted = !is_null($data['is_highlighted']);
         }
 
         if (!is_null($data['preview'])) {
@@ -119,7 +119,7 @@ class NewsController extends BaseController
             'Updated {pinned}{type} "{news}": {text}',
             [
                 'pinned'    => $news->is_pinned ? 'pinned ' : '',
-                'important' => $news->is_important ? 'important ' : '',
+                'highlighted' => $news->is_highlighted ? 'highlighted ' : '',
                 'type'      => $news->is_meeting ? 'meeting' : 'news',
                 'news'      => $news->title,
                 'text'      => $news->text,

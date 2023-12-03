@@ -1,5 +1,6 @@
 {% extends 'layouts/app.twig' %}
 {% import 'macros/base.twig' as m %}
+{% import 'macros/form.twig' as f %}
 
 {% set only_meetings = only_meetings|default(false) %}
 {% block title %}{{ not only_meetings ? __('news.title') : __('news.title.meetings') }}{% endblock %}
@@ -9,7 +10,7 @@
         <h1>
             {{ block('title') }}
             {%- if has_permission_to('admin_news') and is_overview|default(false) -%}
-                {{ m.button(m.icon('plus-lg'), url('admin/news', only_meetings ? {'meeting': 1} : {}), 'secondary') }}
+                {{ m.button(m.icon('plus-lg'), url('/admin/news', only_meetings ? {'meeting': 1} : {}), 'secondary') }}
             {%- endif %}
         </h1>
 
@@ -48,10 +49,10 @@
 {% endblock %}
 
 {% macro news(news, show_comments_link, is_overview) %}
-    <div class="card {% if news.is_important %}bg-warning{% elseif news.is_meeting %}bg-info{% elseif theme.type =='light' %}bg-light{% else %}bg-dark{% endif %} mb-4">
+    <div class="card {% if news.is_highlighted %}bg-warning{% elseif news.is_meeting %}bg-info{% elseif theme.type =='light' %}bg-light{% else %}bg-dark{% endif %} mb-4">
         {% if is_overview|default(false) %}
         <div class="card-header {% if news.is_meeting and theme.type == 'dark' %}text-white{% endif %}">
-                <a href="{{ url('news/' ~ news.id) }}" class="text-inherit">
+                <a href="{{ url('/news/' ~ news.id) }}" class="text-inherit">
                     {% if news.is_pinned %}{{ m.icon('pin-angle') }}{% endif %}
                     {% if news.is_meeting %}{{ __('news.is_meeting') }}{% endif %}
                     {{ news.title }}
@@ -62,7 +63,7 @@
         <div class="card-body bg-body">
             {{ news.text(not is_overview)|markdown }}
             {% if is_overview and news.text != news.text(false) %}
-                {{ m.button(__('news.read_more'), url('news/' ~ news.id), null, 'sm', null, null, 'chevron-double-right') }}
+                {{ m.button(__('news.read_more'), url('/news/' ~ news.id), null, 'sm', null, null, 'chevron-double-right') }}
             {% endif %}
         </div>
 
@@ -70,13 +71,13 @@
             <div class="d-flex flex-column flex-md-row align-items-md-center gap-3">
                 {% if news.updated_at != news.created_at and not is_overview %}
                     <div>
-                        {{ m.icon('clock') }} {{ news.updated_at.format(__('Y-m-d H:i')) }}
+                        {{ m.icon('clock') }} {{ news.updated_at.format(__('general.datetime')) }}
                         {{ __('news.updated') }}
                     </div>
                 {% endif %}
 
                 <div>
-                    {{ m.icon('clock') }} {{ news.created_at.format(__('Y-m-d H:i')) }}
+                    {{ m.icon('clock') }} {{ news.created_at.format(__('general.datetime')) }}
                 </div>
 
                 <div class="text-truncate">
@@ -85,7 +86,7 @@
 
                 {% if show_comments_link|default(false) %}
                     <div>
-                        <a href="{{ url('news/' ~ news.id) }}" class="me-1">
+                        <a href="{{ url('/news/' ~ news.id) }}" class="me-1">
                             {{ m.icon('chat-left-text') }} {{ __('news.comments') }}
                         </a>
                         <span class="badge bg-primary">{{ news.comments.count() }}</span>
@@ -94,8 +95,19 @@
                 {% endif %}
 
                 {% if has_permission_to('admin_news') %}
-                    <div>
-                        {{ m.button(m.icon('pencil'), url('admin/news/' ~ news.id), 'secondary', 'sm') }}
+                    <div class="d-flex ms-auto">
+                        {{ m.button(m.icon('pencil'), url('/admin/news/' ~ news.id), 'secondary', 'sm') }}
+
+                        <form class="ps-1"
+                            action="{{ url('/admin/news/' ~ news.id) }}" enctype="multipart/form-data"
+                            method="post">
+                            {{ csrf() }}
+                            {{ f.delete(null, {
+                                'size': 'sm',
+                                'confirm_title': __('news.delete.title', [news.title[:40]|e]),
+                                'confirm_button_text': __('form.delete')
+                            }) }}
+                        </form>
                     </div>
                 {% endif %}
             </div>

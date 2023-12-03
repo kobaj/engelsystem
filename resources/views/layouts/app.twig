@@ -17,13 +17,13 @@
             {% if page() == 'meetings' -%}
                 {% set parameters = {'meetings': 1}|merge(parameters) -%}
             {% endif %}
-            <link href="{{ url('atom', parameters) }}" type="application/atom+xml" rel="alternate" title="Atom Feed">
-            <link href="{{ url('rss', parameters) }}" type="application/rss+xml" rel="alternate" title="RSS Feed" />
+            <link href="{{ url('/atom', parameters) }}" type="application/atom+xml" rel="alternate" title="Atom Feed">
+            <link href="{{ url('/rss', parameters) }}" type="application/rss+xml" rel="alternate" title="RSS Feed" />
         {%- endif %}
 
     {% endblock %}
 </head>
-<body>
+<body data-theme_type="{{ theme.type }}">
 
 {% block body %}
     {% block header %}

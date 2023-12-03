@@ -17,7 +17,7 @@ function event_config_title()
 function event_config_edit_controller()
 {
     if (!auth()->can('admin_event_config')) {
-        throw_redirect(page_link_to('/'));
+        throw_redirect(url('/'));
     }
 
     $request = request();
@@ -117,8 +117,8 @@ function event_config_edit_controller()
                     $teardown_end_date ? $teardown_end_date->format('Y-m-d H:i') : ''
                 )
             );
-            success(__('Settings saved.'));
-            throw_redirect(page_link_to('admin_event_config'));
+            success(__('settings.success'));
+            throw_redirect(url('/admin_event_config'));
         }
     }
 

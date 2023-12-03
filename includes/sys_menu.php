@@ -1,19 +1,8 @@
 <?php
 
+use Engelsystem\Models\Location;
 use Engelsystem\Models\Question;
-use Engelsystem\Models\Room;
 use Engelsystem\UserHintsRenderer;
-
-/**
- * @param string $page
- * @param array  $parameters get parameters
- * @return string
- */
-function page_link_to($page = '', $parameters = [])
-{
-    $page = str_replace('_', '-', $page);
-    return url($page, $parameters);
-}
 
 /**
  * Render the user hints
@@ -35,8 +24,12 @@ function header_render_hints()
         // Important hints:
         $hints_renderer->addHint(render_user_freeloader_hint(), true);
         $hints_renderer->addHint(render_user_arrived_hint(), true);
+        $hints_renderer->addHint(render_user_pronoun_hint(), true);
+        $hints_renderer->addHint(render_user_firstname_hint(), true);
+        $hints_renderer->addHint(render_user_lastname_hint(), true);
         $hints_renderer->addHint(render_user_tshirt_hint(), true);
         $hints_renderer->addHint(render_user_dect_hint(), true);
+        $hints_renderer->addHint(render_user_mobile_hint(), true);
 
         return $hints_renderer->render();
     }
@@ -63,7 +56,8 @@ function make_navigation(): string
     $menu = [];
     $pages = [
         'user_shifts'    => __('Shifts'),
-        'admin_shifts'   => __('Create shifts'),
+        'angeltypes'     => __('angeltypes.angeltypes'),
+        'questions'      => [__('Ask the Heaven'), 'question.add'],
     ];
 
     foreach ($pages as $menu_page => $options) {
@@ -72,10 +66,10 @@ function make_navigation(): string
         }
 
         $title = ((array) $options)[0];
-        $menu[] = toolbar_item_link(page_link_to($menu_page), '', $title, $menu_page == $page);
+        $menu[] = toolbar_item_link(url(str_replace('_', '-', $menu_page)), '', $title, $menu_page == $page);
     }
 
-    $menu = make_room_navigation($menu);
+    $menu = make_location_navigation($menu);
 
     $admin_menu = [];
     $admin_pages = [
@@ -85,8 +79,10 @@ function make_navigation(): string
         'admin_active'       => 'Active angels',
         'users'              => ['All Angels', 'admin_user'],
         'admin_free'         => 'Free angels',
-        'shifttypes'         => 'Shifttypes',
-        'admin/rooms'        => ['room.rooms', 'admin_rooms'],
+        'admin/questions'    => ['Answer questions', 'question.edit'],
+        'admin/shifttypes'   => ['shifttype.shifttypes', 'shifttypes'],
+        'admin_shifts'       => 'Create shifts',
+        'admin/locations'    => ['location.locations', 'admin_locations'],
         'admin_groups'       => 'Grouprights',
         'admin/schedule'     => ['schedule.import', 'schedule.import'],
         'admin/logs'         => ['log.log', 'admin_log'],
@@ -105,7 +101,7 @@ function make_navigation(): string
 
         $title = ((array) $options)[0];
         $admin_menu[] = toolbar_dropdown_item(
-            page_link_to($menu_page),
+            url(str_replace('_', '-', $menu_page)),
             __($title),
             $menu_page == $page
         );
@@ -137,31 +133,36 @@ function menu_is_allowed(string $page, $options)
 }
 
 /**
- * Adds room navigation to the given menu.
+ * Adds location navigation to the given menu.
  *
  * @param string[] $menu Rendered menu
  * @return string[]
  */
-function make_room_navigation($menu)
+function make_location_navigation($menu)
 {
-    if (!auth()->can('view_rooms')) {
+    if (!auth()->can('view_locations')) {
         return $menu;
     }
 
-    // Get a list of all rooms
-    $rooms = Room::orderBy('name')->get();
-    $room_menu = [];
-    if (auth()->can('admin_rooms')) {
-        $room_menu[] = toolbar_dropdown_item(page_link_to('admin/rooms'), __('Manage rooms'), false, 'list');
+    // Get a list of all locations
+    $locations = Location::orderBy('name')->get();
+    $location_menu = [];
+    if (auth()->can('admin_locations')) {
+        $location_menu[] = toolbar_dropdown_item(
+            url('/admin/locations'),
+            __('Manage locations'),
+            false,
+            'list'
+        );
     }
-    if (count($room_menu) > 0) {
-        $room_menu[] = toolbar_dropdown_item_divider();
+    if (count($location_menu) > 0) {
+        $location_menu[] = toolbar_dropdown_item_divider();
     }
-    foreach ($rooms as $room) {
-        $room_menu[] = toolbar_dropdown_item(room_link($room), $room->name, false, 'pin-map-fill');
+    foreach ($locations as $location) {
+        $location_menu[] = toolbar_dropdown_item(location_link($location), $location->name, false, 'pin-map-fill');
     }
-    if (count($room_menu) > 0) {
-        $menu[] = toolbar_dropdown(__('Rooms'), $room_menu);
+    if (count($location_menu) > 0) {
+        $menu[] = toolbar_dropdown(__('Locations'), $location_menu);
     }
     return $menu;
 }
@@ -187,4 +188,25 @@ function make_language_select()
         );
     }
     return $items;
+}
+
+/**
+ * Renders a hint for new questions to answer.
+ *
+ * @return string|null
+ */
+function admin_new_questions()
+{
+    if (!auth()->can('question.edit') || current_page() == 'admin/questions') {
+        return null;
+    }
+
+    $unanswered_questions = Question::unanswered()->count();
+    if (!$unanswered_questions) {
+        return null;
+    }
+
+    return '<a href="' . url('/admin/questions') . '">'
+        . __('There are unanswered questions!')
+        . '</a>';
 }

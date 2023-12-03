@@ -18,7 +18,7 @@ function shift_entries_controller(): array
 {
     $user = auth()->user();
     if (!$user) {
-        throw_redirect(page_link_to('login'));
+        throw_redirect(url('/login'));
     }
 
     $action = strip_request_item('action');
@@ -44,7 +44,7 @@ function shift_entry_create_controller(): array
     $request = request();
 
     if ($user->isFreeloader()) {
-        throw_redirect(page_link_to('user_myshifts'));
+        throw_redirect(url('/user_myshifts'));
     }
 
     $shift = Shift($request->input('shift_id'));
@@ -113,17 +113,21 @@ function shift_entry_create_controller_admin(Shift $shift, ?AngelType $angeltype
     }
 
     /** @var User[]|Collection $users */
-    $users = User::query()->orderBy('name')->get();
+    $users = User::with('userAngelTypes')->orderBy('name')->get();
     $users_select = [];
     foreach ($users as $user) {
-        $users_select[$user->id] = $user->displayName;
+        $name = $user->displayName;
+        if ($user->userAngelTypes->where('id', $angeltype->id)->isEmpty()) {
+            $name = __('%s (not "%s")', [$name, $angeltype->name]);
+        }
+        $users_select[$user->id] = $name;
     }
 
     $angeltypes_select = $angeltypes->pluck('name', 'id')->toArray();
-    $room = $shift->room;
+    $location = $shift->location;
     return [
         ShiftEntry_create_title(),
-        ShiftEntry_create_view_admin($shift, $room, $angeltype, $angeltypes_select, $signup_user, $users_select),
+        ShiftEntry_create_view_admin($shift, $location, $angeltype, $angeltypes_select, $signup_user, $users_select),
     ];
 }
 
@@ -167,10 +171,10 @@ function shift_entry_create_controller_supporter(Shift $shift, AngelType $angelt
         $users_select[$u->id] = $u->displayName;
     }
 
-    $room = $shift->room;
+    $location = $shift->location;
     return [
         ShiftEntry_create_title(),
-        ShiftEntry_create_view_supporter($shift, $room, $angeltype, $signup_user, $users_select),
+        ShiftEntry_create_view_supporter($shift, $location, $angeltype, $signup_user, $users_select),
     ];
 }
 
@@ -250,10 +254,10 @@ function shift_entry_create_controller_user(Shift $shift, AngelType $angeltype):
         throw_redirect(shift_link($shift));
     }
 
-    $room = $shift->room;
+    $location = $shift->location;
     return [
         ShiftEntry_create_title(),
-        ShiftEntry_create_view_user($shift, $room, $angeltype, $comment),
+        ShiftEntry_create_view_user($shift, $location, $angeltype, $comment),
     ];
 }
 
@@ -272,7 +276,7 @@ function shift_entry_create_link(Shift $shift, AngelType $angeltype, $params = [
         'shift_id'     => $shift->id,
         'angeltype_id' => $angeltype->id,
     ], $params);
-    return page_link_to('shift_entries', $params);
+    return url('/shift-entries', $params);
 }
 
 /**
@@ -288,7 +292,7 @@ function shift_entry_create_link_admin(Shift $shift, $params = [])
         'action'   => 'create',
         'shift_id' => $shift->id,
     ], $params);
-    return page_link_to('shift_entries', $params);
+    return url('/shift-entries', $params);
 }
 
 /**
@@ -301,7 +305,7 @@ function shift_entry_load()
     $request = request();
 
     if (!$request->has('shift_entry_id') || !test_request_int('shift_entry_id')) {
-        throw_redirect(page_link_to('user_shifts'));
+        throw_redirect(url('/user-shifts'));
     }
     $shiftEntry = ShiftEntry::findOrFail($request->input('shift_entry_id'));
 
@@ -362,5 +366,5 @@ function shift_entry_delete_link($shiftEntry, $params = [])
         'action'         => 'delete',
         'shift_entry_id' => $shiftEntry['shift_entry_id'] ?? $shiftEntry['id'],
     ], $params);
-    return page_link_to('shift_entries', $params);
+    return url('/shift-entries', $params);
 }

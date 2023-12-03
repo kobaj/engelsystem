@@ -13,6 +13,7 @@ use Engelsystem\Models\News;
 use Engelsystem\Models\NewsComment;
 use Engelsystem\Models\OAuth;
 use Engelsystem\Models\Privilege;
+use Engelsystem\Models\Question;
 use Engelsystem\Models\Shifts\Shift;
 use Engelsystem\Models\Shifts\ShiftEntry;
 use Engelsystem\Models\UserAngelType;
@@ -51,6 +52,7 @@ use Illuminate\Support\Collection as SupportCollection;
  * @property-read Collection|AngelType[]        $userAngelTypes
  * @property-read UserAngelType                 $pivot
  * @property-read Collection|ShiftEntry[]       $shiftEntries
+ * @property-read Collection|Session[]          $sessions
  * @property-read Collection|Worklog[]          $worklogs
  * @property-read Collection|Worklog[]          $worklogsCreated
  * @property-read Collection|Message[]          $messagesReceived
@@ -99,9 +101,9 @@ class User extends BaseModel
         'password',
     ];
 
-    /** @var array<string> The attributes that should be mutated to dates */
-    protected $dates = [ // phpcs:ignore
-        'last_login_at',
+    /** @var array<string, string> */
+    protected $casts = [ // phpcs:ignore
+        'last_login_at' => 'datetime',
     ];
 
     public function contact(): HasOne
@@ -217,6 +219,23 @@ class User extends BaseModel
     public function worklogsCreated(): HasMany
     {
         return $this->hasMany(Worklog::class, 'creator_id');
+    }
+
+    public function sessions(): HasMany
+    {
+        return $this->hasMany(Session::class);
+    }
+
+    public function questionsAsked(): HasMany
+    {
+        return $this->hasMany(Question::class, 'user_id')
+            ->where('user_id', $this->id);
+    }
+
+    public function questionsAnswered(): HasMany
+    {
+        return $this->hasMany(Question::class, 'answerer_id')
+            ->where('answerer_id', $this->id);
     }
 
     public function messagesSent(): HasMany

@@ -8,6 +8,8 @@ use FastRoute\RouteCollector;
 
 // Pages
 $route->get('/', 'HomeController@index');
+$route->get('/register', 'RegistrationController@view');
+$route->post('/register', 'RegistrationController@save');
 $route->get('/credits', 'CreditsController@index');
 $route->get('/health', 'HealthController@index');
 
@@ -38,9 +40,12 @@ $route->addGroup(
         $route->post('/theme', 'SettingsController@saveTheme');
         $route->get('/language', 'SettingsController@language');
         $route->post('/language', 'SettingsController@saveLanguage');
-        $route->get('/certificates', 'SettingsController@ifsgCertificate');
-        $route->post('/certificates', 'SettingsController@saveIfsgCertificate');
+        $route->get('/certificates', 'SettingsController@certificate');
+        $route->post('/certificates/ifsg', 'SettingsController@saveIfsgCertificate');
+        $route->post('/certificates/driving', 'SettingsController@saveDrivingLicense');
         $route->get('/oauth', 'SettingsController@oauth');
+        $route->get('/sessions', 'SettingsController@sessions');
+        $route->post('/sessions', 'SettingsController@sessionsDelete');
     }
 );
 
@@ -122,14 +127,46 @@ $route->addGroup(
             }
         );
 
-        // Rooms
+        // Shifts
         $route->addGroup(
-            '/rooms',
+            '/shifts',
             function (RouteCollector $route): void {
-                $route->get('', 'Admin\\RoomsController@index');
-                $route->post('', 'Admin\\RoomsController@delete');
-                $route->get('/edit[/{room_id:\d+}]', 'Admin\\RoomsController@edit');
-                $route->post('/edit[/{room_id:\d+}]', 'Admin\\RoomsController@save');
+                $route->get('/history', 'Admin\\ShiftsController@history');
+                $route->post('/history', 'Admin\\ShiftsController@deleteTransaction');
+            }
+        );
+
+        // Shift types
+        $route->addGroup(
+            '/shifttypes',
+            function (RouteCollector $route): void {
+                $route->get('', 'Admin\\ShiftTypesController@index');
+                $route->post('', 'Admin\\ShiftTypesController@delete');
+                $route->get('/{shift_type_id:\d+}', 'Admin\\ShiftTypesController@view');
+                $route->get('/edit[/{shift_type_id:\d+}]', 'Admin\\ShiftTypesController@edit');
+                $route->post('/edit[/{shift_type_id:\d+}]', 'Admin\\ShiftTypesController@save');
+            }
+        );
+
+        // Questions
+        $route->addGroup(
+            '/questions',
+            function (RouteCollector $route): void {
+                $route->get('', 'Admin\\QuestionsController@index');
+                $route->post('', 'Admin\\QuestionsController@delete');
+                $route->get('/{question_id:\d+}', 'Admin\\QuestionsController@edit');
+                $route->post('/{question_id:\d+}', 'Admin\\QuestionsController@save');
+            }
+        );
+
+        // Locations
+        $route->addGroup(
+            '/locations',
+            function (RouteCollector $route): void {
+                $route->get('', 'Admin\\LocationsController@index');
+                $route->post('', 'Admin\\LocationsController@delete');
+                $route->get('/edit[/{location_id:\d+}]', 'Admin\\LocationsController@edit');
+                $route->post('/edit[/{location_id:\d+}]', 'Admin\\LocationsController@save');
             }
         );
 

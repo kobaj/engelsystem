@@ -1,15 +1,11 @@
 <?php
 
-use Engelsystem\Database\Db;
 use Engelsystem\Helpers\Carbon;
-use Engelsystem\Http\Exceptions\HttpForbidden;
 use Engelsystem\Models\AngelType;
-use Engelsystem\Models\Room;
+use Engelsystem\Models\Location;
 use Engelsystem\Models\Shifts\NeededAngelType;
-use Engelsystem\Models\Shifts\Schedule;
 use Engelsystem\Models\Shifts\Shift;
 use Engelsystem\Models\Shifts\ShiftType;
-use Engelsystem\Models\User\User;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Str;
 
@@ -44,8 +40,8 @@ function admin_shifts()
     $shift_over_midnight = true;
 
     // Locations laden
-    $rooms = Room::orderBy('name')->get();
-    $room_array = $rooms->pluck('name', 'id')->toArray();
+    $locations = Location::orderBy('name')->get();
+    $location_array = $locations->pluck('name', 'id')->toArray();
 
     // Load angeltypes
     /** @var AngelType[] $types */
@@ -85,14 +81,14 @@ function admin_shifts()
 
         // Selection of the visible locations for the layers
         if (
-            $request->has('rid')
-            && preg_match('/^\d+$/', $request->input('rid'))
-            && isset($room_array[$request->input('rid')])
+            $request->has('lid')
+            && preg_match('/^\d+$/', $request->input('lid'))
+            && isset($location_array[$request->input('lid')])
         ) {
-            $rid = $request->input('rid');
+            $lid = $request->input('lid');
         } else {
             $valid = false;
-            $rid = $rooms->first()->id;
+            $lid = $locations->first()?->id ?? 0;
             error(__('Please select a location.'));
         }
 
@@ -208,7 +204,7 @@ function admin_shifts()
         // All entries OK
         if ($valid) {
             if ($angelmode == 'location') {
-                $needed_angel_types = NeededAngelType::whereRoomId($rid)
+                $needed_angel_types = NeededAngelType::whereLocationId($lid)
                         ->pluck('count', 'angel_type_id')
                         ->toArray() + $needed_angel_types;
             }
@@ -218,7 +214,7 @@ function admin_shifts()
                 $shifts[] = [
                     'start'         => $start,
                     'end'           => $end,
-                    'room_id'       => $rid,
+                    'location_id'   => $lid,
                     'title'         => $title,
                     'shift_type_id' => $shifttype_id,
                     'description'   => $description,
@@ -238,7 +234,7 @@ function admin_shifts()
                     $shifts[] = [
                         'start'         => $shift_start,
                         'end'           => $shift_end,
-                        'room_id'       => $rid,
+                        'location_id'   => $lid,
                         'title'         => $title,
                         'shift_type_id' => $shifttype_id,
                         'description'   => $description,
@@ -299,7 +295,7 @@ function admin_shifts()
                         $shifts[] = [
                             'start'         => $interval_start,
                             'end'           => $interval_end,
-                            'room_id'       => $rid,
+                            'location_id'   => $lid,
                             'title'         => $title,
                             'shift_type_id' => $shifttype_id,
                             'description'   => $description,
@@ -323,16 +319,16 @@ function admin_shifts()
                 $shifts_table_entry = [
                     'timeslot'      =>
                         icon('clock-history') . ' '
-                        . $start->format(__('Y-m-d H:i'))
+                        . $start->format(__('general.datetime'))
                         . ' - '
-                        . '<span title="' . $end->format(__('Y-m-d')) . '">'
+                        . '<span title="' . $end->format(__('general.date')) . '">'
                         . $end->format(__('H:i'))
                         . '</span>'
                         . ', ' . round($end->copy()->diffInMinutes($start) / 60, 2) . 'h'
                         . '<br>'
-                        . Room_name_render(Room::find($shift['room_id'])),
+                        . location_name_render(Location::find($shift['location_id'])),
                     'title'         =>
-                        ShiftType_name_render(ShiftType::find($shifttype_id))
+                        ShiftType::find($shifttype_id)->name
                         . ($shift['title'] ? '<br />' . $shift['title'] : ''),
                     'needed_angels' => '',
                 ];
@@ -361,13 +357,13 @@ function admin_shifts()
                 $shiftsCreationHint = '<span class="text-danger">' . $shiftsCreationHint . '</span>';
             }
 
-            return page_with_title(__('Preview'), [
+            return page_with_title(__('form.preview'), [
                 form([
                     $hidden_types,
                     form_hidden('shifttype_id', $shifttype_id),
                     form_hidden('description', $description),
                     form_hidden('title', $title),
-                    form_hidden('rid', $rid),
+                    form_hidden('lid', $lid),
                     form_hidden('start', $request->input('start')),
                     form_hidden('end', $request->input('end')),
                     form_hidden('mode', $mode),
@@ -382,7 +378,7 @@ function admin_shifts()
                         'title'         => __('Type and title'),
                         'needed_angels' => __('Needed angels'),
                     ], $shifts_table),
-                    form_submit('submit', icon('save') . __('Save')),
+                    form_submit('submit', icon('save') . __('form.save')),
                 ]),
             ]);
         }
@@ -391,7 +387,7 @@ function admin_shifts()
             !is_array($session->get('admin_shifts_shifts'))
             || !is_array($session->get('admin_shifts_types'))
         ) {
-            throw_redirect(page_link_to('admin_shifts'));
+            throw_redirect(url('/admin-shifts'));
         }
 
         $transactionId = Str::uuid();
@@ -428,15 +424,15 @@ function admin_shifts()
         }
 
         success('Shifts created.');
-        throw_redirect(page_link_to('admin_shifts'));
+        throw_redirect(url('/admin-shifts'));
     } else {
         $session->remove('admin_shifts_shifts');
         $session->remove('admin_shifts_types');
     }
 
-    $rid = null;
-    if ($request->has('rid')) {
-        $rid = $request->input('rid');
+    $lid = null;
+    if ($request->has('lid')) {
+        $lid = $request->input('lid');
     }
     $angel_types = '';
     foreach ($types as $type) {
@@ -453,10 +449,11 @@ function admin_shifts()
             . '</div>';
     }
 
+    $link = button(url('/user-shifts'), icon('chevron-left'), 'btn-sm');
     return page_with_title(
-        admin_shifts_title() . ' ' . sprintf(
+        $link . ' ' . admin_shifts_title() . ' ' . sprintf(
             '<a href="%s">%s</a>',
-            page_link_to('admin_shifts_history'),
+            url('/admin/shifts/history'),
             icon('clock-history')
         ),
         [
@@ -465,8 +462,8 @@ function admin_shifts()
                 div('row', [
                     div('col-md-6 col-xl-5', [
                         form_select('shifttype_id', __('Shifttype'), $shifttypes, $shifttype_id),
-                        form_text('title', __('Title'), $title),
-                        form_select('rid', __('Room'), $room_array, $rid),
+                        form_text('title', __('title.title'), $title),
+                        form_select('lid', __('Location'), $location_array, $lid),
                     ]),
                     div('col-md-6 col-xl-7', [
                         form_textarea('description', __('Additional description'), $description),
@@ -479,7 +476,7 @@ function admin_shifts()
                             div('col-lg-6', [
                                 form_datetime(
                                     'start',
-                                    __('Start'),
+                                    __('shifts.start'),
                                     $request->has('start')
                                         ? Carbon::createFromDatetime($request->input('start'))
                                         : $start
@@ -488,7 +485,7 @@ function admin_shifts()
                             div('col-lg-6', [
                                 form_datetime(
                                     'end',
-                                    __('End'),
+                                    __('shifts.end'),
                                     $request->has('end')
                                         ? Carbon::createFromDatetime($request->input('end'))
                                         : $end
@@ -544,7 +541,7 @@ function admin_shifts()
                         form_info(__('Needed angels')),
                         form_radio(
                             'angelmode',
-                            __('Take needed angels from room settings'),
+                            __('Take needed angels from location settings'),
                             $angelmode == 'location',
                             'location'
                         ),
@@ -559,104 +556,8 @@ function admin_shifts()
                         ]),
                     ]),
                 ]),
-                form_submit('preview', icon('search') . __('Preview')),
+                form_submit('preview', icon('search') . __('form.preview')),
             ]),
         ]
     );
-}
-
-function admin_shifts_history_title(): string
-{
-    return __('Shifts history');
-}
-
-/**
- * Display shifts transaction history
- *
- * @return string
- */
-function admin_shifts_history(): string
-{
-    if (!auth()->can('admin_shifts')) {
-        throw new HttpForbidden();
-    }
-
-    $request = request();
-    $transactionId = $request->postData('transaction_id');
-    if ($request->hasPostData('delete') && $transactionId) {
-        $shifts = Shift::whereTransactionId($transactionId)->get();
-
-        engelsystem_log('Deleting ' . count($shifts) . ' shifts (transaction id ' . $transactionId . ')');
-
-        foreach ($shifts as $shift) {
-            $shift = Shift($shift);
-            foreach ($shift->shiftEntries as $entry) {
-                event('shift.entry.deleting', [
-                    'user'       => $entry->user,
-                    'start'      => $shift->start,
-                    'end'        => $shift->end,
-                    'name'       => $shift->shiftType->name,
-                    'title'      => $shift->title,
-                    'type'       => $entry->angelType->name,
-                    'room'       => $shift->room,
-                    'freeloaded' => $entry->freeloaded,
-                ]);
-            }
-
-            $shift->delete();
-
-            engelsystem_log(
-                'Deleted shift ' . $shift->title . ' / ' . $shift->shiftType->name
-                . ' from ' . $shift->start->format('Y-m-d H:i')
-                . ' to ' . $shift->end->format('Y-m-d H:i')
-            );
-        }
-
-        success(sprintf(__('%s shifts deleted.'), count($shifts)));
-        throw_redirect(page_link_to('admin_shifts_history'));
-    }
-
-    $schedules = Schedule::all()->pluck('name', 'id')->toArray();
-    $shiftsData = Db::select('
-        SELECT
-            s.transaction_id,
-            s.title,
-            schedule_shift.schedule_id,
-            COUNT(s.id) AS count,
-            MIN(s.start) AS start,
-            MAX(s.end) AS end,
-            s.created_by AS user_id,
-            MAX(s.created_at) AS created_at
-        FROM shifts AS s
-        LEFT JOIN schedule_shift on schedule_shift.shift_id = s.id
-        WHERE s.transaction_id IS NOT NULL
-        GROUP BY s.transaction_id
-        ORDER BY created_at DESC
-    ');
-
-    foreach ($shiftsData as &$shiftData) {
-        $shiftData['title'] = $shiftData['schedule_id'] ? __('shifts_history.schedule', [$schedules[$shiftData['schedule_id']]]) : $shiftData['title'];
-        $shiftData['user'] = User_Nick_render(User::find($shiftData['user_id']));
-        $shiftData['start'] = Carbon::make($shiftData['start'])->format(__('Y-m-d H:i'));
-        $shiftData['end'] = Carbon::make($shiftData['end'])->format(__('Y-m-d H:i'));
-        $shiftData['created_at'] = Carbon::make($shiftData['created_at'])->format(__('Y-m-d H:i'));
-        $shiftData['actions'] = form([
-            form_hidden('transaction_id', $shiftData['transaction_id']),
-            form_submit('delete', icon('trash') . __('delete all'), 'btn-sm', true, 'danger'),
-        ]);
-    }
-
-    return page_with_title(admin_shifts_history_title(), [
-        msg(),
-        table([
-            'transaction_id' => __('ID'),
-            'title'          => __('Title'),
-            'count'          => __('Count'),
-            'start'          => __('Start'),
-            'end'            => __('End'),
-            'user'           => __('User'),
-            'created_at'     => __('Created'),
-            'actions'        => '',
-        ], $shiftsData),
-    ], true);
 }
