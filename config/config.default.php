@@ -23,7 +23,7 @@ return [
     'app_name'                => env('APP_NAME', 'Engelsystem-FC'),
 
     // Set to development to enable debugging messages
-    'environment'             => env('ENVIRONMENT', 'production'),
+    'environment'             => env('ENVIRONMENT', 'development'),
 
     // Application URL and base path to use instead of the auto-detected one
     'url'                     => env('APP_URL', null),
@@ -342,7 +342,6 @@ return [
     // To disable a locale in the config.php, you can set its value to null
     'locales'                 => [
         'en_US' => 'English',
-        'de_DE' => 'Deutsch',
     ],
 
     // The default locale to use
