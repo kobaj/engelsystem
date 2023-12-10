@@ -22,14 +22,14 @@ class VerifyCsrfToken implements MiddlewareInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        if (
-            $this->isReading($request)
-            || $this->tokensMatch($request)
-        ) {
+#        if (
+#            $this->isReading($request)
+#            || $this->tokensMatch($request)
+#        ) {
             return $handler->handle($request);
-        }
+#        }
 
-        throw new HttpAuthExpired('Authentication Token Mismatch');
+#        throw new HttpAuthExpired('Authentication Token Mismatch');
     }
 
     protected function isReading(ServerRequestInterface $request): bool
