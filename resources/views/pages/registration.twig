@@ -68,6 +68,8 @@
                                 'autocomplete': 'new-password',
                                 'required': true,
                                 'required_icon': true,
+                                'min_length': minPasswordLength,
+                                'info': __('password.minimal_length', [minPasswordLength]),
                             }
                         ) }}
                     </div>
@@ -80,6 +82,7 @@
                                 'autocomplete': 'new-password',
                                 'required': true,
                                 'required_icon': true,
+                                'min_length': minPasswordLength,
                             }
                         ) }}
                     </div>
@@ -290,7 +293,7 @@
                     <div class="col-sm-6 col-md-4 col-lg-3 col-xl-2">
                         {{ f.checkbox(
                             'angel_types_' ~ angelType.id,
-                            angelType.name ~ (angelType.restricted ? ' ' ~ m.icon('mortarboard-fill', 'text-body') : ''),
+                            angelType.name|e ~ (angelType.restricted ? ' ' ~ m.icon('mortarboard-fill', 'text-body') : ''),
                             {
                                 'value': angelType.id,
                                 'raw_label': true,

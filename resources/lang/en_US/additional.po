@@ -50,9 +50,6 @@ msgstr "The e-mail address is required."
 msgid "validation.email.email"
 msgstr "This e-mail address is not valid."
 
-msgid "validation.password.length"
-msgstr "Your new password is too short."
-
 msgid "validation.new_password.length"
 msgstr "Your new password is too short."
 
@@ -91,6 +88,9 @@ msgstr "The shift type can't not be found."
 
 msgid "schedule.import.success"
 msgstr "Schedule import successful."
+
+msgid "schedule.delete.success"
+msgstr "Schedule deletion successful."
 
 msgid "shifts.filter.toggle"
 msgstr "collapse/show filters"

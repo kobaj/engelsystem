@@ -42,7 +42,7 @@ msgid "page.404.title"
 msgstr "Seite nicht gefunden"
 
 msgid "page.404.not_found"
-msgstr "Schlaf nicht auffindbar"
+msgstr "No sleep found"
 
 msgid "page.405.title"
 msgstr "405: Anfragetyp nicht erlaubt"
@@ -63,7 +63,7 @@ msgid "footer.eventinfo.name_start"
 msgstr "%1$s, ab dem %2$s"
 
 msgid "footer.eventinfo.start_end"
-msgstr "Event von %1$s bis %2$s"
+msgstr "Event vom %1$s bis %2$s"
 
 msgid "footer.issues"
 msgstr "Bugs / Features"
@@ -155,6 +155,9 @@ msgstr ""
 "Wir werden eine E-Mail mit einem Link schicken, mit dem du das Passwort "
 "zurücksetzen kannst. Bitte benutze die E-Mail-Adresse, die du bei der Anmeldung "
 "verwendet hast."
+
+msgid "password.minimal_length"
+msgstr "Mindestlänge %d Zeichen"
 
 msgid "form.recover"
 msgstr "Wiederherstellen"
@@ -1092,17 +1095,11 @@ msgstr "Engel:"
 msgid "Date, Duration:"
 msgstr "Termin, Dauer:"
 
-msgid "Location:"
-msgstr "Ort:"
-
 msgid "Title:"
 msgstr "Titel:"
 
 msgid "Type:"
 msgstr "Typ:"
-
-msgid "Location"
-msgstr "Ort"
 
 msgid "created at %s by %s"
 msgstr "erstellt am %s von %s"
@@ -1264,11 +1261,11 @@ msgid "Rights"
 msgstr "Berechtigungen"
 
 msgid ""
-"You are not marked as arrived. Please go to heaven's desk, get your angel "
+"You are not marked as arrived. Please go to heaven, get your angel "
 "badge and/or tell them that you arrived already."
 msgstr ""
-"Du bist nicht als angekommen markiert. Bitte gehe zur Himmelsverwaltung, "
-"hole Dein Badge ab und/oder erkläre ihnen, dass Du bereits angekommen bist."
+"Du bist nicht als angekommen markiert. Geh bitte zum Himmel, "
+"hole Dein Badge ab und/oder melde dich als angekommen."
 
 msgid ""
 "Please enter your planned date of departure on your settings page to give us "
@@ -1316,9 +1313,6 @@ msgid ""
 msgstr ""
 "Ist der Engel Aktiv, hat er damit Anspruch auf ein T-Shirt. Wenn T-Shirt ein 'Ja' enthält, bedeutet dies, "
 "dass der Engel bereits sein T-Shirt erhalten hat."
-
-msgid "Please visit the angeltypes page or the users profile to manage the users angeltypes."
-msgstr "Bitte besuche die Seite Engeltypen oder das Benutzerprofil, um die Engeltypen des Benutzers zu verwalten."
 
 msgid "Here you can reset the password of this angel:"
 msgstr "Hier kannst du das Passwort für diesen Engel zurücksetzen:"
@@ -1430,6 +1424,9 @@ msgstr "Programm importieren"
 
 msgid "schedule.edit.title"
 msgstr "Programm bearbeiten"
+
+msgid "schedule.delete.title"
+msgstr "Programm mit %u Schichten löschen"
 
 msgid "schedule.import.title"
 msgstr "Programm importieren"
@@ -1901,9 +1898,6 @@ msgid "angeltypes.hide_on_shift_view.info"
 msgstr "Wenn ausgewählt, können nur Admins und Mitglieder des Engeltyps auf der "
 "Schicht Seite die Filteroption für diesen Engeltyp sehen."
 
-msgid "registration.register"
-msgstr "Registrieren"
-
 msgid "location.locations"
 msgstr "Orte"
 
@@ -1992,7 +1986,13 @@ msgid "user.info"
 msgstr "Benutzer Info"
 
 msgid "user.info.hint"
-msgstr "Wird auf der Benutzer Seite für Schichtkoordinatoren und Admins angezeigt."
+msgstr ""
+"Wird auf der Benutzer Seite für Schichtkoordinatoren und Admins angezeigt. "
+"Wenn ein Engel nicht als angekommen markiert ist, "
+"entfernt eine Benutzer Info die nicht-angekommen Nachricht im Systemmenü des Engels."
+
+msgid "user_info.not_arrived_hint"
+msgstr "Wenn du dich für Schichten eintragen willst, komm gerne im Himmel vorbei."
 
 msgid "design.title"
 msgstr "Design"

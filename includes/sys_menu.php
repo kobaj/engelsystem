@@ -66,15 +66,22 @@ function make_navigation(): string
         }
 
         $title = ((array) $options)[0];
-        $menu[] = toolbar_item_link(url(str_replace('_', '-', $menu_page)), '', $title, $menu_page == $page);
+        $menu[] = toolbar_item_link(
+            url(str_replace('_', '-', $menu_page)),
+            '',
+            $title,
+            $menu_page == $page
+        );
     }
 
     $menu = make_location_navigation($menu);
 
     $admin_menu = [];
     $admin_pages = [
-        // path              => name
-        // path              => [name, permission]
+        // Examples:
+        // path              => name,
+        // path              => [name, permission],
+
         'admin_arrive'       => 'Arrive angels',
         'admin_active'       => 'Active angels',
         'users'              => ['All Angels', 'admin_user'],
@@ -102,7 +109,7 @@ function make_navigation(): string
         $title = ((array) $options)[0];
         $admin_menu[] = toolbar_dropdown_item(
             url(str_replace('_', '-', $menu_page)),
-            __($title),
+            htmlspecialchars(__($title)),
             $menu_page == $page
         );
     }

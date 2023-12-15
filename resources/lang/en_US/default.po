@@ -121,6 +121,9 @@ msgstr "Import schedule"
 msgid "schedule.edit.title"
 msgstr "Edit schedule"
 
+msgid "schedule.delete.title"
+msgstr "Delete schedule with %u shifts"
+
 msgid "schedule.import.title"
 msgstr "Import schedule"
 
@@ -667,11 +670,17 @@ msgstr "Gofur has got no t-shirt."
 msgid "Reset done. Angel has not arrived."
 msgstr "Reset done. Gofur has not arrived."
 
-msgid "Angel has been marked as arrived."
-msgstr "Gofur has been marked as arrived."
+msgid "registration.what_todo"
+msgstr "What do you want to do?"
+
+msgid "registration.register"
+msgstr "Register"
 
 msgid "Angeltype"
 msgstr "Gofurtype"
+
+msgid "tshirt.required.hint"
+msgstr "Please specify a T-shirt size in your settings!"
 
 msgid "All Angels"
 msgstr "All Gofurs"
@@ -746,6 +755,9 @@ msgstr "You are not allowed to delete all users for this gofurtype."
 msgid "Denied all users for angeltype %s."
 msgstr "Denied all users for gofurtype %s."
 
+msgid "user.info.hint"
+msgstr "Is displayed for shift coordinators and admins in the user view."
+
 msgid "You are not allowed to confirm all users for this angeltype."
 msgstr "You are not allowed to confirm all users for this gofurtype."
 
@@ -783,6 +795,9 @@ msgstr ""
 msgid "Active angels"
 msgstr "Active gofurs"
 
+msgid "password.minimal_length"
+msgstr "Minimal length %d characters"
+
 msgid ""
 "At least %s angels are forced to be active. The number has to be greater."
 msgstr ""
@@ -793,6 +808,16 @@ msgstr "Please enter a number of gofurs to be marked as active."
 
 msgid "Marked angels."
 msgstr "Marked gofurs."
+
+
+msgid "footer.eventinfo.start_end"
+msgstr "%1$s, from %2$s to %3$s"
+
+msgid "footer.eventinfo.name_start"
+msgstr "%1$s, ab dem %2$s"
+
+msgid "footer.eventinfo.name_start"
+msgstr "%1$s, starting %2$s"
 
 msgid "Search angel:"
 msgstr "Search gofurs:"

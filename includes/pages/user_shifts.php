@@ -282,7 +282,7 @@ function view_user_shifts()
     $end_time = $shiftsFilter->getEnd()->format('H:i');
 
     if (config('signup_requires_arrival') && !$user->state->arrived) {
-        info(render_user_arrived_hint());
+        info(render_user_arrived_hint((bool) $user->state->user_info));
     }
 
     $formattedDays = collect($days)->map(function ($value) {
@@ -382,15 +382,6 @@ function ical_hint()
 }
 
 /**
- * @param array $array
- * @return array
- */
-function get_ids_from_array($array)
-{
-    return $array['id'];
-}
-
-/**
  * @param array  $items
  * @param array  $selected
  * @param string $name
@@ -422,7 +413,7 @@ function make_select($items, $selected, $name, $title = null, $ownSelect = [])
         $htmlItems[] = '<div class="form-check">'
             . '<input class="form-check-input" type="checkbox" id="' . $id . '" name="' . $name . '[]" value="' . $i['id'] . '" '
             . (in_array($i['id'], $selected) ? ' checked="checked"' : '')
-            . '><label class="form-check-label" for="' . $id . '">' . $i['name'] . '</label>'
+            . '><label class="form-check-label" for="' . $id . '">' . htmlspecialchars($i['name']) . '</label>'
             . (!isset($i['enabled']) || $i['enabled'] ? '' : icon('mortarboard-fill'))
             . '</div>';
     }

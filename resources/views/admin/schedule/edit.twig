@@ -2,9 +2,11 @@
 {% import 'macros/base.twig' as m %}
 {% import 'macros/form.twig' as f %}
 
-{% block title %}
+{% block title %}{{ schedule ? __('schedule.edit.title') : __('schedule.import.title') }}{% endblock %}
+
+{% block content_title %}
     {{ m.button(m.icon('chevron-left'), url('/admin/schedule'), 'secondary', 'sm') }}
-    {{ schedule ? __('schedule.edit.title') : __('schedule.import.title') }}
+    {{ block('title') }}
 {% endblock %}
 
 {% block row_content %}
@@ -43,7 +45,13 @@
                 'value': schedule ? schedule.minutes_after : 15
             }) }}
 
-            {{ f.submit(__('form.save')) }}
+            {{ f.save(__('form.save')) }}
+
+            {% if schedule %}
+                {{ f.delete(__('form.delete'), {
+                    'confirm_title': __('schedule.delete.title', [schedule.shifts|length])
+                }) }}
+            {% endif %}
         </div>
     </form>
 {% endblock %}

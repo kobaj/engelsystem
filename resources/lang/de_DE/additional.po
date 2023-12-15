@@ -52,9 +52,6 @@ msgstr "Bitte gib eine E-Mail-Adresse an."
 msgid "validation.email.email"
 msgstr "Die E-Mail-Adresse ist nicht gültig."
 
-msgid "validation.password.length"
-msgstr "Dein neues Passwort ist zu kurz."
-
 msgid "validation.new_password.length"
 msgstr "Dein neues Passwort ist zu kurz."
 
@@ -93,6 +90,9 @@ msgstr "Der Schichttyp konnte nicht gefunden werden."
 
 msgid "schedule.import.success"
 msgstr "Das Programm wurde erfolgreich importiert."
+
+msgid "schedule.delete.success"
+msgstr "Das Programm wurde erfolgreich gelöscht."
 
 msgid "shifts.filter.toggle"
 msgstr "Filter verstecken/anzeigen"
