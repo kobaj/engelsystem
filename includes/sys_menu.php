@@ -57,7 +57,6 @@ function make_navigation(): string
     $pages = [
         'user_shifts'    => __('Shifts'),
         'angeltypes'     => __('angeltypes.angeltypes'),
-        'questions'      => [__('Ask the Heaven'), 'question.add'],
     ];
 
     foreach ($pages as $menu_page => $options) {

@@ -432,7 +432,7 @@ msgstr "You joined an gofurtype which requires a health instruction. "
 
 msgid "angeltype.driving_license.required.info.here"
 msgstr ""
-"You joined an angeltype which requires a driving license. "
+"You joined a gofurtype which requires a driving license. "
 "Please edit your driving license information here: %s."
 
 msgid "ifsg.info"
@@ -541,7 +541,7 @@ msgid "message.title"
 msgstr "Messages"
 
 msgid "message.choose_angel"
-msgstr "Choose an Gofur"
+msgstr "Choose a Gofur"
 
 msgid "message.to_conversation"
 msgstr "To Conversation"
@@ -586,7 +586,7 @@ msgid "angeltypes.restricted"
 msgstr "Requires introduction"
 
 msgid "angeltypes.restricted.info"
-msgstr "Angel types which require introduction can only be used by an angel "
+msgstr "Gofur types which require introduction can only be used by a gofur "
 "if enabled by a supporter (double opt-in)."
 
 msgid "angeltypes.restricted.hint"
@@ -600,8 +600,8 @@ msgid "angeltypes.email"
 msgstr "E-mail"
 
 msgid "angeltypes.shift.self_signup.info"
-msgstr "Angel types which have shift self signup enabled allow angels to self sign up for there shifts, "
-"if shift self signup is disabled only supporters and admins can sign angels into shifts of these angel types."
+msgstr "Gofur types which have shift self signup enabled allow gofurs to self sign up for their shifts, "
+"if shift self signup is disabled only supporters and admins can sign gofurs into shifts of these gofur types."
 
 msgid "shift.self_signup"
 msgstr "Shift self signup"
@@ -613,8 +613,8 @@ msgid "angeltypes.hide_on_shift_view"
 msgstr "Hide on shift view"
 
 msgid "angeltypes.hide_on_shift_view.info"
-msgstr "If checked only admins and members of the angeltype "
-"can see the filter option for this angeltype on the shifts page"
+msgstr "If checked only admins and members of the gofurtype "
+"can see the filter option for this gofurtype on the shifts page"
 
 msgid "registration.register"
 msgstr "Register"
@@ -626,7 +626,7 @@ msgid "location.map_url"
 msgstr "Map"
 
 msgid "location.required_angels"
-msgstr "Required angels"
+msgstr "Required gofurs"
 
 msgid "location.map_url.info"
 msgstr "The map will be embedded on the location page as an iframe."
@@ -715,7 +715,7 @@ msgid "Angel:"
 msgstr "Gofur:"
 
 msgid "You can manage your Angeltypes <a href=\"%s\">on the Angeltypes page</a>."
-msgstr "You can manage your Gofurtypes <a href=\"%s\">on the Angeltypes page</a>."
+msgstr "You can manage your Gofurtypes <a href=\"%s\">on the Gofurtypes page</a>."
 
 msgid "Angel can receive another %d vouchers."
 msgstr "Gofur can receive another %d vouchers."
@@ -880,7 +880,7 @@ msgid ""
 "subscribed to any angeltype."
 msgstr ""
 "The administration has not configured any gofurtypes yet - or you are not "
-"subscribed to any angeltype."
+"subscribed to any gofurtype."
 
 msgid ""
 "The tasks shown here are influenced by the angeltypes you joined already!"
@@ -943,7 +943,7 @@ msgstr ""
 "it means that the gofar has already received their T-shirt."
 
 msgid "Please visit the angeltypes page or the users profile to manage the users angeltypes."
-msgstr "Please visit the gofurtypes page or the users profile to manage the users angeltypes."
+msgstr "Please visit the gofurtypes page or the users profile to manage the users gofurtypes."
 
 msgid "Here you can reset the password of this angel:"
 msgstr "Here you can reset the password of this gofur:"
@@ -962,3 +962,43 @@ msgstr "gofur"
 
 msgid "By completing this form you're registering as a Chaos-Angel. This script will create you an account in the angel task scheduler."
 msgstr "By completing this form you're registering as a gofur for FC. This script will create you an account in the gofur task scheduler."
+
+msgid "login.welcome"
+msgstr "Welcome to Further Confusion's Engelsystem! We're glad you're here!"
+
+msgid "general.register"
+msgstr "Register here"
+
+msgid "login.password.reset"
+msgstr "Reset your password"
+
+msgid "login.registration"
+msgstr "Click here to register"
+
+msgid "login.cookies"
+msgstr "This website places cookies on your system. Because cookies are delicious."
+
+msgid "registration.title"
+msgstr "Thank you for registering!"
+
+msgid "registration.login_data"
+msgstr "Tell us a little bit about you."
+
+msgid "credits.title"
+msgstr "Credits!"
+
+msgid "credits.source"
+msgstr "The people"
+
+msgid "credits.version"
+msgstr "This version of Engelsystem was modified and simplified by [Chip Unicorn](https://im-in.space/@Chip_Unicorn) "
+"for Further Confusion."
+
+msgid "general.logout"
+msgstr "Logout"
+
+msgid "password.reset.title"
+msgstr "Password reset"
+
+msgid "password.recovery.text"
+msgstr "Enter your email address below. If the system can send out emails (not likely) and if your email is registered, a message will go out."

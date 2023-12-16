@@ -88,12 +88,6 @@
                                     </div>
                                 </div>
                             {% endif %}
-
-                            <div class="text-center">
-                                <a href="{{ url('/password/reset') }}" class="">
-                                    {{ __('login.password.reset') }}
-                                </a>
-                            </div>
                         </form>
                     </div>
                 </div>
@@ -113,14 +107,6 @@
                 {% else %}
                     {{ m.alert(__('login.registration.disabled'), 'danger') }}
                 {% endif %}
-            </div>
-
-            <div class="col-sm-6 text-center">
-                <h2>{{ __('login.do') }}</h2>
-                <p>{{ __('login.jobs') }}</p>
-                <a href="{{ url('/angeltypes/about') }}" class="btn btn-primary">
-                    {{ __('angeltypes.about') }} &raquo;
-                </a>
             </div>
 
             <div class="col-md-12 text-center">
