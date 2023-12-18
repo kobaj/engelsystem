@@ -56,7 +56,7 @@ function make_navigation(): string
     $menu = [];
     $pages = [
         'user_shifts'    => __('Shifts'),
-        'angeltypes'     => __('angeltypes.angeltypes'),
+        'admin_shifts'   => __('Create shifts'),
     ];
 
     foreach ($pages as $menu_page => $options) {
