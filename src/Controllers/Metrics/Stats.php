@@ -14,7 +14,7 @@ use Engelsystem\Models\News;
 use Engelsystem\Models\NewsComment;
 use Engelsystem\Models\OAuth;
 use Engelsystem\Models\Question;
-use Engelsystem\Models\Room;
+use Engelsystem\Models\Location;
 use Engelsystem\Models\Shifts\Shift;
 use Engelsystem\Models\User\License;
 use Engelsystem\Models\User\PasswordReset;
@@ -316,6 +316,28 @@ class Stats
     {
         return NewsComment::query()
             ->count();
+    }
+
+    /**
+     * @param bool|null $answered
+     */
+    public function questions(bool $answered = null): int
+    {
+        $query = Question::query();
+        if (!is_null($answered)) {
+            if ($answered) {
+                $query->whereNotNull('answerer_id');
+            } else {
+                $query->whereNull('answerer_id');
+            }
+        }
+
+        return $query->count();
+    }
+
+    public function faq(): int
+    {
+        return Faq::query()->count();
     }
 
     public function messages(): int

@@ -1002,3 +1002,6 @@ msgstr "Password reset"
 
 msgid "password.recovery.text"
 msgstr "Enter your email address below. If the system can send out emails (not likely) and if your email is registered, a message will go out."
+
+msgid "Take needed angels from location settings"
+msgstr "Take needed gofurs from location settings"

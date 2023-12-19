@@ -14,6 +14,7 @@ use Engelsystem\Models\NewsComment;
 use Engelsystem\Models\OAuth;
 use Engelsystem\Models\Privilege;
 use Engelsystem\Models\Question;
+use Engelsystem\Models\Session;
 use Engelsystem\Models\Shifts\Shift;
 use Engelsystem\Models\Shifts\ShiftEntry;
 use Engelsystem\Models\UserAngelType;
@@ -55,6 +56,8 @@ use Illuminate\Support\Collection as SupportCollection;
  * @property-read Collection|Session[]          $sessions
  * @property-read Collection|Worklog[]          $worklogs
  * @property-read Collection|Worklog[]          $worklogsCreated
+ * @property-read Collection|Question[]         $questionsAsked
+ * @property-read Collection|Question[]         $questionsAnswered
  * @property-read Collection|Message[]          $messagesReceived
  * @property-read Collection|Message[]          $messagesSent
  * @property-read Collection|Message[]          $messages

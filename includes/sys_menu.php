@@ -93,7 +93,6 @@ function make_navigation(): string
         'admin/schedule'     => ['schedule.import', 'schedule.import'],
         'admin/logs'         => ['log.log', 'admin_log'],
         'admin_event_config' => 'Event config',
-        'angeltypes'         => ['Angeltypes', 'admin_user']
     ];
 
     if (config('autoarrive')) {
