@@ -81,18 +81,18 @@ function make_navigation(): string
         // path              => name,
         // path              => [name, permission],
 
-        'admin_arrive'       => 'Arrive angels',
-        'admin_active'       => 'Active angels',
+        'admin_arrive'       => ['Arrive angels', 'admin_user'],
+        'admin_active'       => ['Active angels', 'admin_user'],
         'users'              => ['All Angels', 'admin_user'],
-        'admin_free'         => 'Free angels',
-        'admin/questions'    => ['Answer questions', 'question.edit'],
+        'admin_free'         => ['Free angels', 'admin_user'],
+        'admin/questions'    => ['Answer questions', 'admin_user'],
         'admin/shifttypes'   => ['shifttype.shifttypes', 'shifttypes'],
         'admin_shifts'       => 'Create shifts',
         'admin/locations'    => ['location.locations', 'admin_locations'],
         'admin_groups'       => 'Grouprights',
         'admin/schedule'     => ['schedule.import', 'schedule.import'],
-        'admin/logs'         => ['log.log', 'admin_log'],
-        'admin_event_config' => 'Event config',
+        'admin/logs'         => ['log.log', 'admin_user'],
+        'admin_event_config' => ['Event config', 'admin_user']
     ];
 
     if (config('autoarrive')) {
