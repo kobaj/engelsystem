@@ -92,8 +92,9 @@ function make_navigation(): string
         'admin_groups'       => 'Grouprights',
         'admin/schedule'     => ['schedule.import', 'schedule.import'],
         'admin/logs'         => ['log.log', 'admin_user'],
-        'admin_event_config' => ['Event config', 'admin_user']
-    ];
+        'admin_event_config' => ['Event config', 'admin_user'],
+        'angeltypes'         => ['angeltypes.angeltypes', 'admin_user']
+];
 
     if (config('autoarrive')) {
         unset($admin_pages['admin_arrive']);
