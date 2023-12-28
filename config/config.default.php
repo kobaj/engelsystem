@@ -26,7 +26,7 @@ return [
     'environment'             => env('ENVIRONMENT', 'development'),
 
     // Application URL and base path to use instead of the auto-detected one
-    'url'                     => env('APP_URL', null),
+    'url'                     => env('APP_URL', 'https://gofurs.furtherconfusion.org'),
 
     // Header links
     // Available link placeholders: %lang%
