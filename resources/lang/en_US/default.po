@@ -1005,3 +1005,9 @@ msgstr "Enter your email address below. If the system can send out emails (not l
 
 msgid "Take needed angels from location settings"
 msgstr "Take needed gofurs from location settings"
+
+msgid "general.date"
+msgstr "m/d/Y"
+
+msgsi "general.datetime"
+msgstr "m/d/Y H:i"
