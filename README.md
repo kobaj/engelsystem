@@ -3,93 +3,51 @@
 [![GPL](https://img.shields.io/github/license/engelsystem/engelsystem.svg?maxAge=2592000)](LICENSE)
 
 # Engelsystem
+
 This system was forked off of [engelsystem](https://github.com/engelsystem/engelsystem/). This version is available at [Engelsystem-FC](https://github.com/chipuni/engelsystem).
 
-Please visit [engelsystem.de](https://engelsystem.de) for a feature list.
-
-To report bugs use [engelsystem/issues](https://github.com/engelsystem/engelsystem/issues).
-
-Since the Engelsystem is open source, you can help improving it.
-We really love to get pull requests containing fixes or improvements.
-Please read the [CONTRIBUTING.md](CONTRIBUTING.md) and [DEVELOPMENT.md](DEVELOPMENT.md) before you start.
+More documentation can be found at: https://engelsystem.de/doc/
 
 ## Installation
+
 The Engelsystem can be started using the provided startup.sh program.
 
-### Requirements
- * PHP >= 8.1
-   * Required modules:
-     * dom
-     * json
-     * mbstring
-     * PDO
-       * mysql
-     * tokenizer
-     * xml/libxml/SimpleXML
-     * xmlwriter
- * MySQL-Server >= 5.7.8 or MariaDB-Server >= 10.2.2
- * Webserver, i.e. lighttpd, nginx, or Apache
+Take a look at [setup.md] additionally to see how engelsystem is setup for FC.
 
-### Download
-* Go to the [Engelsystem](https://github.com/chipuni/engelsystem) page and download the latest stable release file.
- * Extract the files to your webroot and continue with the directions for configurations and setup.
+### Local Deployment pushing to AWS
 
-### Configuration and Setup
- * The webserver must have write access to the `storage` directory and read access for all other directories
- * The webserver must point to the `public` directory.
- * The webserver must read the `.htaccess` file and `mod_rewrite` must be enabled
+If developing locally, you can upload changes to your AWS account by following these steps:
 
- * Recommended: Directory Listing should be disabled.
- * There must be a MySQL database set up with a user who has full rights to that database.
- * If necessary, create a `config/config.php` to override values from `config/config.default.php`.
-   * To disable/remove values from the `themes`, `tshirt_sizes`, `headers`, `header_items`, `footer_items`, or `locales` lists, set the value of the entry to `null`.
- * To import the database, the `bin/migrate` script has to be run. If you can't execute scripts, you can use the `initial-install.sql` file from the release zip.
- * In the browser, login with credentials `admin` : `asdfasdf` and change the password.
-
-The Engelsystem can now be used.
-
-### Session Settings
- * Make sure the config allows for sessions.
- * Both Apache and Nginx allow for different VirtualHost configurations.
-
-### Docker
-#### Build
-To build the `es_server` container:
-```bash
-cd docker
-docker compose build
+1. Authenticate with AWS
+```
+aws sso login --profile fargate
 ```
 
-or to build the container by its own:
-```bash
+2. Build the docker image
+```
 docker build -f docker/Dockerfile . -t es_server
 ```
 
-#### Run
-Start the Engelsystem
-```bash
-cd docker
-docker compose up -d
+3. Authenticate docker with the AWS ECR instance
+```
+aws ecr get-login-password --region us-west-2 --profile fargate | docker login --username AWS --password-stdin <aws_account_id>.dkr.ecr.us-west-2.amazonaws.com
 ```
 
-#### Migrate
-Import database changes to migrate it to the newest version
-```bash
-cd docker
-docker compose exec es_server bin/migrate
+4. Tag the build with the repo, you can find this value inside the AWS account
+```
+docker tag es_server <aws_account_id>.dkr.ecr.us-west-2.amazonaws.com/<repo>:<tag>
 ```
 
-### Scripts
-#### bin/deploy.sh
-The `bin/deploy.sh` script can be used to deploy the Engelsystem. It uses rsync to deploy the application to a server over ssh.
+5. Upload the build
+```
+docker push <aws_account_id>.dkr.ecr.us-west-2.amazonaws.com/<repo>:<tag>
+```
 
-For usage see `./bin/deploy.sh -h`
+6. Restart the service
+```
+aws ecs update-service --force-new-deployment --service engelsystem --cluster Fargate --profile fargate --region us-west-2
+```
 
-#### bin/migrate
-The `bin/migrate` script can be used to import and update the database of the Engelsystem.
+### Github pushing to AWS
 
-For more information on how to use it call `./bin/migrate help`
-
-### Documentation
-
-More documentation can be found at: https://engelsystem.de/doc/
+Coming soon...
