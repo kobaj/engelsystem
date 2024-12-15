@@ -71,6 +71,21 @@ return [
     'setup_admin_password'    => env('SETUP_ADMIN_PASSWORD', null),
 
     'oauth'                   => [
+        'concat' => [
+            'name' => 'ConCat',
+            'client_id' => env('OAUTH_CLIENT_ID', null),
+            'client_secret' => env('OAUTH_CLIENT_SECRET', null),
+            'url_auth' => env('OAUTH_URL_AUTHORIZE', null),
+            'url_token' => env('OAUTH_URL_ACCESS_TOKEN', null),
+            'url_info' => env('OAUTH_URL_RESOURCE', null), // urlResourceOwnerDetails
+            'scope' => ['pii:basic', 'con:read'],
+            'id' => 'id',
+            'username' => 'username',
+            'first_name' => 'firstName',
+            'last_name' => 'lastName',
+            // I don't know why this doesn't work.
+            // 'hidden' => !empty(env('OAUTH_URL_AUTHORIZE', null)),
+        ]
         // '[name]' => [config]
         /*
         '[name]' => [
