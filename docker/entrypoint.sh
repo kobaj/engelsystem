@@ -43,6 +43,12 @@ if [[ -n "${RUN_USER}" ]]; then
   echo "Running as $user:$group"
 fi
 
-
+# Start the server
+echo "Starting the nginx server."
 nginx -g 'daemon off;'&
+
+# Create migration as needed
+echo "Beginning migration."
+./bin/migrate
+
 exec "$@"

@@ -17,8 +17,7 @@ docker rm engelsystem_es_server_1 engelsystem_es_database_1  2>&1 > /dev/null
 cd docker
 docker-compose build --no-cache && \
 docker-compose up -d && \
-sleep 5 && \
-docker-compose exec es_server bin/migrate
+sleep 5
 
 if [ $? -eq 0 ]; then
   echo "The Engelsystem should now be running locally at http://localhost:8080. Enjoy!"
