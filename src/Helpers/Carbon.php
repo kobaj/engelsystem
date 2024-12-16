@@ -41,18 +41,6 @@ class Carbon extends \Carbon\Carbon
     public static function createTimestampFromDatetime(string $value): ?int
     {
         $carbon = self::createFromDateTime($value);
-        return $carbon === null ? null : $carbon->timestamp;
-    }
-
-    /**
-     * Check if the instance is at the start of an hour.
-     *
-     * @param bool $checkMicroseconds check time at microseconds precision
-     */
-    public function isStartOfHour(bool $checkMicroseconds = false): bool
-    {
-        return $checkMicroseconds
-            ? $this->rawFormat('i:s.u') === '00:00.000000'
-            : $this->rawFormat('i:s') === '00:00';
+        return $carbon?->timestamp;
     }
 }

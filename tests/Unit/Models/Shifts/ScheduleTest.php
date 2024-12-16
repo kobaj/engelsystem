@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Engelsystem\Test\Unit\Models\Shifts;
 
+use Engelsystem\Models\Location;
 use Engelsystem\Models\Shifts\Schedule;
 use Engelsystem\Models\Shifts\ScheduleShift;
 use Engelsystem\Models\Shifts\Shift;
@@ -17,15 +18,39 @@ class ScheduleTest extends ModelTest
         'url'            => 'https://foo.bar/schedule.xml',
         'name'           => 'Testing',
         'shift_type'     => 1,
+        'needed_from_shift_type' => false,
         'minutes_before' => 10,
         'minutes_after'  => 10,
     ];
+
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        ShiftType::factory()->create(['id' => 1]);
+    }
+
+    /**
+     * @covers \Engelsystem\Models\Shifts\Schedule::activeLocations
+     */
+    public function testActiveLocations(): void
+    {
+        $schedule = new Schedule($this->data);
+        $schedule->save();
+
+        $location = Location::factory()->create();
+        $schedule->activeLocations()->attach($location);
+
+        $schedule = Schedule::find($schedule->id);
+        $this->assertCount(1, $schedule->activeLocations);
+    }
 
     /**
      * @covers \Engelsystem\Models\Shifts\Schedule::scheduleShifts
      */
     public function testScheduleShifts(): void
     {
+        Shift::factory(3)->create();
         $schedule = new Schedule($this->data);
         $schedule->save();
 

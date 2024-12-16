@@ -9,7 +9,6 @@ use Engelsystem\Test\Unit\TestCase;
 
 class EventDispatcherTest extends TestCase
 {
-    /** @var array */
     protected array $firedEvents = [];
 
     /**
@@ -126,10 +125,7 @@ class EventDispatcherTest extends TestCase
         $this->firedEvents[$event][] = func_get_args();
     }
 
-    /**
-     * @return null
-     */
-    public function returnNull()
+    public function returnNull(): null
     {
         return null;
     }

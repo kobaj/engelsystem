@@ -8,10 +8,7 @@
 <div class="container">
     <div class="mb-5">
         <h1>
-        {{ has_permission_to('admin_user')
-            ? m.button(m.icon('chevron-left'), url('/users'), null, 'sm')
-            : ''
-        }}
+        {{ can('admin_user') ? m.back(url('/users')) : '' }}
         {{ __('registration.title') }}
         </h1>
     </div>
@@ -107,36 +104,15 @@
                         <li class="list-group-item">
                             {# Empty class to prevent the default bottom margin #}
                             {{ f.checkbox(
-                                'email_shiftinfo',
+                                'email_system',
                                 __(
-                                    'settings.profile.email_shiftinfo',
+                                    'registration.email_system',
                                     [config('app_name')]
                                 ),
                                 {
                                     'class': '',
-                                    'checked': f.formData('email_shiftinfo', false),
-                                },
-                            ) }}
-                        </li>
-                        <li class="list-group-item">
-                            {# Empty class to prevent the default bottom margin #}
-                            {{ f.checkbox(
-                                'email_news',
-                                __('settings.profile.email_news'),
-                                {
-                                    'class': '',
-                                    'checked': f.formData('email_news', false),
-                                },
-                            ) }}
-                        </li>
-                        <li class="list-group-item">
-                            {# Empty class to prevent the default bottom margin #}
-                            {{ f.checkbox(
-                                'email_messages',
-                                __('settings.profile.email_messages'),
-                                {
-                                    'class': '',
-                                    'checked': f.formData('email_messages', false),
+                                    'checked': f.formData('email_system', false),
+                                    'info': __('registration.email_system.info'),
                                 },
                             ) }}
                         </li>
@@ -152,6 +128,26 @@
                             ) }}
                         </li>
                     </ul>
+                    {% if isGoodieEnabled %}
+                        <ul class="list-group pt-1">
+                            <li class="list-group-item">
+                                {% set privacy_email = config('privacy_email') %}
+                                {% set email_goodie_label =
+                                    (isGoodieTShirt ? __('settings.profile.email_tshirt') : __('settings.profile.email_goodie')) ~
+                                    (privacy_email ? ' ' ~ __('settings.profile.privacy', [privacy_email]) : '')
+                                %}
+                                {{ f.checkbox(
+                                    'email_goodie',
+                                    email_goodie_label,
+                                    {
+                                        'class': '',
+                                        'raw_label': true,
+                                        'checked': f.formData('email_goodie', false),
+                                    },
+                                ) }}
+                            </li>
+                        </ul>
+                    {% endif %}
                 </div>
             </div>
         </div>
@@ -192,24 +188,6 @@
 
         <div class="mb-5">
             <div class="row">
-                {% if isGoodieEnabled %}
-                    <div class="col-md-6">
-                        {% set privacy_email = config('privacy_email') %}
-                        {% set email_goody_label = __('settings.profile.email_goody') ~
-                            (privacy_email ? ' ' ~ __('settings.profile.privacy', [privacy_email]) : '')
-                        %}
-                        {{ f.checkbox(
-                            'email_goody',
-                            email_goody_label,
-                            {
-                                'raw_label': true,
-                                'checked': f.formData('email_goody', false),
-                            },
-                        ) }}
-                    </div>
-                    <div class="col-md-6"></div>
-                {% endif %}
-
                 {% if isPlannedArrivalDateEnabled %}
                     <div class="col-md-6">
                         {{ f.input(
@@ -238,6 +216,14 @@
                                 'required': isTShirtSizeRequired,
                                 'required_icon': isTShirtSizeRequired,
                                 'selected': f.formData('tshirt_size', ''),
+                                'info': __('settings.profile.shirt_size.hint'),
+                                'raw_form_text': true,
+                                'form_text': (tShirtLink ? m.icon('info-circle')
+                                    ~ ' <a href="'
+                                    ~ tShirtLink|escape('html_attr')
+                                    ~ '" target="_blank" rel="noopener">'
+                                    ~ __('settings.profile.shirt.link')|e
+                                    ~ '</a>' : ''),
                             }
                         ) }}
                     </div>
