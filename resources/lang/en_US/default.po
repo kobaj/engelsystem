@@ -966,7 +966,7 @@ msgid "How much angels should be active?"
 msgstr "How many gofurs should be active?"
 
 msgid "Arrive angels"
-msgstr "Arrive gofurs"
+msgstr "Arriving gofurs"
 
 msgid "Free angels"
 msgstr "Free gofurs"

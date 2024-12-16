@@ -57,7 +57,11 @@ class ConfigServiceProvider extends ServiceProvider
 
         // Prune values with null to remove them
         foreach ($this->configVarsToPruneNulls as $key) {
-            $config->set($key, array_filter($config->get($key), function ($v) {
+            $retrievedKey = $config->get($key);
+            if (empty($retrievedKey)) {
+                continue;
+            }
+            $config->set($key, array_filter($retrievedKey, function ($v) {
                 return !is_null($v);
             }));
         }

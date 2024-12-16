@@ -67,15 +67,14 @@ function make_navigation(): array
         'admin_active'       => ['Active gofurs', 'admin_user'],
         'users'              => ['All gofurs', 'admin_user'],
         'admin_free'         => ['Free gofurs', 'admin_user'],
-        'admin/questions'    => ['Answer questions', 'admin_user'],
+        'angeltypes'         => ['angeltypes.angeltypes', 'admin_user'],
         'admin/shifttypes'   => ['shifttype.shifttypes', 'shifttypes.view'],
         'admin_shifts'       => 'Create shifts',
-        'admin_groups'       => 'Group rights',
         'admin/schedule'     => ['schedule.import', 'schedule.import'],
+        'admin/questions'    => ['Answer questions', 'admin_user'],
         'admin/logs'         => ['log.log', 'admin_user'],
-        'admin_event_config' => ['Event config', 'admin_user'],
-        'angeltypes'         => ['angeltypes.angeltypes', 'admin_user'],
-        'admin/config'       => ['config.config', 'config.edit'],
+        'admin_groups'       => 'Group rights',
+        'admin/config'       => ['config.config', 'admin_user'],
 ];
 
     if (config('autoarrive')) {
