@@ -19,64 +19,76 @@ class CreateUsersTables extends Migration
      */
     public function up(): void
     {
-        $this->schema->create('users', function (Blueprint $table): void {
-            $table->increments('id');
+        if (!$this->schema->hasTable('users')) {
+            $this->schema->create('users', function (Blueprint $table): void {
+                $table->increments('id');
 
-            $table->string('name', 24)->unique();
-            $table->string('email', 254)->unique();
-            $table->string('password', 255);
-            $table->string('api_key', 32);
+                $table->string('name', 24)->unique();
+                $table->string('email', 254)->unique();
+                $table->string('password', 255);
+                $table->string('api_key', 32);
 
-            $table->dateTime('last_login_at')->nullable();
-            $table->timestamps();
-        });
+                $table->dateTime('last_login_at')->nullable();
+                $table->timestamps();
+            });
+        }
 
-        $this->schema->create('users_personal_data', function (Blueprint $table): void {
-            $this->referencesUser($table, true);
+        if (!$this->schema->hasTable('users_personal_data')) {
+            $this->schema->create('users_personal_data', function (Blueprint $table): void {
+                $this->referencesUser($table, true);
 
-            $table->string('first_name', 64)->nullable();
-            $table->string('last_name', 64)->nullable();
-            $table->string('shirt_size', 4)->nullable();
+                $table->string('first_name', 64)->nullable();
+                $table->string('last_name', 64)->nullable();
+                $table->string('shirt_size', 4)->nullable();
 
-            $table->date('planned_arrival_date')->nullable();
-            $table->date('planned_departure_date')->nullable();
-        });
+                $table->date('planned_arrival_date')->nullable();
+                $table->date('planned_departure_date')->nullable();
+            });
+        }
 
-        $this->schema->create('users_contact', function (Blueprint $table): void {
-            $this->referencesUser($table, true);
+        if (!$this->schema->hasTable('users_contact')) {
+            $this->schema->create('users_contact', function (Blueprint $table): void {
+                $this->referencesUser($table, true);
 
-            $table->string('dect', 5)->nullable();
-            $table->string('mobile', 40)->nullable();
-            $table->string('email', 254)->nullable();
-        });
+                $table->string('dect', 5)->nullable();
+                $table->string('mobile', 40)->nullable();
+                $table->string('email', 254)->nullable();
+            });
+        }
 
-        $this->schema->create('users_settings', function (Blueprint $table): void {
-            $this->referencesUser($table, true);
+        if (!$this->schema->hasTable('users_settings')) {
+            $this->schema->create('users_settings', function (Blueprint $table): void {
+                $this->referencesUser($table, true);
 
-            $table->string('language', 64);
-            $table->tinyInteger('theme');
-            $table->boolean('email_human')->default(false);
-            $table->boolean('email_shiftinfo')->default(false);
-        });
+                $table->string('language', 64);
+                $table->tinyInteger('theme');
+                $table->boolean('email_human')->default(false);
+                $table->boolean('email_shiftinfo')->default(false);
+            });
+        }
 
-        $this->schema->create('users_state', function (Blueprint $table): void {
-            $this->referencesUser($table, true);
+        if (!$this->schema->hasTable('users_state')) {
+            $this->schema->create('users_state', function (Blueprint $table): void {
+                $this->referencesUser($table, true);
 
-            $table->boolean('arrived')->default(false);
-            $table->dateTime('arrival_date')->nullable();
-            $table->boolean('active')->default(false);
-            $table->boolean('force_active')->default(false);
-            $table->boolean('got_shirt')->default(false);
-            $table->integer('got_voucher')->default(0);
-        });
+                $table->boolean('arrived')->default(false);
+                $table->dateTime('arrival_date')->nullable();
+                $table->boolean('active')->default(false);
+                $table->boolean('force_active')->default(false);
+                $table->boolean('got_shirt')->default(false);
+                $table->integer('got_voucher')->default(0);
+            });
+        }
 
-        $this->schema->create('password_resets', function (Blueprint $table): void {
-            $this->referencesUser($table, true);
+        if (!$this->schema->hasTable('password_resets')) {
+            $this->schema->create('password_resets', function (Blueprint $table): void {
+                $this->referencesUser($table, true);
 
-            $table->text('token');
+                $table->text('token');
 
-            $table->timestamp('created_at')->nullable();
-        });
+                $table->timestamp('created_at')->nullable();
+            });
+        }
 
         if ($this->schema->hasTable('User')) {
             $connection = $this->schema->getConnection();
