@@ -6,8 +6,8 @@ namespace Engelsystem\Models;
 
 use Engelsystem\Models\Shifts\NeededAngelType;
 use Engelsystem\Models\Shifts\ShiftEntry;
-use Illuminate\Database\Eloquent\Builder;
 use Engelsystem\Models\User\User;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -42,6 +42,7 @@ use Illuminate\Database\Query\Builder as QueryBuilder;
  * @method static QueryBuilder|AngelType[] whereContactEmail($value)
  * @method static QueryBuilder|AngelType[] whereRestricted($value)
  * @method static QueryBuilder|AngelType[] whereRequiresDriverLicense($value)
+ * @method static QueryBuilder|AngelType[] whereRequiresIfsgCertificate($value)
  * @method static QueryBuilder|AngelType[] whereNoSelfSignup($value)
  * @method static QueryBuilder|AngelType[] whereShowOnDashboard($value)
  * @method static QueryBuilder|AngelType[] whereHideRegister($value)
@@ -52,12 +53,17 @@ class AngelType extends BaseModel
 
     /** @var array Default attributes */
     protected $attributes = [ // phpcs:ignore
+        'description'               => '',
+        'contact_name'              => '',
+        'contact_dect'              => '',
+        'contact_email'             => '',
         'restricted'                => false,
         'requires_driver_license'   => false,
         'requires_ifsg_certificate' => false,
         'shift_self_signup'         => true,
-        'show_on_dashboard'         => false,
+        'show_on_dashboard'         => true,
         'hide_register'             => false,
+        'hide_on_shift_view'        => false,
     ];
 
     /**

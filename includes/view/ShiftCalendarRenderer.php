@@ -3,6 +3,7 @@
 namespace Engelsystem;
 
 use Engelsystem\Helpers\Carbon;
+use Engelsystem\Models\AngelType;
 use Engelsystem\Models\Shifts\Shift;
 use Engelsystem\Models\Shifts\ShiftEntry;
 use Illuminate\Support\Collection;
@@ -181,9 +182,36 @@ class ShiftCalendarRenderer
                 $rendered_until += ShiftCalendarRenderer::SECONDS_PER_ROW;
             }
 
+            $needed_angeltypes = collect($this->needed_angeltypes[$shift->id]);
+
+            // Add angel types from shift entries without reference from needed angel types
+            foreach (
+                $shift->shiftEntries
+                    ->whereNotIn('angel_type_id', $needed_angeltypes->pluck('id'))
+                    ->groupBy('angel_type_id') as $shiftEntriesOfAngelType
+            ) {
+                /** @var Collection|ShiftEntry[] $shiftEntriesOfAngelType */
+                /** @var AngelType $angeltype */
+                $angeltype = $shiftEntriesOfAngelType->first()->angelType;
+                $needed_angeltypes[] = [
+                    'id' => $angeltype->id,
+                    'location_id' => null,
+                    'shift_id' => $shift->id,
+                    'shift_type_id' => null,
+                    'angel_type_id' => $angeltype->id,
+                    'count' => $shift->shiftEntries
+                        ->where('angel_type_id', $angeltype->id)
+                        ->whereNull('freeloaded_by')
+                        ->count(),
+                    'name' => $angeltype->name,
+                    'restricted' => $angeltype->restricted,
+                    'shift_self_signup' => $angeltype->shift_self_signup,
+                ];
+            }
+
             list ($shift_height, $shift_html) = $shift_renderer->render(
                 $shift,
-                $this->needed_angeltypes[$shift->id],
+                $needed_angeltypes,
                 $this->shift_entries[$shift->id],
                 auth()->user()
             );
@@ -213,8 +241,14 @@ class ShiftCalendarRenderer
      */
     private function renderTick($time, $label = false)
     {
-        $time = Carbon::createFromTimestamp($time);
+        $time = Carbon::createFromTimestamp($time, Carbon::now()->timezone);
         $class = $label ? 'tick bg-' . theme_type() : 'tick ';
+
+        $diffNow = $time->diffInMinutes() * 60;
+        if ($diffNow >= 0 && $diffNow < self::SECONDS_PER_ROW) {
+            $class .= ' now';
+        }
+
         if ($time->isStartOfDay()) {
             if (!$label) {
                 return div($class . ' day');
@@ -296,7 +330,7 @@ class ShiftCalendarRenderer
      */
     private function calcBlocksPerSlot()
     {
-        return ceil(
+        return (int) ceil(
             ($this->getLastBlockEndTime() - $this->getFirstBlockStartTime())
             / ShiftCalendarRenderer::SECONDS_PER_ROW
         );
@@ -312,9 +346,9 @@ class ShiftCalendarRenderer
         return div('legend mt-3', [
             badge(__('Your shift'), 'primary'),
             badge(__('Help needed'), 'danger'),
-            badge(__('Other angeltype needed / collides with my shifts'), 'warning'),
+            badge(__('Other angel type needed / collides with my shifts'), 'warning'),
             badge(__('Shift is full'), 'success'),
-            badge(__('Shift is running/ended or you have not arrived'), 'secondary'),
+            badge(__('Shift is running/has ended, you have not arrived or signup is blocked otherwise'), 'secondary'),
         ]);
     }
 }

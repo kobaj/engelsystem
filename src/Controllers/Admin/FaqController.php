@@ -10,6 +10,7 @@ use Engelsystem\Http\Redirector;
 use Engelsystem\Http\Request;
 use Engelsystem\Http\Response;
 use Engelsystem\Models\Faq;
+use Engelsystem\Models\Tag;
 use Psr\Log\LoggerInterface;
 
 class FaqController extends BaseController
@@ -34,7 +35,7 @@ class FaqController extends BaseController
     {
         $faqId = $request->getAttribute('faq_id'); // optional
 
-        $faq = $this->faq->find($faqId);
+        $faq = $this->faq->with('tags')->find($faqId);
 
         return $this->showEdit($faq);
     }
@@ -47,18 +48,13 @@ class FaqController extends BaseController
         $faq = $this->faq->findOrNew($faqId);
 
         if ($request->request->has('delete')) {
-            $faq->delete();
-
-            $this->log->info('Deleted faq "{question}"', ['question' => $faq->question]);
-
-            $this->addNotification('faq.delete.success');
-
-            return $this->redirect->to('/faq');
+            return $this->delete($faq);
         }
 
         $data = $this->validate($request, [
-            'question' => 'required',
+            'question' => 'required|max:255',
             'text'     => 'required',
+            'tags'     => 'optional',
             'delete'   => 'optional|checked',
             'preview'  => 'optional|checked',
         ]);
@@ -67,10 +63,20 @@ class FaqController extends BaseController
         $faq->text = $data['text'];
 
         if (!is_null($data['preview'])) {
-            return $this->showEdit($faq);
+            return $this->showEdit($faq, $data['tags']);
         }
 
         $faq->save();
+
+        $faq->tags()->detach();
+        $tags = collect(explode(',', $data['tags'] ?? ''))
+            ->transform(fn($value) => trim($value))
+            ->filter(fn($value) => $value != '')
+            ->unique();
+        foreach ($tags as $tagName) {
+            $tag = Tag::whereName($tagName)->firstOrCreate(['name' => $tagName]);
+            $faq->tags()->attach($tag);
+        }
 
         $this->log->info('Updated faq "{question}": {text}', ['question' => $faq->question, 'text' => $faq->text]);
 
@@ -79,11 +85,22 @@ class FaqController extends BaseController
         return $this->redirect->to('/faq#faq-' . $faq->id);
     }
 
-    protected function showEdit(?Faq $faq): Response
+    protected function delete(Faq $faq): Response
+    {
+        $faq->delete();
+
+        $this->log->info('Deleted faq "{question}"', ['question' => $faq->question]);
+
+        $this->addNotification('faq.delete.success');
+
+        return $this->redirect->to('/faq');
+    }
+
+    protected function showEdit(?Faq $faq, string $tags = null): Response
     {
         return $this->response->withView(
             'pages/faq/edit.twig',
-            ['faq' => $faq]
+            ['faq' => $faq, 'tags' => $tags]
         );
     }
 }
