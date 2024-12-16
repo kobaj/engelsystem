@@ -173,7 +173,7 @@ msgid "schedule.shift-type"
 msgstr "Shift type"
 
 msgid "schedule.needed-from-shift-type"
-msgstr "Load angel types from shift type (else from location)"
+msgstr "Load gofur types from shift type (else from location)"
 
 msgid "schedule.minutes-before"
 msgstr "Add minutes before talk begins"
@@ -382,7 +382,7 @@ msgid "settings.profile.shirt.link"
 msgstr "More information"
 
 msgid "settings.profile.angeltypes.info"
-msgstr "You can manage your Gofurtypes <a href=\"%s\">on the Gofurtypes page</a>."
+msgstr "You can manage your gofur types <a href=\"%s\">on the gofur types page</a>."
 
 msgid "profile.my_shifts"
 msgstr "My shifts"
@@ -511,22 +511,22 @@ msgid "angeltype.ifsg.own"
 msgstr "My health instruction"
 
 msgid "angeltype.ifsg.required.info.preview"
-msgstr "This angel type requires a health instruction."
+msgstr "This gofur type requires a health instruction."
 
 msgid "angeltype.ifsg.required.info"
-msgstr "This gofurtype requires a health instruction. Please enter your health instruction information!"
+msgstr "This gofur type requires a health instruction. Please enter your health instruction information!"
 
 msgid "angeltype.ifsg.required.info.here"
-msgstr "You joined an gofurtype which requires a health instruction. "
+msgstr "You joined an gofur type which requires a health instruction. "
 "Please edit your health instruction information here: %s."
 
 msgid "angeltype.driving_license.required.info.here"
 msgstr ""
-"You joined a gofurtype which requires a driving license. "
+"You joined a gofur type which requires a driving license. "
 "Please edit your driving license information here: %s."
 
 msgid "angeltype.driving_license.required.info.preview"
-msgstr "This angel type requires a driver's license."
+msgstr "This gofur type requires a driver's license."
 
 msgid "ifsg.info"
 msgstr "Health instruction information"
@@ -666,7 +666,7 @@ msgid "message.title"
 msgstr "Messages"
 
 msgid "message.choose_angel"
-msgstr "Choose a Gofur"
+msgstr "Choose a gofur"
 
 msgid "message.to_conversation"
 msgstr "To Conversation"
@@ -699,7 +699,7 @@ msgid "worklog.delete.info"
 msgstr "Do you really want to delete the work log for %s?"
 
 msgid "angeltypes.angeltypes"
-msgstr "Gofurtypes"
+msgstr "Gofur types"
 
 msgid "angeltypes.about"
 msgstr "Teams-/Job description"
@@ -715,7 +715,7 @@ msgstr "Gofur types which require introduction can only be used by a gofur "
 "if enabled by a supporter (double opt-in)."
 
 msgid "angeltypes.restricted.hint"
-msgstr "This gofurtype requires the attendance at an introduction meeting. "
+msgstr "This gofur type requires the attendance at an introduction meeting. "
 "You might find additional information in the description."
 
 msgid "angeltypes.can-change-later"
@@ -735,8 +735,8 @@ msgid "angeltypes.hide_on_shift_view"
 msgstr "Hide on shift view"
 
 msgid "angeltypes.hide_on_shift_view.info"
-msgstr "If checked only admins and members of the gofurtype "
-"can see the filter option for this gofurtype on the shifts page"
+msgstr "If checked only admins and members of the gofur type "
+"can see the filter option for this gofur type on the shifts page"
 
 msgid "registration.register"
 msgstr "Register"
@@ -778,7 +778,7 @@ msgid "shifttype.delete.title"
 msgstr "Delete shift type \"%s\""
 
 msgid "shifttype.required_angels"
-msgstr "Required angels (on schedule import)"
+msgstr "Required gofurs (on schedule import)"
 
 msgid "shifttype.edit.signup_advance_hours"
 msgstr "Self signup advance hours"
@@ -811,13 +811,13 @@ msgid "registration.register"
 msgstr "Register"
 
 msgid "Angeltype"
-msgstr "Gofurtype"
+msgstr "Gofur type"
 
 msgid "tshirt.required.hint"
 msgstr "Please specify a T-shirt size in your settings!"
 
 msgid "All Angels"
-msgstr "All Gofurs"
+msgstr "All gofurs"
 
 msgid "Angel registration successful!"
 msgstr "Gofur registration successful!"
@@ -826,7 +826,7 @@ msgid ""
 "By completing this form you're registering as a Chaos-Angel. This script "
 "will create you an account in the angel task scheduler."
 msgstr ""
-By completing this form you're registering as a Gofur. This script "
+By completing this form you're registering as a gofur. This script "
 "will create you an account in the gofur task scheduler."
 
 msgid ""
@@ -849,7 +849,7 @@ msgid "Angel:"
 msgstr "Gofur:"
 
 msgid "You can manage your Angeltypes <a href=\"%s\">on the Angeltypes page</a>."
-msgstr "You can manage your Gofurtypes <a href=\"%s\">on the Gofurtypes page</a>."
+msgstr "You can manage your gofur types <a href=\"%s\">on the gofur types page</a>."
 
 msgid "Angel can receive another %d vouchers."
 msgstr "Gofur can receive another %d vouchers."
@@ -864,10 +864,10 @@ msgid "Angel has got no goodie."
 msgstr "Gofur has got no goodie."
 
 msgid "Delete angeltype %s"
-msgstr "Delete gofurtype %s"
+msgstr "Delete gofur type %s"
 
 msgid "User is not in angeltype."
-msgstr "User is not in gofurtype."
+msgstr "User is not in gofur type."
 
 msgid "shifts.random"
 msgstr "Random shift"
@@ -876,7 +876,7 @@ msgid "shifts.history"
 msgstr "Shifts history"
 
 msgid "You need be accepted member of the angeltype."
-msgstr "You need be an accepted member of the gofurtype."
+msgstr "You need be an accepted member of the gofur type."
 
 msgid "Please check your input for needed angels of type %s."
 msgstr "Please check your input for needed gofurs of type %s."
@@ -886,50 +886,50 @@ msgstr "Needed gofurs"
 
 msgid "There is %d unconfirmed angeltype."
 msgid_plural "There are %d unconfirmed angeltypes."
-msgstr[0] "There is %d unconfirmed gofurtype."
-msgstr[1] "There are %d unconfirmed gofurtypes."
+msgstr[0] "There is %d unconfirmed gofur type."
+msgstr[1] "There are %d unconfirmed gofur types."
 
 msgid "You are not allowed to delete all users for this angeltype."
-msgstr "You are not allowed to delete all users for this gofurtype."
+msgstr "You are not allowed to delete all users for this gofur type."
 
 msgid "Denied all users for angeltype %s."
-msgstr "Denied all users for gofurtype %s."
+msgstr "Denied all users for gofur type %s."
 
 msgid "user.info.hint"
 msgstr "Is displayed for shift coordinators and admins in the user view."
 
 msgid "You are not allowed to confirm all users for this angeltype."
-msgstr "You are not allowed to confirm all users for this gofurtype."
+msgstr "You are not allowed to confirm all users for this gofur type."
 
 msgid "Confirmed all users for angeltype %s."
-msgstr "Confirmed all users for gofurtype %s."
+msgstr "Confirmed all users for gofur type %s."
 
 msgid "User angeltype doesn't exist."
-msgstr "User gofurtype doesn't exist."
+msgstr "User gofur type doesn't exist."
 
 msgid "You are not allowed to confirm this users angeltype."
-msgstr "You are not allowed to confirm this users gofurtype."
+msgstr "You are not allowed to confirm this users gofur type."
 
 msgid "%s confirmed for angeltype %s."
-msgstr "%s confirmed for gofurtype %s."
+msgstr "%s confirmed for gofur type %s."
 
 msgid "Confirm angeltype for user"
-msgstr "Confirm gofurtype for user"
+msgstr "Confirm gofur type for user"
 
 msgid "You are not allowed to delete this users angeltype."
-msgstr "You are not allowed to delete this users gofurtype."
+msgstr "You are not allowed to delete this users gofur type."
 
 msgid "Remove angeltype"
-msgstr "Remove gofurtype"
+msgstr "Remove gofur type"
 
 msgid "Add user to angeltype"
-msgstr "Add user to gofurtype"
+msgstr "Add user to gofur type"
 
 msgid ""
 "You joined an angeltype which requires a driving license. Please edit your "
 "driving license information here: %s."
 msgstr ""
-"You joined a gofurtype which requires a driving license. Please edit your "
+"You joined a gofur type which requires a driving license. Please edit your "
 "driving license information here: %s."
 
 msgid "Active angels"
@@ -999,8 +999,8 @@ msgid ""
 "Please visit the angeltypes page or the users profile to manage users "
 "angeltypes."
 msgstr ""
-"Please visit the gofurtypes page or the users profile to manage users "
-"gofurtypes."
+"Please visit the gofur types page or the users profile to manage users "
+"gofur types."
 
 msgid "Allow heaven angels to contact you by e-mail."
 msgstr "Allow gofurden managers to contact you by e-mail."
@@ -1019,36 +1019,36 @@ msgid ""
 "The administration has not configured any angeltypes yet - or you are not "
 "subscribed to any angeltype."
 msgstr ""
-"The administration has not configured any gofurtypes yet - or you are not "
-"subscribed to any gofurtype."
+"The administration has not configured any gofur types yet - or you are not "
+"subscribed to any gofur type."
 
 msgid ""
 "The tasks shown here are influenced by the angeltypes you joined already!"
 msgstr ""
-"The tasks shown here are influenced by the gofurtypes you joined already!"
+"The tasks shown here are influenced by the gofur types you joined already!"
 
 msgid "Do you want to delete angeltype %s?"
-msgstr "Do you want to delete gofurtype %s?"
+msgstr "Do you want to delete gofur type %s?"
 
 msgid ""
 "This angeltype requires a driver license. Please enter your driver license "
 "information!"
 msgstr ""
-"This gofurtype requires a driver license. Please enter your driver license "
+"This gofur type requires a driver license. Please enter your driver license "
 "information!"
 
 msgid ""
 "You are unconfirmed for this angeltype. Please go to the introduction for %s "
 "to get confirmed."
 msgstr ""
-"You are unconfirmed for this gofurtype. Please go to the introduction for %s "
+"You are unconfirmed for this gofur type. Please go to the introduction for %s "
 "to get confirmed."
 
 msgid "New angeltype"
-msgstr "New gofurtype"
+msgstr "New gofur type"
 
 msgid "Other angeltype needed / collides with my shifts"
-msgstr "Other gofurtype needed / collides with my shifts"
+msgstr "Other gofur type needed / collides with my shifts"
 
 msgid "Add more angels"
 msgstr "Add more gofurs"
@@ -1083,7 +1083,7 @@ msgstr ""
 "it means that the gofar has already received their T-shirt."
 
 msgid "Please visit the angeltypes page or the users profile to manage the users angeltypes."
-msgstr "Please visit the gofurtypes page or the users profile to manage the users gofurtypes."
+msgstr "Please visit the gofur types page or the users profile to manage the users gofur types."
 
 msgid "Here you can reset the password of this angel:"
 msgstr "Here you can reset the password of this gofur:"
@@ -1204,33 +1204,33 @@ msgid "admin_shifts.no_shifttypes"
 msgstr "No shift type has been created yet. Shifts can't be created without one."
 
 msgid "admin_shifts.no_angeltypes"
-msgstr "No angel type has been created yet. Shifts can't be created without one."
+msgstr "No gofur type has been created yet. Shifts can't be created without one."
 
 msgid "shift.sign_out.hint"
 msgstr "You can self sign out up to %s hours before the start of the shift. "
-"If you can't attend your shift, ask heaven to sign you out."
+"If you can't attend your shift, ask your gofur manager to sign you out."
 
 msgid "freeload.info.goodie"
 msgstr "You were not present for this shift. "
-"The double length of the shift was deducted from your %s. Please contact heaven if you have questions."
+"The double length of the shift was deducted from your %s. Please contact your gofur manager if you have questions."
 
 msgid "freeload.info"
 msgstr "You were not present for this shift. "
-"Please contact heaven if you have questions."
+"Please contact your gofur manager if you have questions."
 
 msgid "freeload.freeloader.info"
 msgstr "You were not present for at least %s shifts. Therefore, shift registration is blocked. "
-"Please go to heaven to be unlocked again."
+"Please go to your gofur manager to be unlocked again."
 
 msgid "freeload.freeloaded.info.goodie"
 msgstr ""
 "If an angel was not present for a shift, the double length of the shift is deducted from the %s. "
-"If %s shifts are freeloaded, the shift registration is blocked for the angel."
+"If %s shifts are freeloaded, the shift registration is blocked for the gofur."
 
 msgid "freeload.freeloaded.info"
 msgstr ""
 "The angel was not present for a shift. "
-"If %s shifts are freeloaded, the shift registration is blocked for the angel."
+"If %s shifts are freeloaded, the shift registration is blocked for the gofur."
 
 msgid "config.config"
 msgstr "Config"
