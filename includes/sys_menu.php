@@ -38,65 +38,76 @@ function header_render_hints()
 
 function make_navigation(): array
 {
-    $menu = [];
     $pages = [
         // path          => name,
         // path          => [name, permission],
+        'news'           => 'news.title',
         'user_shifts'    => 'general.shifts',
-        'admin_shifts'   => ['Create shifts', 'admin_user'],
+        'locations'      => ['location.locations', 'locations.view'],
     ];
 
+    $menu = make_navigation_group($pages);
+
+    foreach (config('header_items', []) as $title => $options) {
+        $menu[$title] = $options;
+    }
+
+    $gofurs_pages = [
+        // gofurs
+        'admin_arrive'       => [admin_arrive_title(), 'users.arrive.list'],
+        'admin_active'       => ['Active angels', 'admin_user'],
+        'users'              => ['All Angels', 'admin_user'],
+        'admin_free'         => ['Free angels', 'admin_user'],
+        'angeltypes'         => ['angeltypes.angeltypes', 'admin_angel_types'],
+    ];
+
+    $shift_pages = [
+        // shifts
+        'admin/shifttypes'   => ['shifttype.shifttypes', 'shifttypes.edit'],
+        'admin_shifts'       => ['Create shifts', 'admin_shifts'],
+    ];
+
+    $admin_pages = [
+        // Other admin stuff
+        'admin_groups'       => ['Group rights', 'admin_groups'],
+        'admin/schedule'     => ['schedule.import', 'schedule.import'],
+        'admin/logs'         => ['log.log', 'admin_log'],
+        'admin/config'       => ['config.config', 'config.edit'],
+    ];
+
+    if (config('autoarrive')) {
+        unset($gofurs_pages['admin_arrive']);
+    }
+
+    $gofurs_menu = make_navigation_group($gofurs_pages);
+    $shift_menu = make_navigation_group($shift_pages);
+    $admin_menu = make_navigation_group($admin_pages);
+
+    $menu['Gofurs'] = [$gofurs_menu, $gofurs_menu ? null : 'hide', true];
+    $menu['Shift'] = [$shift_menu, $shift_menu ? null : 'hide', true];
+    $menu['Admin'] = [$admin_menu, $admin_menu ? null : 'hide', true];
+
+    return $menu;
+}
+
+function make_navigation_group($pages)
+{
+    $menu = [];
     foreach ($pages as $menu_page => $options) {
         $options = (array) $options;
+        if (!auth()->can($options[1] ?? $menu_page)) {
+            continue;
+        }
+
         $menu[$options[0]] = [
             url(str_replace('_', '-', $menu_page)),
             $options[1] ?? $menu_page,
         ];
     }
 
-    foreach (config('header_items', []) as $title => $options) {
-        $menu[$title] = $options;
-    }
-
-    $admin_pages = [
-        // path              => name,
-        // path              => [name, permission],
-
-        'admin_arrive'       => [admin_arrive_title(), 'admin_user'],
-        'admin_active'       => ['Active angels', 'admin_user'],
-        'users'              => ['All Angels', 'admin_user'],
-        'admin_free'         => ['Free angels', 'admin_user'],
-        'admin/questions'    => ['Answer questions', 'admin_user'],
-        'admin/shifttypes'   => ['shifttype.shifttypes', 'shifttypes.view'],
-        'admin_shifts'       => 'Create shifts',
-        'admin_groups'       => 'Group rights',
-        'admin/schedule'     => ['schedule.import', 'schedule.import'],
-        'admin/logs'         => ['log.log', 'admin_user'],
-        'admin/config'       => ['config.config', 'config.edit'],
-        'angeltypes'         => ['angeltypes.angeltypes', 'admin_user'],
-];
-
-    if (config('autoarrive')) {
-        unset($admin_pages['admin_arrive']);
-    }
-
-    $admin_menu = [];
-    foreach ($admin_pages as $menu_page => $options) {
-        $options = (array) $options;
-        if (!auth()->can($options[1] ?? $menu_page)) {
-            continue;
-        }
-
-        $admin_menu[$options[0]] = [
-            url(str_replace('_', '-', $menu_page)),
-            $options[1] ?? $menu_page,
-        ];
-    }
-
-    $menu['Admin'] = [$admin_menu, $admin_menu ? null : 'hide', true];
-
     return $menu;
 }
+
 
 /**
  * Renders language selection.
