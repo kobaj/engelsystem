@@ -63,14 +63,14 @@ function make_navigation(): array
 
     $shift_pages = [
         // shifts
-        'admin/shifttypes'   => ['shifttype.shifttypes', 'shifttypes.edit'],
         'admin_shifts'       => ['Create shifts', 'admin_shifts'],
+        'admin/shifttypes'   => ['shifttype.shifttypes', 'shifttypes.edit'],
+        'admin/schedule'     => ['schedule.import', 'schedule.import'],
     ];
 
     $admin_pages = [
         // Other admin stuff
         'admin_groups'       => ['Group rights', 'admin_groups'],
-        'admin/schedule'     => ['schedule.import', 'schedule.import'],
         'admin/logs'         => ['log.log', 'admin_log'],
         'admin/config'       => ['config.config', 'config.edit'],
     ];
