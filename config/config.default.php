@@ -92,8 +92,7 @@ return [
             'username' => 'username',
             'first_name' => 'firstName',
             'last_name' => 'lastName',
-            // I don't know why this doesn't work.
-            // 'hidden' => !empty(env('OAUTH_URL_AUTHORIZE', null)),
+            'hidden' => empty(env('OAUTH_URL_AUTHORIZE', null)),
         ]
         // '[name]' => [config]
         /*
