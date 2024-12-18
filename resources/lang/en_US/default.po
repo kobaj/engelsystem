@@ -1137,7 +1137,7 @@ msgid "general.shift"
 msgstr "Shift"
 
 msgid "shift.angeltype_source"
-msgstr "Needed angels from: %s"
+msgstr "Needed gofurs from: %s"
 
 msgid "shift.angeltype_source.shift_type"
 msgstr "Schedule %s via shift type %s"
@@ -1223,12 +1223,12 @@ msgstr "You were not present for at least %s shifts. Therefore, shift registrati
 
 msgid "freeload.freeloaded.info.goodie"
 msgstr ""
-"If an angel was not present for a shift, the double length of the shift is deducted from the %s. "
+"If a gofur was not present for a shift, the double length of the shift is deducted from the %s. "
 "If %s shifts are freeloaded, the shift registration is blocked for the gofur."
 
 msgid "freeload.freeloaded.info"
 msgstr ""
-"The angel was not present for a shift. "
+"The gofur was not present for a shift. "
 "If %s shifts are freeloaded, the shift registration is blocked for the gofur."
 
 msgid "config.config"
