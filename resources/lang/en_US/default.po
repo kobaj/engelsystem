@@ -949,11 +949,11 @@ msgstr "Please enter a number of gofurs to be marked as active."
 msgid "Marked angels."
 msgstr "Marked gofurs."
 
+msgid "footer.eventinfo.name_start_end"
+msgstr "%1$s, from %2$s to %3$s"
+
 msgid "footer.eventinfo.start_end"
 msgstr "%1$s to %2$s"
-
-msgid "footer.eventinfo.name_start"
-msgstr "%1$s, ab dem %2$s"
 
 msgid "footer.eventinfo.name_start"
 msgstr "%1$s, starting %2$s"
