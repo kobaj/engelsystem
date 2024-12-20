@@ -1160,7 +1160,7 @@ msgstr "Take needed gofurs from location settings"
 msgid "general.date"
 msgstr "m/d/Y"
 
-msgsi "general.datetime"
+msgid "general.datetime"
 msgstr "m/d/Y H:i"
 
 msgid "form.recover"
