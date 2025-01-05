@@ -4,10 +4,14 @@
 
 {% block title %}{{ faq and faq.id ? __('faq.edit') : __('faq.add') }}{% endblock %}
 
+{% if tags is null and faq %}
+    {% set tags = faq.tags.implode('name', ', ') %}
+{% endif %}
+
 {% block content %}
     <div class="container">
         <h1>
-            {{ m.button(m.icon('chevron-left'), url('/faq'), 'secondary', 'sm') }}
+            {{ m.back(url('/faq')) }}
             {{ block('title') }}
         </h1>
 
@@ -34,17 +38,25 @@
 
             <div class="row mb-4">
                 <div class="col-md-12">
-                    {{ f.input('question', __('faq.question'), {
+                    {{ f.input('question', __('question.question'), {
                         'required': true,
+                        'required_icon': true,
                         'value': faq ? faq.question : '',
+                        'max_length': 255,
                     }) }}
                 </div>
                 <div class="col-md-12">
-                    {{ f.textarea('text', __('faq.message'), {
+                    {{ f.textarea('text', __('question.answer'), {
                         'required': true,
+                        'required_icon': true,
                         'rows': 10,
                         'value': faq ? faq.text : '',
                     }) }}
+                    {{ f.input(
+                        'tags',
+                        __('form.tags'),
+                        {'value': tags, 'info': __('form.tags.info')}
+                    ) }}
 
                     {{ f.submit(__('form.save'), {'icon_left': 'save'}) }}
 
@@ -61,7 +73,7 @@
                     <div class="col-md-12">
                         <h2>{{ __('form.preview') }}</h2>
 
-                        <div class="card {% if theme.type =='light' %}bg-light{% else %}bg-dark{% endif %}">
+                        <div class="card {{ m.type_bg_class() }}">
                             <div class="card-header">
                                 {{ faq.question }}
                             </div>

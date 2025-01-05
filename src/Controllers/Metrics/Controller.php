@@ -48,8 +48,33 @@ class Controller extends BaseController
         $oauthProviders = $this->config->get('oauth');
         foreach ($userOauth as $key => $oauth) {
             $provider = $oauth['labels']['provider'];
-            $name = isset($oauthProviders[$provider]['name']) ? $oauthProviders[$provider]['name'] : $provider;
+            $name = $oauthProviders[$provider]['name'] ?? $provider;
             $userOauth[$key]['labels']['name'] = $name;
+        }
+
+        $angelTypes = [];
+        foreach ($this->stats->angelTypes() as $angelType) {
+            $angelTypes[] = [
+                'labels' => [
+                    'name' => $angelType['name'],
+                    'restricted' => $angelType['restricted'],
+                    'members' => 'unconfirmed',
+                ], 'value' => $angelType['unconfirmed'],
+            ];
+            $angelTypes[] = [
+                'labels' => [
+                    'name' => $angelType['name'],
+                    'restricted' => $angelType['restricted'],
+                    'members' => 'confirmed',
+                ], 'value' => $angelType['confirmed'],
+            ];
+            $angelTypes[] = [
+                'labels' => [
+                    'name' => $angelType['name'],
+                    'restricted' => $angelType['restricted'],
+                    'members' => 'supporters',
+                ], 'value' => $angelType['supporters'],
+            ];
         }
 
         $data = [
@@ -68,29 +93,46 @@ class Controller extends BaseController
             ],
             'users'                => [
                 'type' => 'gauge',
-                ['labels' => ['state' => 'incoming'], 'value' => $this->stats->newUsers()],
-                ['labels' => ['state' => 'arrived', 'working' => 'no'], 'value' => $this->stats->arrivedUsers(false)],
-                ['labels' => ['state' => 'arrived', 'working' => 'yes'], 'value' => $this->stats->arrivedUsers(true)],
+                ['labels' => ['state' => 'incoming', 'working' => 'no'],
+                    'value' => $this->stats->usersState(false, false)],
+                ['labels' => ['state' => 'incoming', 'working' => 'yes'],
+                    'value' => $this->stats->usersState(true, false)],
+                ['labels' => ['state' => 'arrived', 'working' => 'no'],
+                    'value' => $this->stats->usersState(false)],
+                ['labels' => ['state' => 'arrived', 'working' => 'yes'],
+                    'value' => $this->stats->usersState(true)],
             ],
+            'users_info' => ['type' => 'gauge', $this->stats->usersInfo()],
             'users_force_active'   => ['type' => 'gauge', $this->stats->forceActiveUsers()],
             'users_pronouns'     => ['type' => 'gauge', $this->stats->usersPronouns()],
             'licenses'             => [
                 'type' => 'gauge',
                 'help' => 'The total number of licenses',
                 ['labels' => ['type' => 'has_car'], 'value' => $this->stats->licenses('has_car')],
-                ['labels' => ['type' => 'forklift'], 'value' => $this->stats->licenses('forklift')],
-                ['labels' => ['type' => 'car'], 'value' => $this->stats->licenses('car')],
-                ['labels' => ['type' => '3.5t'], 'value' => $this->stats->licenses('3.5t')],
-                ['labels' => ['type' => '7.5t'], 'value' => $this->stats->licenses('7.5t')],
-                ['labels' => ['type' => '12t'], 'value' => $this->stats->licenses('12t')],
-                ['labels' => ['type' => 'ifsg_light'], 'value' => $this->stats->licenses('ifsg_light')],
-                ['labels' => ['type' => 'ifsg'], 'value' => $this->stats->licenses('ifsg')],
+                ['labels' => ['type' => 'forklift', 'confirmed' => 'no'],
+                    'value' => $this->stats->licenses('forklift')],
+                ['labels' => ['type' => 'forklift', 'confirmed' => 'yes'],
+                    'value' => $this->stats->licenses('forklift', true)],
+                ['labels' => ['type' => 'car', 'confirmed' => 'no'], 'value' => $this->stats->licenses('car')],
+                ['labels' => ['type' => 'car', 'confirmed' => 'yes'], 'value' => $this->stats->licenses('car', true)],
+                ['labels' => ['type' => '3.5t', 'confirmed' => 'no'], 'value' => $this->stats->licenses('3.5t')],
+                ['labels' => ['type' => '3.5t', 'confirmed' => 'yes'], 'value' => $this->stats->licenses('3.5t', true)],
+                ['labels' => ['type' => '7.5t', 'confirmed' => 'no'], 'value' => $this->stats->licenses('7.5t')],
+                ['labels' => ['type' => '7.5t', 'confirmed' => 'yes'], 'value' => $this->stats->licenses('7.5t', true)],
+                ['labels' => ['type' => '12t', 'confirmed' => 'no'], 'value' => $this->stats->licenses('12t')],
+                ['labels' => ['type' => '12t', 'confirmed' => 'yes'], 'value' => $this->stats->licenses('12t', true)],
+                ['labels' => ['type' => 'ifsg_light', 'confirmed' => 'no'],
+                    'value' => $this->stats->licenses('ifsg_light')],
+                ['labels' => ['type' => 'ifsg_light', 'confirmed' => 'yes'],
+                    'value' => $this->stats->licenses('ifsg_light', true)],
+                ['labels' => ['type' => 'ifsg', 'confirmed' => 'no'], 'value' => $this->stats->licenses('ifsg')],
+                ['labels' => ['type' => 'ifsg', 'confirmed' => 'yes'], 'value' => $this->stats->licenses('ifsg', true)],
             ],
             'users_email'          => [
                 'type' => 'gauge',
                 ['labels' => ['type' => 'system'], 'value' => $this->stats->email('system')],
                 ['labels' => ['type' => 'humans'], 'value' => $this->stats->email('humans')],
-                ['labels' => ['type' => 'goody'], 'value' => $this->stats->email('goody')],
+                ['labels' => ['type' => 'goodie'], 'value' => $this->stats->email('goodie')],
                 ['labels' => ['type' => 'news'], 'value' => $this->stats->email('news')],
             ],
             'users_working'        => [
@@ -125,7 +167,7 @@ class Controller extends BaseController
                 'type' => 'histogram',
                 $this->stats->vouchersBuckets($metrics['voucher']) + ['sum' => $this->stats->vouchers()],
             ],
-            'tshirts_issued'       => ['type' => 'counter', 'help' => 'Issued T-Shirts', $this->stats->tshirts()],
+            'goodies_issued'       => ['type' => 'counter', 'help' => 'Issued Goodies', $this->stats->goodies()],
             'tshirt_sizes'         => [
                 'type' => 'gauge',
                 'help' => 'The sizes users have configured',
@@ -133,6 +175,9 @@ class Controller extends BaseController
             'locales'              => ['type' => 'gauge', 'help' => 'The locales users have configured'] + $userLocales,
             'themes'               => ['type' => 'gauge', 'help' => 'The themes users have configured'] + $userThemes,
             'locations'            => ['type' => 'gauge', $this->stats->locations()],
+            'angel_types'          => ['type' => 'gauge', 'help' => 'Angel types with member states'] + $angelTypes,
+            'angel_types_sum'      => ['type' => 'gauge', $this->stats->angelTypesSum()],
+            'shift_types'          => ['type' => 'gauge', $this->stats->shiftTypes()],
             'shifts'               => ['type' => 'gauge', $this->stats->shifts()],
             'announcements'        => [
                 'type' => 'gauge',
@@ -181,7 +226,7 @@ class Controller extends BaseController
         $data['scrape_memory_bytes'] = [
             'type' => 'gauge',
             'help' => 'Memory usage of the current request',
-            memory_get_usage(false),
+            memory_get_usage(),
         ];
 
         return $this->response
@@ -194,9 +239,9 @@ class Controller extends BaseController
         $this->checkAuth(true);
 
         $data = [
-            'user_count'         => $this->stats->newUsers() + $this->stats->arrivedUsers(),
-            'arrived_user_count' => $this->stats->arrivedUsers(),
-            'done_work_hours'    => round($this->stats->workSeconds(true) / 60 / 60, 0),
+            'user_count'         => $this->stats->usersState() + $this->stats->usersState(null, false),
+            'arrived_user_count' => $this->stats->usersState(),
+            'done_work_hours'    => round($this->stats->workSeconds(true) / 60 / 60),
             'users_in_action'    => $this->stats->currentlyWorkingUsers(),
         ];
 
@@ -206,7 +251,7 @@ class Controller extends BaseController
     }
 
     /**
-     * Ensure that the if the request is authorized
+     * Ensure that the request is authorized
      */
     protected function checkAuth(bool $isJson = false): void
     {

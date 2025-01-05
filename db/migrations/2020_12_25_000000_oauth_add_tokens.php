@@ -9,17 +9,15 @@ use Illuminate\Database\Schema\Blueprint;
 
 class OauthAddTokens extends Migration
 {
-    use Reference;
-
     /**
      * Run the migration
      */
     public function up(): void
     {
         $this->schema->table('oauth', function (Blueprint $table): void {
-            $table->string('access_token')->nullable()->default(null)->after('identifier');
-            $table->string('refresh_token')->nullable()->default(null)->after('access_token');
-            $table->dateTime('expires_at')->nullable()->default(null)->after('refresh_token');
+            $table->string('access_token')->nullable()->after('identifier');
+            $table->string('refresh_token')->nullable()->after('access_token');
+            $table->dateTime('expires_at')->nullable()->after('refresh_token');
         });
     }
 

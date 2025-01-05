@@ -1,4 +1,4 @@
-{% extends 'admin/locations/index.twig' %}
+{% extends 'pages/locations/index.twig' %}
 {% import 'macros/base.twig' as m %}
 {% import 'macros/form.twig' as f %}
 
@@ -15,6 +15,7 @@
                     'required': true,
                     'required_icon': true,
                     'value': f.formData('location', location ? location.name : ''),
+                    'max_length': 35,
                 }) }}
 
                 {{ f.input('dect', __('general.dect'), {

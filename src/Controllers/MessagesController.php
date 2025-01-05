@@ -6,6 +6,7 @@ namespace Engelsystem\Controllers;
 
 use Engelsystem\Database\Database;
 use Engelsystem\Helpers\Authenticator;
+use Engelsystem\Http\Exceptions\HttpForbidden;
 use Engelsystem\Http\Redirector;
 use Engelsystem\Http\Request;
 use Engelsystem\Http\Response;
@@ -13,7 +14,6 @@ use Engelsystem\Models\Message;
 use Engelsystem\Models\User\User;
 use Illuminate\Database\Query\Expression as QueryExpression;
 use Illuminate\Support\Collection;
-use Engelsystem\Http\Exceptions\HttpForbidden;
 use Psr\Http\Message\RequestInterface;
 
 class MessagesController extends BaseController
@@ -75,7 +75,7 @@ class MessagesController extends BaseController
         $users->prepend($currentUser->displayName, $currentUser->id);
 
         return $this->response->withView(
-            'pages/messages/overview.twig',
+            'pages/messages/index.twig',
             [
                 'conversations' => $conversations,
                 'users' => $users,
@@ -171,7 +171,7 @@ class MessagesController extends BaseController
         if ($msg->user_id == $currentUser->id) {
             $msg->delete();
         } else {
-            throw new HttpForbidden('You can not delete a message you haven\'t send');
+            throw new HttpForbidden();
         }
 
         return $this->redirect->to('/messages/' . $otherUserId . '#newest');
@@ -218,7 +218,8 @@ class MessagesController extends BaseController
                 $join->on('messages.id', '=', 'conversations.last_id');
             })
             ->orderBy('created_at', 'DESC')
-            ->get();
+            ->get()
+            ->load(['receiver.personalData', 'receiver.state']);
     }
 
     protected function raw(mixed $value): QueryExpression

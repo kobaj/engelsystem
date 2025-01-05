@@ -17,7 +17,7 @@ use Illuminate\Support\Collection;
  */
 function shifts_title()
 {
-    return __('Shifts');
+    return __('general.shifts');
 }
 
 /**
@@ -71,7 +71,7 @@ function update_ShiftsFilter_timerange(ShiftsFilter $shiftsFilter, $days)
     $end_time = $shiftsFilter->getEndTime();
     if (is_null($end_time)) {
         $end_time = $start_time + 24 * 60 * 60;
-        $end = Carbon::createFromTimestamp($end_time);
+        $end = Carbon::createFromTimestamp($end_time, Carbon::now()->timezone);
         if (!in_array($end->format('Y-m-d'), $days)) {
             $end->startOfDay()->subSecond(); // the day before
             $end_time = $end->timestamp;
@@ -126,7 +126,9 @@ function load_locations(bool $onlyWithActiveShifts = false)
 
         $locationIdsFromShift = Shift::query()
             ->leftJoin('needed_angel_types', 'shifts.id', 'needed_angel_types.shift_id')
-            ->whereNotNull('needed_angel_types.shift_id')
+            ->leftJoin('needed_angel_types AS nast', 'shifts.shift_type_id', 'nast.shift_type_id')
+            ->whereNotNull('needed_angel_types.id')
+            ->orWhereNotNull('nast.id')
             ->select('shifts.location_id');
 
         $locations->whereIn('id', $locationIdsFromAngelType)
@@ -177,7 +179,7 @@ function load_types()
     $isShico = auth()->can('admin_shifts');
 
     if (!AngelType::count()) {
-        error(__('The administration has not configured any angeltypes yet - or you are not subscribed to any angeltype.'));
+        error(__('The administration has not configured any angel types yet - or you are not subscribed to any angel type.'));
         throw_redirect(url('/'));
     }
 
@@ -235,18 +237,21 @@ function view_user_shifts()
     $days = load_days();
     $locations = load_locations(true);
     $types = load_types();
-    $ownAngelTypes = [];
 
-    /** @var EloquentCollection|UserAngelType[] $userAngelTypes */
-    $userAngelTypes = UserAngelType::whereUserId($user->id)
+    /** @var EloquentCollection|UserAngelType[] $ownAngelTypes */
+    $ownAngelTypes = UserAngelType::whereUserId($user->id)
         ->leftJoin('angel_types', 'user_angel_type.angel_type_id', 'angel_types.id')
         ->where(function (Builder $query) {
             $query->whereNotNull('user_angel_type.confirm_user_id')
                 ->orWhere('angel_types.restricted', false);
         })
-        ->get();
-    foreach ($userAngelTypes as $type) {
-        $ownAngelTypes[] = $type->angel_type_id;
+        ->pluck('angel_type_id')->toArray();
+
+    if (empty($ownAngelTypes)) {
+        // Show at least some shifts even if the user is not in the needed angeltype / confirmed for it
+        $ownAngelTypes = UserAngelType::whereUserId($user->id)->pluck('angel_type_id')->toArray()
+            ?: AngelType::whereRestricted(false)->pluck('id')->toArray()
+            ?: AngelType::pluck('id')->toArray();
     }
 
     if (!$session->has('shifts-filter')) {
@@ -263,7 +268,7 @@ function view_user_shifts()
     $shiftCalendarRenderer = shiftCalendarRendererByShiftFilter($shiftsFilter);
 
     if (empty($user->api_key)) {
-        User_reset_api_key($user, false);
+        auth()->resetApiKey($user);
     }
 
     $filled = [
@@ -281,8 +286,10 @@ function view_user_shifts()
     $end_day = $shiftsFilter->getEnd()->format('Y-m-d');
     $end_time = $shiftsFilter->getEnd()->format('H:i');
 
+    $canSignUpForShifts = true;
     if (config('signup_requires_arrival') && !$user->state->arrived) {
-        info(render_user_arrived_hint((bool) $user->state->user_info));
+        $canSignUpForShifts = false;
+        info(render_user_arrived_hint());
     }
 
     $formattedDays = collect($days)->map(function ($value) {
@@ -293,7 +300,6 @@ function view_user_shifts()
 
     return page([
         div('col-md-12', [
-            msg(),
             view(__DIR__ . '/../../resources/views/pages/user-shifts.html', [
                 'title'         => shifts_title(),
                 'add_link'      => auth()->can('admin_shifts') ? $link : '',
@@ -323,7 +329,7 @@ function view_user_shifts()
                     'types',
                     icon('person-lines-fill') . __('angeltypes.angeltypes')
                     . ' <small><span class="bi bi-info-circle-fill text-info" data-bs-toggle="tooltip" title="'
-                    . __('The tasks shown here are influenced by the angeltypes you joined already!')
+                    . __('The tasks shown here are influenced by the angel types you joined already!')
                     . '"></span></small>',
                     $ownAngelTypes
                 ),
@@ -344,7 +350,11 @@ function view_user_shifts()
                 'set_last_4h'   => __('last 4h'),
                 'set_next_4h'   => __('next 4h'),
                 'set_next_8h'   => __('next 8h'),
-                'buttons'       => button(
+                'random'        => auth()->can('user_shifts') && $canSignUpForShifts ? button(
+                    url('/shifts/random'),
+                    icon('dice-4-fill') . __('shifts.random')
+                ) : '',
+                'dashboard'     => button(
                     public_dashboard_link(),
                     icon('speedometer2') . __('Public Dashboard')
                 ),
@@ -367,18 +377,11 @@ function ical_hint()
 
     return heading(__('iCal export and API') . ' ' . button_help('user/ical'), 2)
         . '<p>' . sprintf(
-            __('Export your own shifts. <a href="%s">iCal format</a> or <a href="%s">JSON format</a> available (please keep secret, otherwise <a href="%s">reset the api key</a>).'),
+            __('Export your own shifts formatted as <a href="%s" target="_blank">iCal</a> or <a href="%s" target="_blank">JSON</a> (please keep the link secret, otherwise you have to reset the api key <a href="%s">in your settings</a>).'),
             url('/ical', ['key' => $user->api_key]),
             url('/shifts-json-export', ['key' => $user->api_key]),
-            url('/user-myshifts', ['reset' => 1])
-        )
-        . ' <button class="btn btn-sm btn-danger" type="button"
-            data-bs-toggle="collapse" data-bs-target="#collapseApiKey"
-            aria-expanded="false" aria-controls="collapseApiKey">
-            ' . __('Show API Key') . '
-            </button>'
-        . '</p>'
-        . '<p id="collapseApiKey" class="collapse"><code>' . $user->api_key . '</code></p>';
+            url('/settings/api')
+        ) . '</p>';
 }
 
 /**

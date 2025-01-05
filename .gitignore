@@ -14,9 +14,13 @@ Thumbs.db
 _vimrc_local.vim
 .sass-cache
 
-# PHPstorm files
+# IDE & dev env files
+/flake.nix
+/flake.lock
+/.devcontainer
 /.idea/
 /.phpstorm.meta.php
+/.vscode
 
 # Docker .env files
 /docker/.env

@@ -1,7 +1,7 @@
 # Setup instructions
 
 These instructions will set up an instance of `Engelsystem-FC` as HTTP on port 8080
-on an Amazon instance. They do not include changes that were made, post-installation, 
+on an Amazon instance. They do not include changes that were made, post-installation,
 to run it on port 443 as https.
 
 ## Create an EC2 instance
@@ -59,8 +59,8 @@ Log back into the system.
 
 2. Start up Engelsystem with the command `./startup.sh`. This will take some time to complete.
 
-3. Once the startup is finished, you can visit the webpage at 
-http://ec2-??-???-???-???.compute-1.amazonaws.com:8080/login. 
+3. Once the startup is finished, you can visit the webpage at
+http://ec2-??-???-???-???.compute-1.amazonaws.com:8080/login.
 
 4. The default user name is `admin` and the default password is `asdfasdf`.
 
@@ -80,20 +80,18 @@ http://ec2-??-???-???-???.compute-1.amazonaws.com:8080/login.
 
 12. Click on the "Admin" menu in the middle of the top of the screen. Choose "Locations".
 
-13. You will want at least 8 locations: "18+ panel", "Artist Alley", "Dance", "Dealer's Den", 
-"Hospitality/Staff Feed", "Hydration Station", "Night Market", "Registration". There may be 
+13. You will want at least 8 locations: "18+ panel", "Artist Alley", "Dance", "Dealer's Den",
+"Hospitality/Staff Feed", "Hydration Station", "Night Market", "Registration". There may be
 others!
 
-14. Click on the "Admin" menu in the middle of the top of the screen. Choose "Grouprights".
+14. Try creating a new user. By default they should be automatically a "gofur".
 
-15. Change the rights for "Shift Coordinator" to be the same as "Angel", except that it can also
-do "admin\_shifts." So its group rights should be: admin\_shifts, angeltypes, faq.view, ical, login, 
-logout, news, register, shifts\_json\_export, user\_myshifts, user\_settings, user\_shifts, view\_locations 
+15. Try creating a new user and assigning them "Shift Coordinator" permissions
+(make sure to keep the gofur permissions checked).
 
-16. Try creating a gofur, and make sure that they have the basic information that they want.
-
-17. Try creating a requestor. Log out, log back as "admin", give your requestor "Shift Coordinator"
-rights, log out, log back as the requestor, and make sure that they can create a request.
+16. Try creating a new user and assigning them "Staff" permissions
+(with or without shift coordinator permissions, up to you)
+(make sure to keep the gofur permissions checked).
 
 18. Let everyone know that the service is up and ready!
 

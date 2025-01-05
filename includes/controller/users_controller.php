@@ -1,12 +1,14 @@
 <?php
 
 use Engelsystem\Database\Db;
+use Engelsystem\Models\AngelType;
 use Engelsystem\Models\Shifts\ShiftEntry;
 use Engelsystem\Models\User\State;
 use Engelsystem\Models\User\User;
 use Engelsystem\ShiftCalendarRenderer;
 use Engelsystem\ShiftsFilter;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Str;
 
 /**
@@ -49,7 +51,7 @@ function user_delete_controller()
     $request = request();
 
     if ($request->has('user_id')) {
-        $user_source = User::find($request->query->get('user_id'));
+        $user_source = User::findOrFail($request->query->get('user_id'));
     } else {
         $user_source = $user;
     }
@@ -78,6 +80,13 @@ function user_delete_controller()
         }
 
         if ($valid) {
+            // Move user created news/answers/worklogs/shifts  etc. to deleting user
+            $user_source->news()->update(['user_id' => $user->id]);
+            $user_source->questionsAnswered()->update(['answerer_id' => $user->id]);
+            $user_source->worklogsCreated()->update(['creator_id' => $user->id]);
+            $user_source->shiftsCreated()->update(['created_by' => $user->id]);
+            $user_source->shiftsUpdated()->update(['updated_by' => $user->id]);
+
             // Load data before user deletion to prevent errors when displaying
             $user_source->load(['contact', 'personalData', 'settings', 'state']);
             $user_source->delete();
@@ -204,7 +213,7 @@ function user_controller()
         }
     }
 
-    $shifts = Shifts_by_user($user_source->id, auth()->can('user_shifts_admin'));
+    $shifts = Shifts_by_user($user_source->id, true);
     foreach ($shifts as $shift) {
         // TODO: Move queries to model
         $shift->needed_angeltypes = Db::select(
@@ -221,7 +230,7 @@ function user_controller()
         foreach ($neededAngeltypes as &$needed_angeltype) {
             $needed_angeltype['users'] = Db::select(
                 '
-                    SELECT `shift_entries`.`freeloaded`, `users`.*
+                    SELECT `shift_entries`.`freeloaded_by`, `users`.*
                     FROM `shift_entries`
                     JOIN `users` ON `shift_entries`.`user_id`=`users`.`id`
                     WHERE `shift_entries`.`shift_id` = ?
@@ -234,14 +243,29 @@ function user_controller()
     }
 
     if (empty($user_source->api_key)) {
-        User_reset_api_key($user_source, false);
+        auth()->resetApiKey($user_source);
     }
 
-    if ($user_source->state->force_active) {
-        $tshirt_score = __('Enough');
-    } else {
-        $tshirt_score = sprintf('%.2f', User_tshirt_score($user_source->id)) . '&nbsp;h';
+    $goodie_score = sprintf('%.2f', User_goodie_score($user_source->id)) . '&nbsp;h';
+    if ($user_source->state->force_active && config('enable_force_active')) {
+        $goodie_score = '<span title="' . $goodie_score . '">' . __('Enough') . '</span>';
     }
+
+    $worklogs = $user_source->worklogs()
+        ->with(['user', 'creator'])
+        ->get();
+
+    $is_ifsg_supporter = (bool) AngelType::whereRequiresIfsgCertificate(true)
+        ->leftJoin('user_angel_type', 'user_angel_type.angel_type_id', 'angel_types.id')
+        ->where('user_angel_type.user_id', $user->id)
+        ->where('user_angel_type.supporter', true)
+        ->count();
+
+    $is_drive_supporter = (bool) AngelType::whereRequiresDriverLicense(true)
+        ->leftJoin('user_angel_type', 'user_angel_type.angel_type_id', 'angel_types.id')
+        ->where('user_angel_type.user_id', $user->id)
+        ->where('user_angel_type.supporter', true)
+        ->count();
 
     return [
         htmlspecialchars($user_source->displayName),
@@ -253,10 +277,14 @@ function user_controller()
             $user_source->groups,
             $shifts,
             $user->id == $user_source->id,
-            $tshirt_score,
-            auth()->can('admin_active'),
+            $goodie_score,
+            auth()->can('user.goodie.edit'),
             auth()->can('admin_user_worklog'),
-            UserWorkLogsForUser($user_source->id)
+            $worklogs,
+            auth()->can('user.ifsg.edit')
+                || $is_ifsg_supporter
+                || auth()->can('user.drive.edit')
+                || $is_drive_supporter,
         ),
     ];
 }
@@ -286,7 +314,7 @@ function users_list_controller()
             'freeloads',
             'active',
             'force_active',
-            'got_shirt',
+            'got_goodie',
             'shirt_size',
             'planned_arrival_date',
             'planned_departure_date',
@@ -297,14 +325,16 @@ function users_list_controller()
     }
 
     /** @var User[]|Collection $users */
-    $users = User::with(['contact', 'personalData', 'state'])
+    $users = User::with(['contact', 'personalData', 'state', 'shiftEntries' => function (HasMany $query) {
+        $query->whereNotNull('freeloaded_by');
+    }])
         ->orderBy('name')
         ->get();
     foreach ($users as $user) {
         $user->setAttribute(
             'freeloads',
-            $user->shiftEntries()
-                ->where('freeloaded', true)
+            $user->shiftEntries
+                ->whereNotNull('freeloaded_by')
                 ->count()
         );
     }
@@ -327,8 +357,8 @@ function users_list_controller()
             State::whereArrived(true)->count(),
             State::whereActive(true)->count(),
             State::whereForceActive(true)->count(),
-            ShiftEntry::whereFreeloaded(true)->count(),
-            State::whereGotShirt(true)->count(),
+            ShiftEntry::whereNotNull('freeloaded_by')->count(),
+            State::whereGotGoodie(true)->count(),
             State::query()->sum('got_voucher')
         ),
     ];
@@ -411,7 +441,7 @@ function shiftCalendarRendererByShiftFilter(ShiftsFilter $shiftsFilter)
             foreach ($shift_entries[$shift->id] as $shift_entry) {
                 if (
                     $needed_angeltype['angel_type_id'] == $shift_entry->angel_type_id
-                    && !$shift_entry->freeloaded
+                    && !$shift_entry->freeloaded_by
                 ) {
                     $taken++;
                 }
@@ -449,7 +479,7 @@ function user_driver_license_required_hint()
     $user = auth()->user();
 
     // User has already entered data, no hint needed.
-    if ($user->license->wantsToDrive()) {
+    if (!config('driving_license_enabled') || $user->license->wantsToDrive()) {
         return null;
     }
 
