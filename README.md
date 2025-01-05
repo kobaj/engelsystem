@@ -35,12 +35,12 @@ aws ecr get-login-password --region us-west-2 --profile fargate | docker login -
 
 4. Tag the build with the repo, you can find this value inside the AWS account
 ```
-docker tag es_server <aws_account_id>.dkr.ecr.us-west-2.amazonaws.com/engelsystem:latest
+docker tag es_server <aws_account_id>.dkr.ecr.us-west-2.amazonaws.com/engelsystem:<whatever_the_current_tag_is>
 ```
 
 5. Upload the build
 ```
-docker push <aws_account_id>.dkr.ecr.us-west-2.amazonaws.com/engelsystem:latest
+docker push <aws_account_id>.dkr.ecr.us-west-2.amazonaws.com/engelsystem
 ```
 
 6. Restart the service
@@ -48,6 +48,6 @@ docker push <aws_account_id>.dkr.ecr.us-west-2.amazonaws.com/engelsystem:latest
 aws ecs update-service --force-new-deployment --service engelsystem --cluster Fargate --profile fargate --region us-west-2
 ```
 
-## Github pushing to AWS
+## Github pushing to Prod AWS
 
-Coming soon...
+As soon as you push (or merge to) main, this will automatically kick off a build and upload it to Prod AWS. After a few minutes the changes will be live on anthroarts.org!
