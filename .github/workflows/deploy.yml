@@ -13,13 +13,15 @@ name: Deploy to Amazon ECS
 
 on:
   push:
-    branches:
-      - main
+# TODO only for testing
+#    branches:
+#      - main
 
 env:
   # These values come from https://github.com/anthroarts/fargate-infrastructure
   AWS_REGION: us-west-2
-  AWS_ROLE: arn:aws:iam::474196809376:role/engelsystem-github-deploy
+#   AWS_ROLE: arn:aws:iam::474196809376:role/engelsystem-github-deploy
+  AWS_ROLE: arn:aws:iam::340752843182:role/engelsystem-github-deploy # TODO, this is kobaj, dont commit this.
   CONTAINER_NAME: engelsystem
   ECR_REPOSITORY: engelsystem
   ECS_CLUSTER: Fargate
@@ -32,7 +34,7 @@ env:
   # Set this to true only if you want to override engelsystem terraform fargate tag configuration.
   # IE, you want to force a deployment and ignore whatever is specified for the tag inside
   # of https://github.com/anthroarts/fargate-infrastructure/blob/main/engelsystem_ecs.tf
-  WRITE_NEW_TASK_DEFINITION_TAG: false
+  WRITE_NEW_TASK_DEFINITION_TAG: true # ONLY FOR DEBUGGING
 
 permissions:
   # This is required for requesting the OIDC credentials
@@ -78,7 +80,6 @@ jobs:
           echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
 
       - name: Download task definition
-        if: env.WRITE_NEW_TASK_DEFINITION_TAG == 'true'
         run: |
           aws ecs describe-task-definition --task-definition $TASK_DEFINITION_FAMILY --query taskDefinition > task-definition.json
 
