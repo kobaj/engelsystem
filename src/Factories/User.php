@@ -82,11 +82,12 @@ class User
         $validationRules = [
             'username' => 'required|username',
             'email' => 'required|email',
+            'email_system'  => 'optional|checked',
             'email_shiftinfo' => 'optional|checked',
             'email_by_human_allowed' => 'optional|checked',
             'email_messages' => 'optional|checked',
             'email_news' => 'optional|checked',
-            'email_goody' => 'optional|checked',
+            'email_goodie' => 'optional|checked',
             // Using length here, because min/max would validate dect/mobile as numbers.
             'mobile' => $this->isRequired('mobile') . '|length:0:40',
         ];
@@ -94,12 +95,12 @@ class User
         $isPasswordEnabled = $this->determineIsPasswordEnabled();
 
         if ($isPasswordEnabled) {
-            $minPasswordLength = $this->config->get('min_password_length');
+            $minPasswordLength = $this->config->get('password_min_length');
             $validationRules['password'] = 'required|length:' . $minPasswordLength;
             $validationRules['password_confirmation'] = 'required';
         }
 
-        $isFullNameEnabled = $this->config->get('enable_user_name');
+        $isFullNameEnabled = $this->config->get('enable_full_name');
 
         if ($isFullNameEnabled) {
             $validationRules['firstname'] = $this->isRequired('firstname') . '|length:0:64';
@@ -159,6 +160,13 @@ class User
         $this->validateUniqueUsername($data['username']);
         $this->validateUniqueEmail($data['email']);
 
+        // simplified e-mail preferences
+        if ($data['email_system']) {
+            $data['email_shiftinfo'] = true;
+            $data['email_messages'] = true;
+            $data['email_news'] = true;
+        }
+
         if ($isPasswordEnabled) {
             // Finally, validate that password matches password_confirmation.
             // The respect keyValue validation does not seem to work.
@@ -210,6 +218,7 @@ class User
      */
     private function createUser(array $data, array $rawData): EngelsystemUser
     {
+        // Ensure all user entries got created before saving
         $this->dbConnection->beginTransaction();
 
         $user = new EngelsystemUser([
@@ -254,7 +263,7 @@ class User
             'theme'           => $this->config->get('theme'),
             'email_human'     => $data['email_by_human_allowed'] ?? false,
             'email_messages'  => $data['email_messages'] ?? false,
-            'email_goody'     => $data['email_goody'] ?? false,
+            'email_goodie'     => $data['email_goodie'] ?? false,
             'email_shiftinfo' => $data['email_shiftinfo'] ?? false,
             'email_news'      => $data['email_news'] ?? false,
             'mobile_show'     => $isShowMobileEnabled && $data['mobile_show'],
@@ -274,6 +283,7 @@ class User
             ->associate($user)
             ->save();
 
+        // Handle OAuth registration
         if ($this->session->has('oauth2_connect_provider') && $this->session->has('oauth2_user_id')) {
             $oauth = new OAuth([
                 'provider'      => $this->session->get('oauth2_connect_provider'),
@@ -296,17 +306,20 @@ class User
         $defaultGroup = Group::find($this->authenticator->getDefaultRole());
         $user->groups()->attach($defaultGroup);
 
+        auth()->resetApiKey($user);
         if ($this->determineIsPasswordEnabled() && array_key_exists('password', $data)) {
             auth()->setPassword($user, $data['password']);
         }
 
         $assignedAngelTypeNames = $this->assignAngelTypes($user, $rawData);
 
-        $this->logger->info(sprintf(
-            'User %s signed up as: %s',
-            sprintf('%s (%u)', $user->displayName, $user->id),
-            join(', ', $assignedAngelTypeNames),
-        ));
+        $this->logger->info(
+            'User {user} registered and signed up as: {angeltypes}',
+            [
+                'user' => sprintf('%s (%u)', $user->displayName, $user->id),
+                'angeltypes' => join(', ', $assignedAngelTypeNames),
+            ]
+        );
 
         $this->dbConnection->commit();
 

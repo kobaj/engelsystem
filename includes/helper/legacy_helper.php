@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-use Engelsystem\Renderer\Twig\Extensions\Globals;
 use Engelsystem\Helpers\Carbon;
 use Engelsystem\Helpers\DayOfEvent;
+use Engelsystem\Renderer\Twig\Extensions\Globals;
 
 function theme_id(): int
 {
@@ -14,9 +14,6 @@ function theme_id(): int
     return $globals['themeId'];
 }
 
-/**
- * @return array
- */
 function theme(): array
 {
     $theme_id = theme_id();
@@ -34,7 +31,7 @@ function dateWithEventDay(string $day): string
     $dayOfEvent = DayOfEvent::get($date);
     $dateFormatted = $date->format(__('general.date'));
 
-    if (!config('enable_show_day_of_event') || is_null($dayOfEvent)) {
+    if (is_null($dayOfEvent)) {
         return $dateFormatted;
     }
 

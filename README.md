@@ -8,15 +8,15 @@ This system was forked off of [engelsystem](https://github.com/engelsystem/engel
 
 More documentation can be found at: https://engelsystem.de/doc/
 
-## Installation
+## Local Installation
 
 The Engelsystem can be started using the provided startup.sh program.
 
 Take a look at [setup.md] additionally to see how engelsystem is setup for FC.
 
-### Local Deployment pushing to AWS
+## Local Deployment pushing to AWS
 
-If developing locally, you can upload changes to your AWS account by following these steps:
+If developing locally against [fargate-infrastructure](https://github.com/anthroarts/fargate-infrastructure), you can upload changes to your AWS account by following these steps:
 
 1. Authenticate with AWS
 ```
@@ -35,12 +35,12 @@ aws ecr get-login-password --region us-west-2 --profile fargate | docker login -
 
 4. Tag the build with the repo, you can find this value inside the AWS account
 ```
-docker tag es_server <aws_account_id>.dkr.ecr.us-west-2.amazonaws.com/<repo>:<tag>
+docker tag es_server <aws_account_id>.dkr.ecr.us-west-2.amazonaws.com/engelsystem:latest
 ```
 
 5. Upload the build
 ```
-docker push <aws_account_id>.dkr.ecr.us-west-2.amazonaws.com/<repo>:<tag>
+docker push <aws_account_id>.dkr.ecr.us-west-2.amazonaws.com/engelsystem:latest
 ```
 
 6. Restart the service
@@ -48,6 +48,6 @@ docker push <aws_account_id>.dkr.ecr.us-west-2.amazonaws.com/<repo>:<tag>
 aws ecs update-service --force-new-deployment --service engelsystem --cluster Fargate --profile fargate --region us-west-2
 ```
 
-### Github pushing to Prod AWS
+## Github pushing to Prod AWS
 
 As soon as you push (or merge to) main, this will automatically kick off a build and upload it to Prod AWS. After a few minutes the changes will be live on anthroarts.org!
