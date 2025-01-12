@@ -1236,3 +1236,33 @@ msgstr "Config"
 
 msgid "config.edit.success"
 msgstr "Configuration updated successfully"
+
+msgid "Create angel type"
+msgstr "Create gofur type"
+
+msgid "Do you want to delete angel type %s?"
+msgstr "Do you want to delete gofur type %s?"
+
+msgid "Delete angel type %s"
+msgstr "Delete gofur type %s"
+
+msgid "Copy needed angels from location settings"
+msgstr "Copy needed gofurs from location settings"
+
+msgid "Copy needed angels from shift type settings"
+msgstr "Copy needed gofurs from shift type settings"
+
+msgid "Angel has been marked as active."
+msgstr "Gofur has been marked as active."
+
+msgid "Angel has been marked as not active."
+msgstr "Gofur has been marked as not active."
+
+msgid "Angel has been marked as arrived."
+msgstr "Gofur has been marked as arrived."
+
+msgid "Angel has been marked as not active."
+msgstr "Gofur has been marked as not active."
+
+msgid "Angel type saved."
+msgstr "Gofur type saved."
