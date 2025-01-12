@@ -6,8 +6,7 @@ to run it on port 443 as https.
 
 ## Create an EC2 instance (deprecated)
 
-[!WARNING]
-Deprecated, please use the [fargate infrastructure](https://github.com/anthroarts/fargate-infrastructure) package to deploy to ec2 and setup the instance.
+> :warning: Deprecated, please use the [fargate infrastructure](https://github.com/anthroarts/fargate-infrastructure) package to deploy to ec2 and setup the instance.
 
 Go to AWS, then EC2, then Instances. Launch an instance with the following settings:
 
