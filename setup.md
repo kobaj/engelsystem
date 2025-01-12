@@ -4,7 +4,10 @@ These instructions will set up an instance of `Engelsystem-FC` as HTTP on port 8
 on an Amazon instance. They do not include changes that were made, post-installation,
 to run it on port 443 as https.
 
-## Create an EC2 instance
+## Create an EC2 instance (deprecated)
+
+[!WARNING]
+Deprecated, please use the [fargate infrastructure](https://github.com/anthroarts/fargate-infrastructure) package to deploy to ec2 and setup the instance.
 
 Go to AWS, then EC2, then Instances. Launch an instance with the following settings:
 
@@ -26,7 +29,7 @@ Go to AWS, then EC2, then Instances. Launch an instance with the following setti
 
 9. Keep track of the address of the server.
 
-## Set up the instance
+## Set up the instance (deprecated)
 
 1. ssh into your server. The command will be something like `ssh -i ?????.pem ubuntu@ec2-??-???-???-???.compute-1.amazonaws.com`
 
@@ -51,48 +54,44 @@ $ sudo usermod -a -G docker ubuntu
 $ sudo reboot
 ```
 
-## Initialize the instance
-
 Log back into the system.
 
-1. Check that you have docker permission by typing `docker ps`
+3. Check that you have docker permission by typing `docker ps`
 
-2. Start up Engelsystem with the command `./startup.sh`. This will take some time to complete.
+4. Start up Engelsystem with the command `./startup.sh`. This will take some time to complete.
 
-3. Once the startup is finished, you can visit the webpage at
+5. Once the startup is finished, you can visit the webpage at
 http://ec2-??-???-???-???.compute-1.amazonaws.com:8080/login.
 
-4. The default user name is `admin` and the default password is `asdfasdf`.
+## Initialize the instance with types, shifts, and locations
 
-5. Click on `admin` in the upper-right side, then choose `Settings`.
+1. The default user name is `admin` and the default password is `asdfasdf`.
 
-6. Under "Settings" is "Password". Click that.
+2. Click on `admin` in the upper-right side, then choose `Settings`.
 
-7. Your old password remains `asdfasdf`. Enter a new password, then click "Save".
+3. Under "Settings" is "Password". Click that.
 
-8. Click on the "Admin" menu in the middle of the top of the screen. Choose "Gofurtypes".
+4. Your old password remains `asdfasdf`. Enter a new password, then click "Save".
 
-9. Click on the + to the right of the word "Gofurtypes". You will want 2 types: "Gofur" and "Requestor".
+5. Click on the "Gofurs" menu in the middle of the top of the screen. Choose "Gofur types".
 
-10. Click on the "Admin" menu in the middle of the top of the screen. Choose "Shift types".
+6. Click on the + to the right of the word "Gofurtypes". You will want 2 types: "Gofur" and "Requestor".
 
-11. Click on the + to the right of the word "Shift types". You will want 1 type: "Regular shift".
+7. Click on the "Shift" menu in the middle of the top of the screen. Choose "Shift types".
 
-12. Click on the "Admin" menu in the middle of the top of the screen. Choose "Locations".
+8. Click on the + to the right of the word "Shift types". You will want 1 type: "Regular shift".
 
-13. You will want at least 8 locations: "18+ panel", "Artist Alley", "Dance", "Dealer's Den",
-"Hospitality/Staff Feed", "Hydration Station", "Night Market", "Registration". There may be
-others!
+9. Click on the "Locations" menu in the middle of the top of the screen.
 
-14. Try creating a new user. By default they should be automatically a "gofur".
+10. You will want at least 8 locations: "18+ panel", "Artist Alley", "Dance", "Dealer's Den", "Hospitality/Staff Feed", "Hydration Station", "Night Market", "Registration". There may be others!
 
-15. Try creating a new user and assigning them "Shift Coordinator" permissions
+11. Try creating a new user. By default they should be automatically a "gofur".
+
+12. Try creating a new user and assigning them "Shift Coordinator" permissions
 (make sure to keep the gofur permissions checked).
 
-16. Try creating a new user and assigning them "Staff" permissions
+13. Try creating a new user and assigning them "Staff" permissions
 (with or without shift coordinator permissions, up to you)
 (make sure to keep the gofur permissions checked).
 
-18. Let everyone know that the service is up and ready!
-
-
+14. Let everyone know that the service is up and ready!
