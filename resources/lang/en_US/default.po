@@ -1266,3 +1266,24 @@ msgstr "Gofur has been marked as not active."
 
 msgid "Angel type saved."
 msgstr "Gofur type saved."
+
+msgid "general.user"
+msgstr "User"
+
+msgid "event.buildup.start"
+msgstr "Pre-event setup"
+
+msgid "event.starts"
+msgstr "Event start"
+
+msgid "event.ends"
+msgstr "Event end"
+
+msgid "event.teardown.ends"
+msgstr "Teardown"
+
+msgid "shifts.start"
+msgstr "Shift start"
+
+msgid "shifts.end"
+msgstr "Shift end"
