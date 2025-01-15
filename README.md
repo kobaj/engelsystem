@@ -1,18 +1,16 @@
-[![pipeline status](https://chaos.expert/engelsystem/engelsystem/badges/main/pipeline.svg)](https://chaos.expert/engelsystem/engelsystem/commits/main)
-[![coverage report](https://chaos.expert/engelsystem/engelsystem/badges/main/coverage.svg)](https://chaos.expert/engelsystem/engelsystem/commits/main)
-[![GPL](https://img.shields.io/github/license/engelsystem/engelsystem.svg?maxAge=2592000)](LICENSE)
-
 # Engelsystem
 
-This system was forked off of [engelsystem](https://github.com/engelsystem/engelsystem/). This version is available at [Engelsystem-FC](https://github.com/chipuni/engelsystem).
+Access it here: https://engelsystem.anthroarts.org!
 
-More documentation can be found at: https://engelsystem.de/doc/
+Check out the [FC wiki](https://wiki.furcon.org/doc/engelsystem-Npw9BF62KE) for user instructions
+
+This system was forked off of [engelsystem](https://github.com/engelsystem/engelsystem/). More official documentation can be found at: https://engelsystem.de/doc/.
 
 ## Local Installation
 
-The Engelsystem can be started using the provided startup.sh program.
+The Engelsystem can be started locally using the provided [startup.sh](startup.sh) program. Be sure to use [shutdown.sh](shutdown.sh) later to turn it off.
 
-Take a look at [setup.md] additionally to see how engelsystem is setup for FC.
+Take a look at [setup.md](setup.md) additionally to see how engelsystem is setup for FC.
 
 ## Local Deployment pushing to AWS
 
@@ -50,4 +48,4 @@ aws ecs update-service --force-new-deployment --service engelsystem --cluster Fa
 
 ## Github pushing to Prod AWS
 
-As soon as you push (or merge to) main, this will automatically kick off a build and upload it to Prod AWS. After a few minutes the changes will be live on anthroarts.org!
+As soon as you push (or merge to) main, this will automatically kick off a build and upload it to Prod AWS. After a few minutes the changes will be live on https://engelsystem.anthroarts.org!
