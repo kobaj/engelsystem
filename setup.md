@@ -70,29 +70,8 @@ http://ec2-??-???-???-???.compute-1.amazonaws.com:8080/login.
 
 7. Your old password remains `asdfasdf`. Enter a new password, then click "Save".
 
-8. Click on the "Admin" menu in the middle of the top of the screen. Choose "Gofurtypes".
+8. From here on out you can fill in the Gofur Types, Locations, and Shift Types. There are some helpful resources available in the wiki to accomplish this: https://wiki.furcon.org/doc/engelsystem-Npw9BF62KE#h-developer-instructions
 
-9. Click on the + to the right of the word "Gofurtypes". You will want 2 types: "Gofur" and "Requestor".
-
-10. Click on the "Admin" menu in the middle of the top of the screen. Choose "Shift types".
-
-11. Click on the + to the right of the word "Shift types". You will want 1 type: "Regular shift".
-
-12. Click on the "Admin" menu in the middle of the top of the screen. Choose "Locations".
-
-13. You will want at least 8 locations: "18+ panel", "Artist Alley", "Dance", "Dealer's Den",
-"Hospitality/Staff Feed", "Hydration Station", "Night Market", "Registration". There may be
-others!
-
-14. Try creating a new user. By default they should be automatically a "gofur".
-
-15. Try creating a new user and assigning them "Shift Coordinator" permissions
-(make sure to keep the gofur permissions checked).
-
-16. Try creating a new user and assigning them "Staff" permissions
-(with or without shift coordinator permissions, up to you)
-(make sure to keep the gofur permissions checked).
-
-18. Let everyone know that the service is up and ready!
+9. Let everyone know that the service is up and ready!
 
 
