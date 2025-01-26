@@ -4,7 +4,9 @@ These instructions will set up an instance of `Engelsystem-FC` as HTTP on port 8
 on an Amazon instance. They do not include changes that were made, post-installation,
 to run it on port 443 as https.
 
-## Create an EC2 instance
+## Create an EC2 instance (deprecated)
+
+> :warning: Deprecated, please use the [fargate infrastructure](https://github.com/anthroarts/fargate-infrastructure) package to deploy to ec2 and setup the instance.
 
 Go to AWS, then EC2, then Instances. Launch an instance with the following settings:
 
@@ -26,7 +28,7 @@ Go to AWS, then EC2, then Instances. Launch an instance with the following setti
 
 9. Keep track of the address of the server.
 
-## Set up the instance
+## Set up the instance (deprecated)
 
 1. ssh into your server. The command will be something like `ssh -i ?????.pem ubuntu@ec2-??-???-???-???.compute-1.amazonaws.com`
 
@@ -51,27 +53,25 @@ $ sudo usermod -a -G docker ubuntu
 $ sudo reboot
 ```
 
-## Initialize the instance
-
 Log back into the system.
 
-1. Check that you have docker permission by typing `docker ps`
+3. Check that you have docker permission by typing `docker ps`
 
-2. Start up Engelsystem with the command `./startup.sh`. This will take some time to complete.
+4. Start up Engelsystem with the command `./startup.sh`. This will take some time to complete.
 
-3. Once the startup is finished, you can visit the webpage at
+5. Once the startup is finished, you can visit the webpage at
 http://ec2-??-???-???-???.compute-1.amazonaws.com:8080/login.
 
-4. The default user name is `admin` and the default password is `asdfasdf`.
+## Initialize the instance with types, shifts, and locations
 
-5. Click on `admin` in the upper-right side, then choose `Settings`.
+1. The default user name is `admin` and the default password is `asdfasdf`.
 
-6. Under "Settings" is "Password". Click that.
+2. Click on `admin` in the upper-right side, then choose `Settings`.
 
-7. Your old password remains `asdfasdf`. Enter a new password, then click "Save".
+3. Under "Settings" is "Password". Click that.
 
-8. From here on out you can fill in the Gofur Types, Locations, and Shift Types. There are some helpful resources available in the wiki to accomplish this: https://wiki.furcon.org/doc/engelsystem-Npw9BF62KE#h-developer-instructions
+4. Your old password remains `asdfasdf`. Enter a new password, then click "Save".
 
-9. Let everyone know that the service is up and ready!
+5. From here on out you can fill in the Gofur Types, Locations, and Shift Types. There are some helpful resources available in the wiki to accomplish this: https://wiki.furcon.org/doc/engelsystem-Npw9BF62KE#h-developer-instructions
 
-
+6. Let everyone know that the service is up and ready!
