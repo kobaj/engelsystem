@@ -175,38 +175,17 @@ class SetupFcGroupPermissions extends Migration
 
     private function renameGroup($groupNameOld, $groupNameNew): void
     {
-        $angel_group = $this->db->table('groups')->where('name', $groupNameOld)->update(['name' => $groupNameNew]);
+        FcMigrationUtils::renameGroup($this->db, $groupNameOld, $groupNameNew);
     }
 
-    private function removeGroupPrivilege($group_name, $privilege_name): void {
-        $group = $this->db->table('groups')->where('name', $group_name)->first();
-        if (!$group) {
-            return;
-        }
-
-        $privilege = $this->db->table('privileges')->where('name', $privilege_name)->first();
-        if(!$privilege) {
-            return;
-        }
-
-        $this->db->table('group_privileges')->where('group_id', $group->id)->where('privilege_id', $privilege->id)->delete();
+    private function removeGroupPrivilege($group_name, $privilege_name): void
+    {
+        FcMigrationUtils::removeGroupPrivilege($this->db, $group_name, $privilege_name);
     }
 
     private function addGroupPrivilege($group_name, $privilege_name): void
     {
-        $group = $this->db->table('groups')->where('name', $group_name)->first();
-        if (!$group) {
-            return;
-        }
-
-        $privilege = $this->db->table('privileges')->where('name', $privilege_name)->first();
-        if(!$privilege) {
-            return;
-        }
-
-        $this->db->table('group_privileges')->insert([
-            ['group_id' => $group->id, 'privilege_id' => $privilege->id],
-        ]);
+        FcMigrationUtils::addGroupPrivilege($this->db, $group_name, $privilege_name);
     }
 
     /**
@@ -215,5 +194,56 @@ class SetupFcGroupPermissions extends Migration
     public function down(): void
     {
         throw new Exception('FC cannot be downgraded, sorry!');
+    }
+}
+
+
+class FcMigrationUtils
+{
+    public static function renameGroup($db, $groupNameOld, $groupNameNew): void
+    {
+        $db->table('groups')->where('name', $groupNameOld)->update(['name' => $groupNameNew]);
+    }
+
+    public static function removeGroupPrivilege($db, $group_name, $privilege_name): void
+    {
+        $group = $db->table('groups')->where('name', $group_name)->first();
+        if (!$group) {
+            // No group found with that name.
+            return;
+        }
+
+        $privilege = $db->table('privileges')->where('name', $privilege_name)->first();
+        if(!$privilege) {
+            // No privilege found with that name.
+            return;
+        }
+
+        $db->table('group_privileges')->where('group_id', $group->id)->where('privilege_id', $privilege->id)->delete();
+    }
+
+    public static function addGroupPrivilege($db, $group_name, $privilege_name): void
+    {
+        $group = $db->table('groups')->where('name', $group_name)->first();
+        if (!$group) {
+            // No group found with that name.
+            return;
+        }
+
+        $privilege = $db->table('privileges')->where('name', $privilege_name)->first();
+        if(!$privilege) {
+            // No privilege found with that name.
+            return;
+        }
+
+        $group_privileges = $db->table('group_privileges')->where('group_id', $group->id)->where('privilege_id', $privilege->id);
+        if($group_privileges->count() !== 0) {
+            // GroupPrivilege already exists.
+            return;
+        }
+
+        $db->table('group_privileges')->insert([
+            ['group_id' => $group->id, 'privilege_id' => $privilege->id],
+        ]);
     }
 }
