@@ -68,17 +68,6 @@
                                                 ) }}
 
                                                 {{ m.edit(url('/admin/locations/edit/' ~ location.id), {'class': 'm-1'}) }}
-
-                                                <form method="post" class="ps-1">
-                                                    {{ csrf() }}
-                                                    {{ f.hidden('id', location.id) }}
-                                                    {{ f.delete(null, {
-                                                        'size': 'sm',
-                                                        'confirm_title': __('location.delete.title', [location.name|e]),
-                                                        'confirm_button_text': __('form.delete'),
-                                                        'class': 'm-1',
-                                                    }) }}
-                                                </form>
                                             {% else %}
                                                 {{ m.button(
                                                     __('form.view'),
